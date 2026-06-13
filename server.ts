@@ -51,7 +51,8 @@ async function startServer() {
   app.post("/api/convert/excel-csv", upload.single("file"), async (req, res) => {
     try {
       if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-      const xlsx = await import("xlsx");
+      const xlsxModule = await import("xlsx");
+      const xlsx = xlsxModule.default || xlsxModule;
       const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
       const sheetName = workbook.SheetNames[0];
       const csv = xlsx.utils.sheet_to_csv(workbook.Sheets[sheetName]);
@@ -63,16 +64,44 @@ async function startServer() {
     }
   });
 
-  // Convert PDF to Document (Text extraction proxying as doc)
+  // Convert PDF to Document (Text extraction proxying as doc/docx)
   app.post("/api/convert/pdf-word", upload.single("file"), async (req, res) => {
     try {
       if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-      // @ts-ignore
-      const pdfParse = (await import("pdf-parse")).default;
+      const targetFormat = req.body.targetFormat || 'docx';
+      const pdfParseModule = await import("pdf-parse");
+      const pdfParse = pdfParseModule.default || pdfParseModule;
       const data = await pdfParse(req.file.buffer);
-      res.header("Content-Type", "application/msword");
-      res.attachment("converted.doc");
-      res.send(data.text);
+      
+      if (targetFormat === 'docx') {
+         const docxModule = await import("docx");
+         const { Document, Packer, Paragraph, TextRun } = docxModule.default || docxModule;
+         
+         const paragraphs = data.text.split('\\n').map((line: string) => 
+            new Paragraph({
+               children: [new TextRun(line)]
+            })
+         );
+         
+         const doc = new Document({
+            sections: [{
+               properties: {},
+               children: paragraphs
+            }]
+         });
+         
+         const b64string = await Packer.toBase64String(doc);
+         const buffer = Buffer.from(b64string, 'base64');
+         
+         res.header("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+         res.attachment("converted.docx");
+         res.send(buffer);
+      } else {
+         // fallback for manually outputting raw text as legacy format
+         res.header("Content-Type", "application/msword");
+         res.attachment(`converted.${targetFormat}`);
+         res.send(data.text);
+      }
     } catch (e: any) {
       res.status(500).json({ error: e.message || "Failed to convert PDF" });
     }
@@ -82,8 +111,10 @@ async function startServer() {
   app.post("/api/convert/word-pdf", upload.single("file"), async (req, res) => {
     try {
       if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-      const mammoth = await import("mammoth");
-      const { PDFDocument } = await import("pdf-lib");
+      const mammothModule = await import("mammoth");
+      const mammoth = mammothModule.default || mammothModule;
+      const pdfLibModule = await import("pdf-lib");
+      const { PDFDocument } = pdfLibModule.default || pdfLibModule;
       
       const { value: text } = await mammoth.extractRawText({ buffer: req.file.buffer });
       

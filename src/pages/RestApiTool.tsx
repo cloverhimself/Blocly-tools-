@@ -125,7 +125,7 @@ export function RestApiTool() {
               </button>
            </div>
 
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start h-[500px]">
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start h-auto lg:h-[500px]">
              {/* Request Configuration */}
              <div className="bg-white border-2 border-[#111111] shadow-[4px_4px_0px_#111111] flex flex-col h-full overflow-hidden">
                 <div className="flex border-b-2 border-[#111111] bg-slate-50">

@@ -8,13 +8,17 @@ export function Dropzone({
   fileName,
   fileMeta,
   onFileSelect,
-  onReset
+  onReset,
+  label = "Drop a video here, or",
+  acceptedTypesLabel = "MP4 - MOV - MKV - WEBM - AVI - up to 2 GB"
 }: {
   state: DropzoneState;
   fileName?: string;
   fileMeta?: string;
   onFileSelect: (file: File) => void;
   onReset?: () => void;
+  label?: string;
+  acceptedTypesLabel?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -49,7 +53,7 @@ export function Dropzone({
   const m = map[state] || map.file;
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full flex flex-col flex-1 min-w-0">
       <input 
         type="file" 
         className="hidden" 
@@ -62,27 +66,27 @@ export function Dropzone({
           onClick={handleClick}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className="w-full min-h-[230px] flex flex-col items-center justify-center gap-3.5 bg-[#FAFAFA] border-2 border-dashed border-[#111111] rounded-sm cursor-pointer p-8 font-sans box-border transition-colors hover:bg-[#FFFBE0]"
+          className="w-full h-full flex-1 min-h-[230px] flex flex-col items-center justify-center gap-3.5 bg-[#FAFAFA] border-2 border-dashed border-[#111111] rounded-sm cursor-pointer p-8 font-sans box-border transition-colors hover:bg-[#FFFBE0]"
         >
           <UploadCloud className="w-[42px] h-[42px] text-[#111111]" strokeWidth={1.5} />
           <div className="text-[17px] font-semibold text-[#111111] text-center">
-            Drop a video here, or <span className="border-b-[3px] border-[#FFD400] pb-[1px]">browse files</span>
+            {label} <span className="border-b-[3px] border-[#FFD400] pb-[1px]">browse files</span>
           </div>
           <div className="font-mono text-[11.5px] text-[#111111]/55 text-center mt-1">
-            MP4 - MOV - MKV - WEBM - AVI - up to 2 GB
+            {acceptedTypesLabel}
           </div>
         </button>
       ) : (
-        <div className="w-full min-h-[230px] box-border border border-[#111111] rounded-sm p-6 flex flex-col justify-center gap-5 bg-[#FAFAFA]">
-          <div className="flex items-center gap-4">
+        <div className="w-full h-full flex-1 min-h-[230px] box-border border border-[#111111] rounded-sm p-6 flex flex-col justify-center gap-5 bg-[#FAFAFA] min-w-0">
+          <div className="flex items-center gap-4 min-w-0 w-full overflow-hidden">
             <span className="w-[54px] h-[54px] flex-none border border-[#111111] rounded-sm bg-[#FFD400] flex items-center justify-center">
               <FileVideo className="w-[26px] h-[26px] text-[#111111]" strokeWidth={1.6} />
             </span>
-            <div className="min-w-0 flex-1">
-              <div className="font-mono font-semibold text-[15px] text-[#111111] overflow-hidden text-ellipsis whitespace-nowrap">
+            <div className="min-w-0 flex-1 overflow-hidden">
+              <div className="font-mono font-semibold text-[15px] pl-1 text-[#111111] overflow-hidden text-ellipsis whitespace-nowrap" title={fileName}>
                 {fileName}
               </div>
-              <div className="font-mono text-[12px] text-[#111111]/55 mt-1">
+              <div className="font-mono text-[12px] pl-1 text-[#111111]/55 mt-1 overflow-hidden text-ellipsis whitespace-nowrap">
                 {fileMeta}
               </div>
             </div>

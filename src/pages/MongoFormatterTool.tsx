@@ -82,8 +82,8 @@ export function MongoFormatterTool() {
           <p className="text-[#111111]/60 text-sm">Beautify MongoDB JSON objects and query chains</p>
         </div>
 
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[400px]">
-          <div className="flex flex-col">
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[500px]">
+          <div className="flex flex-col min-h-[300px]">
             <label className="font-mono text-xs uppercase tracking-wider text-[#111111] mb-2 font-bold select-none">
               Input Query or JSON
             </label>
@@ -98,8 +98,8 @@ export function MongoFormatterTool() {
               <div className="mt-2 text-red-500 font-mono text-xs break-words">{error}</div>
             )}
           </div>
-          <div className="flex flex-col">
-            <div className="flex items-center justify-between mb-2">
+          <div className="flex flex-col min-h-[300px]">
+             <div className="flex items-center justify-between mb-2">
               <label className="font-mono text-xs uppercase tracking-wider text-[#111111] font-bold select-none">
                 Formatted Output
               </label>

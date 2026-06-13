@@ -123,7 +123,7 @@ export function CurlToFetchTool() {
         </div>
 
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[400px] relative">
-          <div className="flex flex-col">
+          <div className="flex flex-col min-h-[300px]">
             <label className="font-mono text-xs uppercase tracking-wider text-[#111111] mb-2 font-bold select-none">
               Curl Command
             </label>
@@ -141,7 +141,7 @@ export function CurlToFetchTool() {
           
           <ArrowRight className="hidden md:block w-8 h-8 text-[#111111]/20 absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-2 z-10 bg-[#FAFAFA]" />
 
-          <div className="flex flex-col relative z-0">
+          <div className="flex flex-col relative z-0 min-h-[300px]">
              <div className="flex items-center justify-between mb-2">
               <label className="font-mono text-xs uppercase tracking-wider text-[#111111] font-bold select-none">
                 fetch() Snippet

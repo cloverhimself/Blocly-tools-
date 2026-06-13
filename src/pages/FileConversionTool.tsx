@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TopNav } from "../components/TopNav";
 import { Footer } from "../components/Footer";
 import { Dropzone } from "../components/Dropzone";
@@ -9,6 +9,8 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
   const [status, setStatus] = useState<'empty' | 'selected' | 'converting' | 'success' | 'error'>('empty');
   const [errorMsg, setErrorMsg] = useState("");
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [targetFormat, setTargetFormat] = useState<'docx' | 'doc'>('docx');
   
   const endpointMap = {
     'pdf-word': '/api/convert/pdf-word',
@@ -25,9 +27,22 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
      '.xlsx,.xls';
 
   const extOutput = 
-     type === 'pdf-word' ? 'doc' : 
+     type === 'pdf-word' ? targetFormat : 
      type === 'word-pdf' ? 'pdf' : 
      'csv';
+
+  useEffect(() => {
+    let timer: any;
+    if (status === 'converting') {
+      timer = setInterval(() => {
+        setProgress((prev) => {
+          if (prev < 95) return prev + 1;
+          return prev;
+        });
+      }, 50); // 1% every 50ms = 5 seconds to 100%.
+    }
+    return () => clearInterval(timer);
+  }, [status]);
 
   const handleFile = (f: File) => {
     setFile(f);
@@ -36,34 +51,51 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
     setDownloadUrl(null);
   };
 
-  const handleConvert = async () => {
+  const handleConvert = () => {
     if (!file) return;
     setStatus('converting');
+    setProgress(0);
     
     const formData = new FormData();
     formData.append('file', file);
-    
-    try {
-      const res = await fetch(currentEndpoint, {
-        method: 'POST',
-        body: formData
-      });
-      
-      if (!res.ok) {
-        const errData = await res.json().catch(() => null);
-        throw new Error(errData?.error || res.statusText);
-      }
-      
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      setDownloadUrl(url);
-      setStatus('success');
-      
-    } catch (err: any) {
-      console.error(err);
-      setErrorMsg(err.message || 'Conversion failed. Make sure the file format is valid.');
-      setStatus('error');
+    if (type === 'pdf-word') {
+       formData.append('targetFormat', targetFormat);
     }
+    
+    const xhr = new XMLHttpRequest();
+
+    xhr.addEventListener('load', () => {
+      setProgress(100);
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const blob = xhr.response;
+        const url = window.URL.createObjectURL(blob);
+        setDownloadUrl(url);
+        // Small delay to let the user see 100%
+        setTimeout(() => setStatus('success'), 400);
+      } else {
+        const reader = new FileReader();
+        reader.onload = function() {
+           try {
+              const errData = JSON.parse(reader.result as string);
+              setErrorMsg(errData?.error || xhr.statusText);
+           } catch {
+              setErrorMsg(xhr.statusText);
+           }
+           setStatus('error');
+        };
+        reader.readAsText(xhr.response);
+      }
+    });
+
+    xhr.addEventListener('error', () => {
+      console.error('XHR Error');
+      setErrorMsg('Conversion failed. Make sure the file format is valid.');
+      setStatus('error');
+    });
+
+    xhr.open('POST', currentEndpoint);
+    xhr.responseType = 'blob'; 
+    xhr.send(formData);
   };
 
   const handleReset = () => {
@@ -96,7 +128,7 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
         </p>
 
         <div className="flex flex-col md:flex-row gap-6 items-stretch mt-6">
-           <div className="flex-[1.5] relative">
+           <div className="flex-[1.5] relative min-w-0 flex flex-col">
               <input 
                   type="file" 
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
@@ -107,13 +139,17 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
                      e.target.value = '';
                   }} 
               />
-              <Dropzone 
-                state={dzState} 
-                fileName={file?.name} 
-                fileMeta={file ? `Ready to convert` : undefined} 
-                onFileSelect={handleFile}
-                onReset={handleReset}
-              />
+              <div className="flex-1 w-full flex flex-col items-stretch">
+                <Dropzone 
+                  state={dzState} 
+                  fileName={file?.name} 
+                  fileMeta={file ? `Ready to convert` : undefined} 
+                  onFileSelect={handleFile}
+                  onReset={handleReset}
+                  label="Drop a file here, or"
+                  acceptedTypesLabel={acceptTypes.toUpperCase().split(',').join(' - ')}
+                />
+              </div>
               {(status !== 'empty') && (
                 <div className="absolute inset-0 z-20 pointer-events-none"></div>
               )}
@@ -121,6 +157,21 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
 
            <div className="flex-1 min-w-[300px] border-2 border-[#111111] bg-white shadow-[4px_4px_0px_#111111] rounded-sm p-6 box-border flex flex-col justify-center gap-4 min-h-[220px]">
               
+              {type === 'pdf-word' && (
+                <div className="flex flex-col gap-2 pb-4 border-b-2 border-[#111111]/10">
+                  <label className="font-mono text-[11.5px] uppercase tracking-wider font-bold text-[#111111]">Format</label>
+                  <select 
+                    value={targetFormat} 
+                    onChange={e => setTargetFormat(e.target.value as any)}
+                    disabled={status === 'converting' || status === 'success'}
+                    className="w-full px-3 py-2 bg-[#FAFAFA] border-2 border-[#111111] rounded-sm font-mono text-[13px] focus:outline-none focus:ring-2 focus:ring-[#FFD400] disabled:opacity-50"
+                  >
+                    <option value="docx">.docx (Modern)</option>
+                    <option value="doc">.doc (Legacy)</option>
+                  </select>
+                </div>
+              )}
+
               {status === 'empty' && (
                 <>
                   <div className="flex items-center justify-center gap-2 mb-2">
@@ -149,9 +200,52 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
               )}
 
               {status === 'converting' && (
-                <div className="flex flex-col items-center justify-center gap-4 py-6">
-                  <RefreshCw className="w-8 h-8 text-[#111111] animate-spin" />
-                  <div className="font-mono text-[12px] text-[#111111] font-bold">Uploading & Converting...</div>
+                <div className="flex flex-col items-center justify-center gap-4 py-4 w-full">
+                  {type === 'pdf-word' && (
+                     <div className="relative w-16 h-16 flex items-center justify-center">
+                       <svg className="w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 100 100">
+                         <circle cx="50" cy="50" r="40" className="stroke-[#111111]/10 stroke-[8] fill-none" />
+                         <circle cx="50" cy="50" r="40" className="stroke-[#FFD400] stroke-[8] fill-none transition-all duration-300 ease-out" style={{ strokeDasharray: 251.2, strokeDashoffset: 251.2 - (251.2 * progress) / 100 }} />
+                       </svg>
+                       <div className="absolute inset-0 flex items-center justify-center font-mono text-[13px] font-bold text-[#111111]">
+                         {progress}%
+                       </div>
+                     </div>
+                  )}
+
+                  {type === 'word-pdf' && (
+                    <div className="w-full max-w-[200px] flex flex-col gap-2">
+                       <div className="h-4 w-full bg-[#111111]/10 rounded-sm overflow-hidden border border-[#111111]">
+                          <div 
+                             className="h-full bg-blue-500 transition-all duration-300 ease-out"
+                             style={{ width: `${progress}%` }}
+                          />
+                       </div>
+                       <div className="font-mono text-[11px] text-right font-bold text-[#111111]">
+                         {progress}% complete
+                       </div>
+                    </div>
+                  )}
+
+                  {type === 'excel-csv' && (
+                    <div className="flex flex-col items-center gap-3">
+                       <div className="grid grid-cols-5 gap-1 w-[120px]">
+                          {Array.from({ length: 20 }).map((_, i) => (
+                             <div 
+                                key={i} 
+                                className={`h-4 rounded-[1px] transition-colors duration-200 ${(i / 20) * 100 < progress ? 'bg-[#107C41]' : 'bg-[#111111]/10'}`} 
+                             />
+                          ))}
+                       </div>
+                       <div className="font-mono text-[11px] font-bold text-[#107C41]">
+                         {progress}% Processed
+                       </div>
+                    </div>
+                  )}
+
+                  <div className="font-mono text-[12px] text-[#111111] font-bold text-center mt-2">
+                    {progress < 40 ? "Uploading to Cloud..." : "Converting Format..."}
+                  </div>
                 </div>
               )}
 
