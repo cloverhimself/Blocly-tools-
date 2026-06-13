@@ -32,9 +32,9 @@ export function Home() {
     },
     {
       name: 'File Conversion', tools: [
-         { name: 'PDF to Word', desc: 'Convert PDF documents to Word', icon: <FileText />, to: "/tools/pdf-word" },
-         { name: 'Word to PDF', desc: 'Convert Word documents to PDF', icon: <FileText />, to: "/tools/word-pdf" },
-         { name: 'Excel to CSV', desc: 'Convert Excel spreadsheets to CSV', icon: <Table />, to: "/tools/excel-csv" },
+         { name: 'PDF to Word', desc: 'Convert PDF documents to Word', icon: <FileText />, to: "/tools/pdf-word", disabled: true },
+         { name: 'Word to PDF', desc: 'Convert Word documents to PDF', icon: <FileText />, to: "/tools/word-pdf", disabled: true },
+         { name: 'Excel to CSV', desc: 'Convert Excel spreadsheets to CSV', icon: <Table />, to: "/tools/excel-csv", disabled: true },
       ]
     },
     {
@@ -84,8 +84,8 @@ export function Home() {
     },
     {
       name: 'API Tools', tools: [
-        { name: 'REST API Tester', desc: 'Test HTTP requests', icon: <Network />, to: "/tools/rest-api" },
-        { name: 'HTTP Header Viewer', desc: 'View HTTP request and response headers', icon: <Server />, to: "/tools/http-headers" },
+        { name: 'REST API Tester', desc: 'Test HTTP requests', icon: <Network />, to: "/tools/rest-api", cloud: true },
+        { name: 'HTTP Header Viewer', desc: 'View HTTP request and response headers', icon: <Server />, to: "/tools/http-headers", cloud: true },
       ]
     },
     {
@@ -159,7 +159,7 @@ export function Home() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {cat.tools.map((t, j) => (
-                  <ToolCard key={j} label={t.name} desc={t.desc} iconEl={t.icon} featured={t.featured} to={t.to} />
+                  <ToolCard key={j} label={t.name} desc={t.desc} iconEl={t.icon} featured={(t as any).featured} to={t.to} disabled={(t as any).disabled} />
                 ))}
               </div>
             </div>

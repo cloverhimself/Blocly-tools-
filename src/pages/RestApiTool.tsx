@@ -34,26 +34,33 @@ export function RestApiTool() {
     });
 
     try {
-      const opts: RequestInit = {
-        method,
-        headers: reqHeaders,
-      };
-      if (method !== "GET" && method !== "HEAD" && body) {
-        opts.body = body;
-      }
-      
-      const res = await fetch(target, opts);
-      setResponseStatus(res.status);
-      
-      const hdrs: Record<string, string> = {};
-      res.headers.forEach((v, k) => hdrs[k] = v);
-      setResponseHeaders(hdrs);
+      const bodyContent = (method !== "GET" && method !== "HEAD" && body) ? body : undefined;
 
-      const text = await res.text();
+      const proxyOpts = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: target,
+          method,
+          headers: reqHeaders,
+          body: bodyContent
+        })
+      };
+      
+      const proxyRes = await fetch("/api/proxy", proxyOpts);
+      const proxyData: any = await proxyRes.json();
+      
+      if (!proxyRes.ok || proxyData.error) {
+        throw new Error(proxyData.error || proxyRes.statusText);
+      }
+
+      setResponseStatus(proxyData.status);
+      setResponseHeaders(proxyData.headers || {});
+
       try {
-        setResponse(JSON.stringify(JSON.parse(text), null, 2));
+        setResponse(JSON.stringify(JSON.parse(proxyData.body), null, 2));
       } catch (e) {
-        setResponse(text);
+        setResponse(proxyData.body);
       }
     } catch (err: any) {
       setResponse(`Error: ${err.message}\nThis might be due to CORS restrictions.`);

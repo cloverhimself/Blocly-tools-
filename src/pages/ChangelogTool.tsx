@@ -137,7 +137,7 @@ export function ChangelogTool() {
                     placeholder="Describe change..." 
                     value={c.text} 
                     onChange={e => handleChangeText(i, e.target.value)} 
-                    className="flex-1 border-2 border-[#111111] bg-slate-50 px-3 py-2 font-mono text-sm focus:outline-none focus:bg-white" 
+                    className="flex-1 min-w-0 border-2 border-[#111111] bg-slate-50 px-3 py-2 font-mono text-sm focus:outline-none focus:bg-white" 
                   />
                   <button onClick={() => handleRemove(i)} className="w-10 flex-none flex items-center justify-center border-2 border-transparent text-[#111111]/40 hover:text-red-500 hover:border-red-500 transition-colors">
                     <Trash2 className="w-4 h-4" />

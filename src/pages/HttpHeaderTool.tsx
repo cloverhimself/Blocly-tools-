@@ -24,27 +24,37 @@ export function HttpHeaderTool() {
     setStatus(null);
 
     try {
-      const response = await fetch(target, { method: "HEAD" });
-      setStatus(response.status);
+      const proxyOpts = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: target, method: "HEAD" })
+      };
       
-      const hdrs: Record<string, string> = {};
-      response.headers.forEach((val, key) => {
-        hdrs[key] = val;
-      });
+      const proxyRes = await fetch("/api/proxy", proxyOpts);
+      const data: any = await proxyRes.json();
       
-      setHeaders(hdrs);
+      if (!proxyRes.ok || data.error) {
+        throw new Error(data.error || proxyRes.statusText);
+      }
+      
+      setStatus(data.status);
+      setHeaders(data.headers || {});
     } catch (err: any) {
-      // If HEAD fails (e.g. CORS), try GET
       try {
-        const response = await fetch(target, { method: "GET" });
-        setStatus(response.status);
+        const proxyOpts = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: target, method: "GET" })
+        };
+        const proxyRes = await fetch("/api/proxy", proxyOpts);
+        const data: any = await proxyRes.json();
         
-        const hdrs: Record<string, string> = {};
-        response.headers.forEach((val, key) => {
-          hdrs[key] = val;
-        });
+        if (!proxyRes.ok || data.error) {
+          throw new Error(data.error || proxyRes.statusText);
+        }
         
-        setHeaders(hdrs);
+        setStatus(data.status);
+        setHeaders(data.headers || {});
       } catch (err2: any) {
          setError(err2.message || "Failed to fetch. This may be due to CORS restrictions or an invalid URL.");
       }

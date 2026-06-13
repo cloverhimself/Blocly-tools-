@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { TopNav } from "../components/TopNav";
 import { Footer } from "../components/Footer";
 import { Copy, Check } from "lucide-react";

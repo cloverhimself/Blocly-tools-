@@ -37,7 +37,7 @@ export function InvoiceTool() {
   };
 
   const subtotal = items.reduce((acc, curr) => acc + (curr.qty * curr.price), 0);
-  const tax = subtotal * (taxRate / 100);
+  const tax = taxRate >= 0 ? subtotal * (taxRate / 100) : 0;
   const total = subtotal + tax;
 
   const handlePrint = () => {
@@ -53,7 +53,7 @@ export function InvoiceTool() {
       <main className="flex-1 max-w-5xl mx-auto w-full px-5 py-10 flex flex-col print:p-0 print:max-w-none">
         
         {/* Editor Controls (Hidden on print) */}
-        <div className="mb-10 w-full text-left print:hidden flex justify-between items-end">
+        <div className="mb-10 w-full text-left print:hidden flex flex-col md:flex-row gap-6 justify-between md:items-end">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 bg-[#FFD400] flex items-center justify-center shadow-[4px_4px_0px_#111111] border-2 border-[#111111]">
@@ -63,19 +63,51 @@ export function InvoiceTool() {
             </div>
             <p className="text-[#111111]/60 text-sm">Create and print clean invoices instantly in your browser</p>
           </div>
-          <button 
-            onClick={handlePrint}
-            className="flex items-center gap-2 px-6 py-3 bg-[#111111] text-white font-mono text-sm uppercase font-bold hover:bg-[#111111]/90 active:scale-[0.99] transition-all"
-          >
-            <Printer className="w-4 h-4" /> Print / Save PDF
-          </button>
+          <div className="flex items-center gap-4">
+             <div className="flex items-center gap-2">
+                <span className="font-mono text-[10px] uppercase font-bold text-[#111111]/60">Currency</span>
+                <select 
+                  className="bg-white border-2 border-[#111111] font-mono text-sm px-2 py-1 focus:outline-none"
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                >
+                  <option value="$">USD ($)</option>
+                  <option value="€">EUR (€)</option>
+                  <option value="£">GBP (£)</option>
+                  <option value="¥">JPY (¥)</option>
+                  <option value="₹">INR (₹)</option>
+                  <option value="A$">AUD (A$)</option>
+                  <option value="C$">CAD (C$)</option>
+                  <option value="₦">NGN (₦)</option>
+                  <option value="R">ZAR (R)</option>
+                  <option value="">None</option>
+                </select>
+             </div>
+             
+             <label className="flex items-center gap-2 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  checked={taxRate >= 0}
+                  onChange={(e) => setTaxRate(e.target.checked ? 10 : -1)}
+                  className="w-4 h-4 accent-[#111111] cursor-pointer cursor-pointer"
+                />
+                <span className="font-mono text-[10px] uppercase font-bold text-[#111111] cursor-pointer">Include Tax</span>
+             </label>
+
+            <button 
+              onClick={handlePrint}
+              className="flex items-center gap-2 px-6 py-3 bg-[#111111] text-white font-mono text-sm uppercase font-bold hover:bg-[#111111]/90 active:scale-[0.99] transition-all ml-2"
+            >
+              <Printer className="w-4 h-4" /> Print / Save PDF
+            </button>
+          </div>
         </div>
 
         {/* Invoice Paper (What gets printed) */}
         <div className="bg-white border-2 border-[#111111] p-10 md:p-16 shadow-[8px_8px_0px_#111111] print:shadow-none print:border-none print:p-0 flex flex-col gap-10">
            
-           <div className="flex justify-between items-start">
-             <div className="w-1/2">
+           <div className="flex flex-col md:flex-row justify-between items-start gap-10">
+             <div className="w-full md:w-1/2">
                 <h2 className="font-extrabold text-4xl uppercase tracking-tighter mb-6">Invoice</h2>
                 <textarea 
                   className="w-full whitespace-pre-wrap focus:outline-none focus:bg-slate-50 border border-transparent hover:border-slate-200 resize-none font-medium leading-relaxed print:hover:border-transparent" 
@@ -85,14 +117,14 @@ export function InvoiceTool() {
                   spellCheck={false}
                 />
              </div>
-             <div className="w-1/3 flex flex-col gap-4 text-right">
+             <div className="w-full md:w-1/3 flex flex-col gap-4 text-left md:text-right">
                 <div className="flex flex-col">
                   <span className="font-mono text-xs uppercase font-bold text-[#111111]/60">Invoice No.</span>
                   <input 
                     type="text" 
                     value={invoiceNum} 
                     onChange={e => setInvoiceNum(e.target.value)}
-                    className="text-right focus:outline-none font-bold text-lg focus:bg-slate-50 hover:bg-slate-50 border border-transparent hover:border-slate-200 print:hover:border-transparent"
+                    className="text-left md:text-right focus:outline-none font-bold text-lg focus:bg-slate-50 hover:bg-slate-50 border border-transparent hover:border-slate-200 print:hover:border-transparent"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -101,13 +133,13 @@ export function InvoiceTool() {
                     type="date" 
                     value={date} 
                     onChange={e => setDate(e.target.value)}
-                    className="text-right focus:outline-none font-bold focus:bg-slate-50 hover:bg-slate-50 border border-transparent hover:border-slate-200 print:hover:border-transparent print:appearance-none"
+                    className="text-left md:text-right focus:outline-none font-bold focus:bg-slate-50 hover:bg-slate-50 border border-transparent hover:border-slate-200 print:hover:border-transparent print:appearance-none"
                   />
                 </div>
              </div>
            </div>
 
-           <div className="w-1/2">
+           <div className="w-full md:w-1/2">
              <span className="font-mono text-xs uppercase font-bold text-[#111111]/60 block mb-2">Bill To</span>
              <textarea 
                 className="w-full whitespace-pre-wrap focus:outline-none focus:bg-slate-50 border border-transparent hover:border-slate-200 resize-none font-medium leading-relaxed print:hover:border-transparent" 
@@ -119,8 +151,8 @@ export function InvoiceTool() {
            </div>
 
            {/* Table */}
-           <div>
-             <table className="w-full text-left border-y-2 border-[#111111]">
+           <div className="overflow-x-auto w-full">
+             <table className="w-full text-left border-y-2 border-[#111111] min-w-[500px]">
                <thead>
                  <tr className="border-b-2 border-[#111111] bg-slate-50 print:bg-transparent">
                    <th className="py-3 px-4 font-mono text-xs uppercase font-bold w-full">Description</th>
@@ -178,25 +210,27 @@ export function InvoiceTool() {
              </div>
            </div>
 
-           {/* Totals */}
+            {/* Totals */}
            <div className="flex justify-end mt-4">
-             <div className="w-1/2 md:w-1/3 flex flex-col gap-2">
+             <div className="w-full sm:w-1/2 md:w-1/3 flex flex-col gap-2">
                 <div className="flex justify-between items-center py-2 border-b border-[#111111]/10">
                    <span className="font-mono text-xs uppercase font-bold text-[#111111]/60">Subtotal</span>
                    <span className="font-mono font-bold">{currency}{subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-[#111111]/10 group">
-                   <span className="font-mono text-xs uppercase font-bold text-[#111111]/60 flex items-center gap-2">
-                     Tax/VAT %
-                     <input 
-                       type="number" 
-                       value={taxRate}
-                       onChange={e => setTaxRate(parseFloat(e.target.value) || 0)}
-                       className="w-12 text-center bg-slate-100 border border-transparent group-hover:border-slate-300 focus:outline-none focus:bg-white print:hidden px-1"
-                     />
-                   </span>
-                   <span className="font-mono font-bold">{currency}{tax.toFixed(2)}</span>
-                </div>
+                {taxRate >= 0 && (
+                  <div className="flex justify-between items-center py-2 border-b border-[#111111]/10 group">
+                     <span className="font-mono text-xs uppercase font-bold text-[#111111]/60 flex items-center gap-2">
+                       Tax/VAT %
+                       <input 
+                         type="number" 
+                         value={taxRate}
+                         onChange={e => setTaxRate(parseFloat(e.target.value) || 0)}
+                         className="w-12 text-center bg-slate-100 border border-transparent group-hover:border-slate-300 focus:outline-none focus:bg-white print:hidden px-1"
+                       />
+                     </span>
+                     <span className="font-mono font-bold">{currency}{tax.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between items-center py-4">
                    <span className="font-extrabold text-xl uppercase tracking-tighter">Total Due</span>
                    <span className="font-extrabold text-2xl tracking-tight">{currency}{total.toFixed(2)}</span>

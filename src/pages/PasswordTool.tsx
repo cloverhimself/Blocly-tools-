@@ -62,20 +62,29 @@ export function PasswordTool() {
   const generatePassword = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
     let pwd = "";
-    // Generate one of each to guarantee strong
-    pwd += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)];
-    pwd += "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)];
-    pwd += "0123456789"[Math.floor(Math.random() * 10)];
-    pwd += "!@#$%^&*()"[Math.floor(Math.random() * 10)];
     
-    // Fill the rest
+    // Use Web Crypto API for secure and fast random generation
+    const randomVals = new Uint32Array(16);
+    crypto.getRandomValues(randomVals);
+
+    pwd += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[randomVals[0] % 26];
+    pwd += "abcdefghijklmnopqrstuvwxyz"[randomVals[1] % 26];
+    pwd += "0123456789"[randomVals[2] % 10];
+    pwd += "!@#$%^&*()"[randomVals[3] % 10];
+    
     for (let i = 0; i < 12; i++) {
-        pwd += chars[Math.floor(Math.random() * chars.length)];
+        pwd += chars[randomVals[i + 4] % chars.length];
     }
     
-    // Shuffle
-    pwd = pwd.split('').sort(() => 0.5 - Math.random()).join('');
-    setPassword(pwd);
+    // Shuffle securely
+    const arr = pwd.split('');
+    for (let i = arr.length - 1; i > 0; i--) {
+        const randomBuffer = new Uint32Array(1);
+        crypto.getRandomValues(randomBuffer);
+        const j = randomBuffer[0] % (i + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    setPassword(arr.join(''));
   };
 
   return (
@@ -92,7 +101,7 @@ export function PasswordTool() {
           <p className="text-[#111111]/60 text-sm">Test the security of your password or generate a strong one</p>
         </div>
 
-        <div className="bg-white border-2 border-[#111111] p-6 shadow-[4px_4px_0px_#111111]">
+        <div className="bg-white border-2 border-[#111111] p-6 shadow-[4px_4px_0px_#111111] mb-8">
           <div className="relative mb-6">
             <input
               type={showPassword ? "text" : "password"}
@@ -154,6 +163,16 @@ export function PasswordTool() {
           >
             Generate Strong Password
           </button>
+        </div>
+
+        <div className="bg-slate-50 border-2 border-[#111111] p-6 shadow-[4px_4px_0px_#111111]">
+           <h3 className="font-mono text-xs uppercase font-bold text-[#111111]/60 mb-4">Tips for a strong password</h3>
+           <ul className="text-sm text-[#111111]/80 space-y-3 leading-relaxed">
+             <li>• <strong>Use Passphrases:</strong> Combine 3-4 random but memorable words (e.g., <code className="bg-slate-200 px-1 py-0.5 rounded-sm text-xs">battery-horse-staple-correct</code>) instead of complex short passwords.</li>
+             <li>• <strong>Avoid Context:</strong> Do not use names of your pets, family members, or birth dates. These can be easily guessed through social engineering.</li>
+             <li>• <strong>Unique for Every Account:</strong> Never reuse passwords across multiple sites. If one site is breached, your other accounts remain safe.</li>
+             <li>• <strong>Use a Password Manager:</strong> Store your long, randomized passwords securely in a reputable password manager so you only need to remember one master password.</li>
+           </ul>
         </div>
       </main>
       <Footer />

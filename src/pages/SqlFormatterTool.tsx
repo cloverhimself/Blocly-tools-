@@ -16,7 +16,7 @@ export function SqlFormatterTool() {
     if (input.trim() === "") {
       output = "";
     } else {
-      output = format(input, { language: dialect as any, uppercase: true });
+      output = format(input, { language: dialect as any, keywordCase: "upper" });
     }
   } catch (e: any) {
     error = e.message || "Invalid SQL syntax";
