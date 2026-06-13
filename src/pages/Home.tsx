@@ -9,7 +9,7 @@ import {
   Fingerprint, SearchCode, Terminal, Type, Replace, Hash, 
   ShieldAlert, Scale, Lock, Box, ListTree, Code, 
   MonitorSmartphone, Database, DatabaseZap, DatabaseBackup, 
-  Palette, Pipette, PaintBucket, Paintbrush, Network, Server 
+  Palette, Pipette, PaintBucket, Paintbrush, Network, Server, ImagePlus, AppWindow
 } from "lucide-react";
 
 export function Home() {
@@ -28,6 +28,8 @@ export function Home() {
         { name: 'Compress Image', desc: 'Smaller files, sharp detail', icon: <FileMinus />, to: "/tools/image-compress" },
         { name: 'Resize Image', desc: 'Set exact pixel dimensions', icon: <FileImage />, to: "/tools/image-resize" },
         { name: 'QR Code Generator', desc: 'High-res, lossless QR codes', icon: <QrCode />, to: "/tools/qrcode" },
+        { name: 'Favicon Generator', desc: 'Generate multi-size favicons', icon: <AppWindow />, to: "/tools/favicon" },
+        { name: 'SVG Viewer & Converter', desc: 'Preview and convert SVGs', icon: <ImagePlus />, to: "/tools/svg" },
       ]
     },
     {

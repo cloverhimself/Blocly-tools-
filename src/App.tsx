@@ -35,6 +35,8 @@ import { JsonToSqlTool } from "./pages/JsonToSqlTool";
 import { ChangelogTool } from "./pages/ChangelogTool";
 import { InvoiceTool } from "./pages/InvoiceTool";
 import { FileConversionPlaceholderTool } from "./pages/FileConversionPlaceholderTool";
+import { FaviconTool } from "./pages/FaviconTool";
+import { SvgTool } from "./pages/SvgTool";
 
 export default function App() {
   return (
@@ -74,6 +76,8 @@ export default function App() {
         <SwitchRoute path="/tools/json-to-sql" element={<JsonToSqlTool />} />
         <SwitchRoute path="/tools/changelog" element={<ChangelogTool />} />
         <SwitchRoute path="/tools/invoice" element={<InvoiceTool />} />
+        <SwitchRoute path="/tools/favicon" element={<FaviconTool />} />
+        <SwitchRoute path="/tools/svg" element={<SvgTool />} />
         <SwitchRoute path="/tools/pdf-word" element={<FileConversionPlaceholderTool title="PDF to Word" />} />
         <SwitchRoute path="/tools/word-pdf" element={<FileConversionPlaceholderTool title="Word to PDF" />} />
         <SwitchRoute path="/tools/excel-csv" element={<FileConversionPlaceholderTool title="Excel to CSV" />} />

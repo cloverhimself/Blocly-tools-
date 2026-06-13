@@ -6,7 +6,7 @@ export function TopNav() {
     <header className="w-full border-b border-[#111111] bg-[#FAFAFA]">
       <div className="max-w-7xl mx-auto px-5 h-[62px] flex items-center justify-between gap-3.5">
         <Link to="/" className="flex items-center gap-2.5 text-[#111111]">
-          <span className="w-[19px] h-[19px] bg-[#FFD400] border border-[#111111] block flex-none"></span>
+          <img src="/logo.svg" alt="Blocly" className="w-[20px] h-[20px] block flex-none" />
           <span className="font-extrabold text-[18px] tracking-tight">Blocly</span>
           <span className="font-mono text-[11px] text-[#111111]/50">/tools</span>
         </Link>

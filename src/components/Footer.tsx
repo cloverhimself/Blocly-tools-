@@ -7,7 +7,7 @@ export function Footer() {
         <div className="flex flex-wrap gap-9 justify-between">
           <div className="max-w-[320px]">
              <div className="flex items-center gap-2.5 mb-3">
-              <span className="w-[18px] h-[18px] bg-[#FFD400] border border-[#111111] block"></span>
+              <img src="/logo.svg" alt="Blocly" className="w-[19px] h-[19px] block" />
               <span className="font-extrabold text-[17px] tracking-tight">Blocly Tools</span>
             </div>
             <p className="m-0 text-[13px] leading-relaxed text-[#111111]/60">
