@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { TopNav } from "../components/TopNav";
 import { Footer } from "../components/Footer";
 import { Dropzone, DropzoneState } from "../components/Dropzone";
@@ -33,6 +33,20 @@ export function AudioConvertTool() {
   
   const ffmpegRef = useRef(new FFmpeg());
   
+  useEffect(() => {
+    let timer: any;
+    if (mode === 'loading') {
+      // Simulate WASM download progress over 4 seconds
+      timer = setInterval(() => {
+        setProgress((prev) => {
+          if (prev < 90) return prev + Math.floor(Math.random() * 5) + 2;
+          return prev;
+        });
+      }, 200);
+    }
+    return () => clearInterval(timer);
+  }, [mode]);
+
   const handleFile = (selectedFile: File) => {
     if (selectedFile.size > 2 * 1024 * 1024 * 1024) {
       alert("File is too large (max 2GB supported by browser memory).");
@@ -225,9 +239,9 @@ export function AudioConvertTool() {
 
                 {mode === 'loading' && (
                   <>
-                    <ProgressBar indeterminate label="Loading converter engine…" valueLabel="ffmpeg.wasm" />
+                    <ProgressBar value={progress} label="Loading converter engine…" valueLabel="ffmpeg.wasm" />
                     <div className="font-mono text-[11.5px] text-[#111111]/55 mt-1">
-                      Fetching the WebAssembly decoder (~8 MB, cached after first run).
+                      Fetching the WebAssembly decoder (~30 MB, cached after first run).
                     </div>
                   </>
                 )}
