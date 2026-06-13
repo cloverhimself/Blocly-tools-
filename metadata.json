@@ -1,0 +1,6 @@
+{
+  "name": "Blocly Tools",
+  "description": "Everyday file tools that run entirely in your browser. Private by design.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
