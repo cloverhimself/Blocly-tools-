@@ -90,7 +90,7 @@ export function ChangelogTool() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <div className="bg-white border-2 border-[#111111] p-6 shadow-[4px_4px_0px_#111111] flex flex-col gap-6">
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase text-[#111111]/60">Version</label>
                 <input 
@@ -118,9 +118,9 @@ export function ChangelogTool() {
               </button>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               {changes.map((c, i) => (
-                <div key={i} className="flex gap-2">
+                <div key={i} className="flex flex-col sm:flex-row gap-2">
                   <select 
                     value={c.type} 
                     onChange={e => handleChangeType(i, e.target.value as ChangeType)}

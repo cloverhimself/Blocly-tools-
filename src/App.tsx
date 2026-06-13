@@ -34,7 +34,7 @@ import { MongoFormatterTool } from "./pages/MongoFormatterTool";
 import { JsonToSqlTool } from "./pages/JsonToSqlTool";
 import { ChangelogTool } from "./pages/ChangelogTool";
 import { InvoiceTool } from "./pages/InvoiceTool";
-import { FileConversionPlaceholderTool } from "./pages/FileConversionPlaceholderTool";
+import { FileConversionTool } from "./pages/FileConversionTool";
 import { FaviconTool } from "./pages/FaviconTool";
 import { SvgTool } from "./pages/SvgTool";
 
@@ -78,9 +78,9 @@ export default function App() {
         <SwitchRoute path="/tools/invoice" element={<InvoiceTool />} />
         <SwitchRoute path="/tools/favicon" element={<FaviconTool />} />
         <SwitchRoute path="/tools/svg" element={<SvgTool />} />
-        <SwitchRoute path="/tools/pdf-word" element={<FileConversionPlaceholderTool title="PDF to Word" />} />
-        <SwitchRoute path="/tools/word-pdf" element={<FileConversionPlaceholderTool title="Word to PDF" />} />
-        <SwitchRoute path="/tools/excel-csv" element={<FileConversionPlaceholderTool title="Excel to CSV" />} />
+        <SwitchRoute path="/tools/pdf-word" element={<FileConversionTool title="PDF to Word" type="pdf-word" />} />
+        <SwitchRoute path="/tools/word-pdf" element={<FileConversionTool title="Word to PDF" type="word-pdf" />} />
+        <SwitchRoute path="/tools/excel-csv" element={<FileConversionTool title="Excel to CSV" type="excel-csv" />} />
       </SwitchRoutes>
     </Router>
   );

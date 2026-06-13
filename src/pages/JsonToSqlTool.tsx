@@ -99,7 +99,7 @@ export function JsonToSqlTool() {
                   type="text"
                   value={tableName}
                   onChange={(e) => setTableName(e.target.value)}
-                  className="bg-white border-2 border-[#111111] px-3 py-1 font-mono text-sm focus:outline-none"
+                  className="bg-white border-2 border-[#111111] px-3 py-1 font-mono text-sm focus:outline-none w-full min-w-0"
                 />
               </div>
               <button

@@ -1,14 +1,18 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
+import multer from "multer";
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB limit
+
   app.use(express.json({ limit: '50mb' }));
 
   // Helper API to proxy requests to avoid CORS for tools
+
   app.post("/api/proxy", async (req, res) => {
     try {
       const { url, method, headers, body } = req.body;
@@ -41,6 +45,73 @@ async function startServer() {
   app.post("/api/cloud/:toolType", async (req, res) => {
     const { toolType } = req.params;
     res.json({ message: `Cloud processing for ${toolType} is not fully implemented in the MVP.` });
+  });
+
+  // Convert Excel to CSV
+  app.post("/api/convert/excel-csv", upload.single("file"), async (req, res) => {
+    try {
+      if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+      const xlsx = await import("xlsx");
+      const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
+      const sheetName = workbook.SheetNames[0];
+      const csv = xlsx.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+      res.header("Content-Type", "text/csv");
+      res.attachment("converted.csv");
+      res.send(csv);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || "Failed to convert Excel to CSV" });
+    }
+  });
+
+  // Convert PDF to Document (Text extraction proxying as doc)
+  app.post("/api/convert/pdf-word", upload.single("file"), async (req, res) => {
+    try {
+      if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+      // @ts-ignore
+      const pdfParse = (await import("pdf-parse")).default;
+      const data = await pdfParse(req.file.buffer);
+      res.header("Content-Type", "application/msword");
+      res.attachment("converted.doc");
+      res.send(data.text);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || "Failed to convert PDF" });
+    }
+  });
+
+  // Convert Word to PDF (Text extraction wrapped in basic PDF layout)
+  app.post("/api/convert/word-pdf", upload.single("file"), async (req, res) => {
+    try {
+      if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+      const mammoth = await import("mammoth");
+      const { PDFDocument } = await import("pdf-lib");
+      
+      const { value: text } = await mammoth.extractRawText({ buffer: req.file.buffer });
+      
+      const pdfDoc = await PDFDocument.create();
+      let page = pdfDoc.addPage();
+      const { width, height } = page.getSize();
+      
+      const lines = text.split('\\n');
+      let y = height - 50;
+      
+      for (const line of lines) {
+        if (y < 50) {
+           page = pdfDoc.addPage();
+           y = height - 50;
+        }
+        // Basic naive line wrapping and drawing
+        let currentLine = line.substring(0, 80);
+        page.drawText(currentLine, { x: 50, y, size: 12 });
+        y -= 16;
+      }
+      
+      const pdfBytes = await pdfDoc.save();
+      res.header("Content-Type", "application/pdf");
+      res.attachment("converted.pdf");
+      res.send(Buffer.from(pdfBytes));
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || "Failed to convert Word to PDF" });
+    }
   });
 
   if (process.env.NODE_ENV !== "production") {

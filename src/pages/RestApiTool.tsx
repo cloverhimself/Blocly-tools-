@@ -98,7 +98,7 @@ export function RestApiTool() {
         </div>
 
         <div className="flex flex-col gap-6">
-           <div className="flex bg-white border-2 border-[#111111] shadow-[4px_4px_0px_#111111] p-1">
+           <div className="flex flex-col sm:flex-row bg-white border-2 border-[#111111] shadow-[4px_4px_0px_#111111] p-1 gap-1 sm:gap-0">
               <select 
                 className="bg-slate-100 border-none px-4 py-3 font-mono font-bold text-sm focus:outline-none cursor-pointer"
                 value={method}
@@ -108,9 +108,9 @@ export function RestApiTool() {
                   <option key={m} value={m}>{m}</option>
                 ))}
               </select>
-              <div className="w-0.5 bg-[#111111] my-1" />
+              <div className="hidden sm:block w-0.5 bg-[#111111] my-1 mx-1" />
               <input 
-                 className="flex-1 px-4 py-3 font-mono text-sm focus:outline-none"
+                 className="flex-1 px-4 py-3 font-mono text-sm focus:outline-none bg-slate-50 sm:bg-transparent"
                  value={url}
                  onChange={e => setUrl(e.target.value)}
                  placeholder="https://api.example.com/v1/users"
@@ -119,7 +119,7 @@ export function RestApiTool() {
               <button 
                  onClick={handleSend}
                  disabled={loading}
-                 className="bg-[#111111] text-[#FFD400] px-6 py-3 font-mono font-bold uppercase text-sm flex items-center gap-2 hover:bg-[#111111]/90 transition-colors disabled:opacity-50"
+                 className="bg-[#111111] text-[#FFD400] px-6 py-3 font-mono font-bold uppercase text-sm flex items-center justify-center gap-2 hover:bg-[#111111]/90 transition-colors disabled:opacity-50"
               >
                  {loading ? "Sending" : "Send"} <Send className="w-4 h-4" />
               </button>

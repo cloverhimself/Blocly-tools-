@@ -80,8 +80,8 @@ export function JsonFormatterTool() {
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-5 h-[500px]">
-            <div className="flex-1 flex flex-col gap-2">
+          <div className="flex flex-col lg:flex-row gap-5 h-auto lg:h-[500px]">
+            <div className="flex-1 flex flex-col gap-2 min-h-[300px]">
               <div className="font-mono text-[11.5px] uppercase tracking-[0.1em] text-[#111111]/60">Raw Data</div>
               <textarea
                 value={input}
@@ -91,7 +91,7 @@ export function JsonFormatterTool() {
               />
             </div>
             
-            <div className="flex-1 flex flex-col gap-2">
+            <div className="flex-1 flex flex-col gap-2 min-h-[300px]">
               <div className="flex justify-between items-end">
                 <div className="flex items-center gap-2">
                   <div className="font-mono text-[11.5px] uppercase tracking-[0.1em] text-[#111111]/60">Formatted</div>

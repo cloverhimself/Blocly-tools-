@@ -138,9 +138,9 @@ export function RgbHslTool() {
               <input type="number" min="0" max="255" value={b} onChange={(e) => handleRgbChange(r, g, e.target.value)} className="w-16 bg-slate-50 border-2 border-[#111111] px-2 py-1 font-mono text-sm focus:outline-none" />
             </div>
             
-            <div className="flex items-center justify-between p-3 bg-slate-100 border-2 border-[#111111]/20">
-              <span className="font-mono font-bold text-lg">{rgbString}</span>
-              <button onClick={() => copyToClipboard(rgbString, 'rgb')} className="flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#111111] text-[#111111] font-mono text-xs uppercase font-bold hover:bg-[#FFD400] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none shadow-[2px_2px_0px_#111111] transition-all">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-100 border-2 border-[#111111]/20 gap-3">
+              <span className="font-mono font-bold text-base sm:text-lg">{rgbString}</span>
+              <button onClick={() => copyToClipboard(rgbString, 'rgb')} className="flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#111111] text-[#111111] font-mono text-xs uppercase font-bold hover:bg-[#FFD400] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none shadow-[2px_2px_0px_#111111] transition-all w-full sm:w-auto justify-center">
                 {copiedRgb ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />} Copy
               </button>
             </div>
@@ -165,9 +165,9 @@ export function RgbHslTool() {
               <input type="number" min="0" max="100" value={l} onChange={(e) => handleHslChange(h, s, e.target.value)} className="w-16 bg-slate-50 border-2 border-[#111111] px-2 py-1 font-mono text-sm focus:outline-none" />
             </div>
             
-            <div className="flex items-center justify-between p-3 bg-slate-100 border-2 border-[#111111]/20">
-              <span className="font-mono font-bold text-lg">{hslString}</span>
-              <button onClick={() => copyToClipboard(hslString, 'hsl')} className="flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#111111] text-[#111111] font-mono text-xs uppercase font-bold hover:bg-[#FFD400] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none shadow-[2px_2px_0px_#111111] transition-all">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-100 border-2 border-[#111111]/20 gap-3">
+              <span className="font-mono font-bold text-base sm:text-lg">{hslString}</span>
+              <button onClick={() => copyToClipboard(hslString, 'hsl')} className="flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#111111] text-[#111111] font-mono text-xs uppercase font-bold hover:bg-[#FFD400] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none shadow-[2px_2px_0px_#111111] transition-all w-full sm:w-auto justify-center">
                 {copiedHsl ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />} Copy
               </button>
             </div>

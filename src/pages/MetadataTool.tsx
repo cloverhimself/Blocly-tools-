@@ -69,7 +69,7 @@ ${twitterHandle ? `<meta name="twitter:creator" content="${twitterHandle}" />` :
                 <label className="text-xs font-bold text-[#111111]/60 uppercase">Image URL (OG / Twitter)</label>
                 <input type="text" value={imageUrl} onChange={e => setImageUrl(e.target.value)} className="w-full bg-slate-50 border-2 border-[#111111] px-3 py-2 font-mono text-sm focus:outline-none focus:bg-white" />
              </div>
-             <div className="flex gap-4">
+             <div className="flex flex-col sm:flex-row gap-4">
                <div className="flex flex-col gap-1.5 flex-1">
                   <label className="text-xs font-bold text-[#111111]/60 uppercase">Theme Color</label>
                   <div className="flex">

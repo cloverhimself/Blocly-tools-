@@ -44,7 +44,7 @@ export function PaletteTool() {
     <div className="w-full min-h-screen bg-[#FAFAFA] text-[#111111] font-sans flex flex-col">
       <TopNav />
       <main className="flex-1 max-w-5xl mx-auto w-full px-5 py-10 flex flex-col">
-        <div className="mb-8 w-full flex justify-between items-end">
+        <div className="mb-8 w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 bg-[#FFD400] flex items-center justify-center shadow-[4px_4px_0px_#111111] border-2 border-[#111111]">
@@ -56,7 +56,7 @@ export function PaletteTool() {
           </div>
           <button 
             onClick={generatePalette}
-            className="flex items-center gap-2 px-4 py-2 bg-[#FFD400] border-2 border-[#111111] text-[#111111] font-mono text-sm uppercase font-bold hover:bg-[#ffe14d] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none shadow-[4px_4px_0px_#111111] transition-all"
+            className="flex items-center gap-2 px-4 py-2 bg-[#FFD400] border-2 border-[#111111] text-[#111111] font-mono text-sm uppercase font-bold hover:bg-[#ffe14d] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none shadow-[4px_4px_0px_#111111] transition-all w-full md:w-auto justify-center"
           >
             <RefreshCw className="w-4 h-4" /> Generate New
           </button>

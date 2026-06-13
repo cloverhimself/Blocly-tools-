@@ -43,26 +43,26 @@ export function GradientTool() {
           <div className="bg-white border-2 border-[#111111] p-6 shadow-[4px_4px_0px_#111111]">
              <h2 className="m-0 font-mono text-sm uppercase tracking-wider font-bold mb-6">Controls</h2>
              
-             <div className="flex items-center gap-4 mb-6">
-                <div className="flex-1 flex flex-col gap-2">
+             <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
+                <div className="w-full sm:flex-1 flex flex-col gap-2">
                   <label className="font-mono text-xs font-bold uppercase text-[#111111]/60">Color 1</label>
                   <div className="flex">
-                    <input type="color" value={color1} onChange={e => setColor1(e.target.value)} className="w-12 h-10 border-2 border-[#111111] border-r-0 cursor-pointer p-0" />
-                    <input type="text" value={color1.toUpperCase()} onChange={e => setColor1(e.target.value)} className="flex-1 bg-slate-50 border-2 border-[#111111] px-2 font-mono text-sm focus:outline-none uppercase" />
+                    <input type="color" value={color1} onChange={e => setColor1(e.target.value)} className="w-12 h-10 border-2 border-[#111111] border-r-0 cursor-pointer p-0 shrink-0" />
+                    <input type="text" value={color1.toUpperCase()} onChange={e => setColor1(e.target.value)} className="flex-1 w-full bg-slate-50 border-2 border-[#111111] px-2 font-mono text-sm focus:outline-none uppercase min-w-0" />
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2 pt-6">
-                  <button onClick={reverseColors} className="w-10 h-10 flex items-center justify-center bg-slate-100 hover:bg-[#FFD400] border-2 border-[#111111] transition-colors" title="Swap Colors">
+                <div className="flex flex-col gap-2 pt-0 sm:pt-6">
+                  <button onClick={reverseColors} className="w-10 h-10 flex items-center justify-center bg-slate-100 hover:bg-[#FFD400] border-2 border-[#111111] transition-colors rotate-90 sm:rotate-0" title="Swap Colors">
                     ⇄
                   </button>
                 </div>
 
-                <div className="flex-1 flex flex-col gap-2">
+                <div className="w-full sm:flex-1 flex flex-col gap-2">
                   <label className="font-mono text-xs font-bold uppercase text-[#111111]/60">Color 2</label>
                   <div className="flex">
-                    <input type="color" value={color2} onChange={e => setColor2(e.target.value)} className="w-12 h-10 border-2 border-[#111111] border-r-0 cursor-pointer p-0" />
-                    <input type="text" value={color2.toUpperCase()} onChange={e => setColor2(e.target.value)} className="flex-1 bg-slate-50 border-2 border-[#111111] px-2 font-mono text-sm focus:outline-none uppercase" />
+                    <input type="color" value={color2} onChange={e => setColor2(e.target.value)} className="w-12 h-10 border-2 border-[#111111] border-r-0 cursor-pointer p-0 shrink-0" />
+                    <input type="text" value={color2.toUpperCase()} onChange={e => setColor2(e.target.value)} className="flex-1 w-full bg-slate-50 border-2 border-[#111111] px-2 font-mono text-sm focus:outline-none uppercase min-w-0" />
                   </div>
                 </div>
              </div>

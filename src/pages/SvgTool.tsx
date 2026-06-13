@@ -95,7 +95,7 @@ export function SvgTool() {
           </p>
 
           <div className="flex flex-col lg:flex-row gap-6 items-stretch">
-            <div className="flex-[1.5] flex flex-col">
+            <div className="flex-[1.5] flex flex-col min-h-[300px]">
               <div className="flex items-center justify-between mb-2">
                  <span className="font-mono text-[11.5px] uppercase tracking-[0.1em] text-[#111111]/60 font-bold">SVG Code Input</span>
               </div>

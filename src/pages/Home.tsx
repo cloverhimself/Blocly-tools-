@@ -34,9 +34,9 @@ export function Home() {
     },
     {
       name: 'File Conversion', tools: [
-         { name: 'PDF to Word', desc: 'Convert PDF documents to Word', icon: <FileText />, to: "/tools/pdf-word", disabled: true },
-         { name: 'Word to PDF', desc: 'Convert Word documents to PDF', icon: <FileText />, to: "/tools/word-pdf", disabled: true },
-         { name: 'Excel to CSV', desc: 'Convert Excel spreadsheets to CSV', icon: <Table />, to: "/tools/excel-csv", disabled: true },
+         { name: 'PDF to Word', desc: 'Convert PDF documents to Word', icon: <FileText />, to: "/tools/pdf-word", cloud: true },
+         { name: 'Word to PDF', desc: 'Convert Word documents to PDF', icon: <FileText />, to: "/tools/word-pdf", cloud: true },
+         { name: 'Excel to CSV', desc: 'Convert Excel spreadsheets to CSV', icon: <Table />, to: "/tools/excel-csv", cloud: true },
       ]
     },
     {
@@ -141,11 +141,11 @@ export function Home() {
         </div>
 
         <div className="border-y border-[#111111] bg-[#FAFAFA]">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:flex-wrap md:grid md:grid-cols-4">
             {trust.map((t, i) => (
-              <div key={i} className="px-5 py-3.5 border-r border-[#111111]/15 last:border-r-0 flex items-center gap-2.5">
+              <div key={i} className="px-5 py-3.5 border-b sm:border-b-0 sm:border-r border-[#111111]/15 last:border-b-0 last:border-r-0 flex items-center gap-2.5 flex-1 w-full sm:w-auto">
                 <span className="w-[7px] h-[7px] bg-[#FFD400] border border-[#111111] flex-none"></span>
-                <span className="font-mono text-[11.5px] text-[#111111] truncate">{t}</span>
+                <span className="font-mono text-[11.5px] text-[#111111]">{t}</span>
               </div>
             ))}
           </div>
@@ -161,7 +161,7 @@ export function Home() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {cat.tools.map((t, j) => (
-                  <ToolCard key={j} label={t.name} desc={t.desc} iconEl={t.icon} featured={(t as any).featured} to={t.to} disabled={(t as any).disabled} />
+                  <ToolCard key={j} label={t.name} desc={t.desc} iconEl={t.icon} featured={(t as any).featured} to={t.to} disabled={(t as any).disabled} cloud={(t as any).cloud} />
                 ))}
               </div>
             </div>

@@ -87,12 +87,12 @@ export function LicenseTool() {
                 
                 <div className="flex flex-col gap-2">
                     <label className="font-mono text-[11px] uppercase tracking-wider text-[#111111]/60">License Type</label>
-                    <div className="flex border border-[#111111] rounded-sm overflow-hidden">
+                    <div className="flex flex-col sm:flex-row border border-[#111111] rounded-sm overflow-hidden">
                         {(Object.keys(LICENSES) as (keyof typeof LICENSES)[]).map((key, i) => (
                              <button
                                 key={key}
                                 onClick={() => setSelected(key)}
-                                className={`flex-1 py-3 px-4 font-mono text-[13px] border-none cursor-pointer transition-colors ${selected === key ? 'bg-[#FFD400] font-bold text-[#111111]' : 'bg-[#FAFAFA] hover:bg-[#FFFBE0] text-[#111111]/80'} ${i === 0 ? 'border-r border-[#111111]' : ''}`}
+                                className={`flex-1 py-3 px-4 font-mono text-[13px] border-none cursor-pointer transition-colors ${selected === key ? 'bg-[#FFD400] font-bold text-[#111111]' : 'bg-[#FAFAFA] hover:bg-[#FFFBE0] text-[#111111]/80'} ${i === 0 ? 'border-b sm:border-b-0 sm:border-r border-[#111111]' : ''}`}
                              >
                                  {LICENSES[key].name}
                              </button>

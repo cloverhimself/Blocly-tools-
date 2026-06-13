@@ -63,7 +63,7 @@ export function InvoiceTool() {
             </div>
             <p className="text-[#111111]/60 text-sm">Create and print clean invoices instantly in your browser</p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
              <div className="flex items-center gap-2">
                 <span className="font-mono text-[10px] uppercase font-bold text-[#111111]/60">Currency</span>
                 <select 
@@ -89,14 +89,14 @@ export function InvoiceTool() {
                   type="checkbox" 
                   checked={taxRate >= 0}
                   onChange={(e) => setTaxRate(e.target.checked ? 10 : -1)}
-                  className="w-4 h-4 accent-[#111111] cursor-pointer cursor-pointer"
+                  className="w-4 h-4 accent-[#111111] cursor-pointer"
                 />
                 <span className="font-mono text-[10px] uppercase font-bold text-[#111111] cursor-pointer">Include Tax</span>
              </label>
 
             <button 
               onClick={handlePrint}
-              className="flex items-center gap-2 px-6 py-3 bg-[#111111] text-white font-mono text-sm uppercase font-bold hover:bg-[#111111]/90 active:scale-[0.99] transition-all ml-2"
+              className="flex items-center gap-2 px-6 py-3 bg-[#111111] text-white font-mono text-sm uppercase font-bold hover:bg-[#111111]/90 active:scale-[0.99] transition-all ml-0 md:ml-2 sm:w-auto"
             >
               <Printer className="w-4 h-4" /> Print / Save PDF
             </button>
