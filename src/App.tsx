@@ -38,6 +38,16 @@ import { FileConversionTool } from "./pages/FileConversionTool";
 import { FaviconTool } from "./pages/FaviconTool";
 import { SvgTool } from "./pages/SvgTool";
 
+import { TestDataGeneratorTool } from "./pages/TestDataGeneratorTool";
+import { TimestampConverterTool } from "./pages/TimestampConverterTool";
+import { CronGeneratorTool } from "./pages/CronGeneratorTool";
+import { JwtGeneratorTool } from "./pages/JwtGeneratorTool";
+import { UrlEncoderTool } from "./pages/UrlEncoderTool";
+import { MarkdownPreviewerTool } from "./pages/MarkdownPreviewerTool";
+import { SitemapGeneratorTool } from "./pages/SitemapGeneratorTool";
+import { OpenGraphImageGeneratorTool } from "./pages/OpenGraphImageGeneratorTool";
+import { LoremIpsumTool } from "./pages/LoremIpsumTool";
+
 export default function App() {
   return (
     <Router>
@@ -52,6 +62,7 @@ export default function App() {
         <SwitchRoute path="/tools/json" element={<JsonFormatterTool />} />
         <SwitchRoute path="/tools/gitignore" element={<GitignoreTool />} />
         <SwitchRoute path="/tools/jwt" element={<JwtDecoderTool />} />
+        <SwitchRoute path="/tools/jwt-generator" element={<JwtGeneratorTool />} />
         <SwitchRoute path="/tools/image-convert" element={<ImageConvertTool />} />
         <SwitchRoute path="/tools/image-compress" element={<ImageCompressTool />} />
         <SwitchRoute path="/tools/image-resize" element={<ImageResizeTool />} />
@@ -81,6 +92,15 @@ export default function App() {
         <SwitchRoute path="/tools/pdf-word" element={<FileConversionTool title="PDF to Word" type="pdf-word" />} />
         <SwitchRoute path="/tools/word-pdf" element={<FileConversionTool title="Word to PDF" type="word-pdf" />} />
         <SwitchRoute path="/tools/excel-csv" element={<FileConversionTool title="Excel to CSV" type="excel-csv" />} />
+
+        <SwitchRoute path="/tools/test-data" element={<TestDataGeneratorTool />} />
+        <SwitchRoute path="/tools/timestamp" element={<TimestampConverterTool />} />
+        <SwitchRoute path="/tools/cron" element={<CronGeneratorTool />} />
+        <SwitchRoute path="/tools/url-encoder" element={<UrlEncoderTool />} />
+        <SwitchRoute path="/tools/markdown" element={<MarkdownPreviewerTool />} />
+        <SwitchRoute path="/tools/sitemap" element={<SitemapGeneratorTool />} />
+        <SwitchRoute path="/tools/og-image" element={<OpenGraphImageGeneratorTool />} />
+        <SwitchRoute path="/tools/lorem" element={<LoremIpsumTool />} />
       </SwitchRoutes>
     </Router>
   );
