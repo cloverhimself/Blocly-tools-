@@ -100,6 +100,16 @@ export const toolRegistry: Record<string, ToolDefinition> = {
     keywords: ["time", "timestamp", "unix", "epoch", "date", "convert"],
     iconName: "Clock"
   },
+  compressAudio: {
+    id: "compressAudio",
+    name: "Compress Audio",
+    category: "Media",
+    description: "Reduce audio file sizes instantly",
+    route: "/tools/compress-audio",
+    status: "stable",
+    keywords: ["audio", "compress", "size", "bitrate", "mp3", "shrink", "reduce"],
+    iconName: "AudioWaveform"
+  },
   // Add an example of unmigrated tools:
   restApi: {
     id: "restApi",

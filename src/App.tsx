@@ -12,6 +12,7 @@ import { ImageConvertTool } from "./pages/ImageConvertTool";
 import { ImageCompressTool } from "./pages/ImageCompressTool";
 import { ImageResizeTool } from "./pages/ImageResizeTool";
 import { AudioConvertTool } from "./pages/AudioConvertTool";
+import { CompressAudioTool } from "./pages/CompressAudioTool";
 import { UuidTool } from "./pages/UuidTool";
 import { DockerfileTool } from "./pages/DockerfileTool";
 import { HexRgbTool } from "./pages/HexRgbTool";
@@ -66,6 +67,7 @@ export default function App() {
         <SwitchRoute path="/tools/image-convert" element={<ImageConvertTool />} />
         <SwitchRoute path="/tools/image-compress" element={<ImageCompressTool />} />
         <SwitchRoute path="/tools/image-resize" element={<ImageResizeTool />} />
+        <SwitchRoute path="/tools/compress-audio" element={<CompressAudioTool />} />
         <SwitchRoute path="/tools/uuid" element={<UuidTool />} />
         <SwitchRoute path="/tools/dockerfile" element={<DockerfileTool />} />
         <SwitchRoute path="/tools/hex-rgb" element={<HexRgbTool />} />

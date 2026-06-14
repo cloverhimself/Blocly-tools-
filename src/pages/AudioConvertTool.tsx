@@ -107,7 +107,7 @@ export function AudioConvertTool() {
       const data = (await ffmpeg.readFile(outputName)) as Uint8Array;
       
       const mimeTypes: Record<Format, string> = { MP3: 'audio/mpeg', WAV: 'audio/wav', AAC: 'audio/aac', OGG: 'audio/ogg' };
-      const blob = new Blob([data.buffer], { type: mimeTypes[format] });
+      const blob = new Blob([data.buffer as ArrayBuffer], { type: mimeTypes[format] });
       const url = URL.createObjectURL(blob);
       
       setOutSize(blob.size);

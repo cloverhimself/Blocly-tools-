@@ -87,6 +87,13 @@ export function Home() {
           to: "/tools/audio-convert",
           keywords: ["mp3", "wav", "aac", "ogg", "flac", "audio", "convert"],
         },
+        {
+          name: "Compress Audio",
+          desc: "Reduce file sizes instantly",
+          icon: <FileMinus />,
+          to: "/tools/compress-audio",
+          keywords: ["audio", "compress", "size", "bitrate", "mp3", "shrink", "reduce"],
+        },
       ],
     },
     {
