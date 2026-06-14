@@ -538,13 +538,6 @@ export function Home() {
 
   const isSearching = q.length > 0;
 
-  const trust = [
-    "100% in your browser",
-    "No upload, ever",
-    "Works offline",
-    "Open source (MIT)",
-  ];
-
   return (
     <div className="w-full min-h-screen bg-[#FAFAFA] text-[#111111] font-sans flex flex-col">
       <TopNav />
@@ -572,22 +565,6 @@ export function Home() {
               results={searchResultsDropdown}
               onSelect={trackUsage}
             />
-          </div>
-        </div>
-
-        <div className="border-y border-[#111111] bg-[#FAFAFA]">
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:flex-wrap md:grid md:grid-cols-4">
-            {trust.map((t, i) => (
-              <div
-                key={i}
-                className="px-5 py-3.5 border-b sm:border-b-0 sm:border-r border-[#111111]/15 last:border-b-0 last:border-r-0 flex items-center gap-2.5 flex-1 w-full sm:w-auto"
-              >
-                <span className="w-[7px] h-[7px] bg-[#FFD400] border border-[#111111] flex-none"></span>
-                <span className="font-mono text-[11.5px] text-[#111111]">
-                  {t}
-                </span>
-              </div>
-            ))}
           </div>
         </div>
 

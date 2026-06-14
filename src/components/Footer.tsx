@@ -14,13 +14,6 @@ export function Footer() {
               A unified productivity platform where every tool feels identical in interaction, reliability, and structure. Fast, reliable utilities for everyone.
             </p>
           </div>
-          
-          <div className="flex flex-col gap-2.5">
-            <div className="font-mono text-[10px] tracking-widest uppercase text-[#111111]/45 mb-1">Project Information</div>
-            <a href="#" className="text-[#111111] text-[13px] hover:underline decoration-[#FFD400] decoration-2 underline-offset-2">About & Privacy</a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-[#111111] text-[13px] hover:underline decoration-[#FFD400] decoration-2 underline-offset-2">GitHub Repository</a>
-            <a href="#" className="text-[#111111] text-[13px] hover:underline decoration-[#FFD400] decoration-2 underline-offset-2">License (MIT)</a>
-          </div>
         </div>
         
         <div className="mt-9 pt-4 border-t border-[#111111] flex flex-col md:flex-row flex-wrap gap-x-5 gap-y-2 justify-between font-mono text-[11.5px] text-[#111111]/55">
