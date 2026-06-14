@@ -80,6 +80,26 @@ export const toolRegistry: Record<string, ToolDefinition> = {
     keywords: ["regex", "regular expression", "test", "match", "replace", "pattern"],
     iconName: "SearchCode"
   },
+  sqlFormatter: {
+    id: "sqlFormatter",
+    name: "SQL Formatter",
+    category: "Developer",
+    description: "Format and beautify SQL queries",
+    route: "/tools/sql-formatter",
+    status: "stable",
+    keywords: ["sql", "format", "beautify", "query", "database"],
+    iconName: "Database"
+  },
+  timestampConverter: {
+    id: "timestampConverter",
+    name: "Timestamp Converter",
+    category: "Developer",
+    description: "Convert Unix epoch to human dates",
+    route: "/tools/timestamp",
+    status: "stable",
+    keywords: ["time", "timestamp", "unix", "epoch", "date", "convert"],
+    iconName: "Clock"
+  },
   // Add an example of unmigrated tools:
   restApi: {
     id: "restApi",

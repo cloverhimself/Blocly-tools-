@@ -56,12 +56,12 @@ async function startServer() {
       const fileBuffer = req.file.buffer;
       const targetFormat = req.body.targetFormat || 'docx';
       
-      const pdfParseModule = await import("pdf-parse");
+      const pdfParseModule: any = await import("pdf-parse");
       const pdfParse = pdfParseModule.default || pdfParseModule;
       const data = await pdfParse(fileBuffer);
       
       if (targetFormat === 'docx') {
-         const docxModule = await import("docx");
+         const docxModule: any = await import("docx");
          const { Document, Packer, Paragraph, TextRun } = docxModule.default || docxModule;
          
          const paragraphs = data.text.split('\\n').map((line: string) => 

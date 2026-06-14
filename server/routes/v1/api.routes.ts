@@ -11,7 +11,7 @@ router.post("/proxy", validateRequest(z.object({
   body: z.object({
     url: z.string().url(),
     method: z.string(),
-    headers: z.record(z.string()).optional(),
+    headers: z.record(z.string(), z.string()).optional(),
     body: z.any().optional()
   })
 })), async (req: Request, res: Response) => {
@@ -71,7 +71,7 @@ router.post("/json/format", validateRequest(z.object({
 
 router.post("/jwt/generate", validateRequest(z.object({
   body: z.object({
-    payload: z.record(z.any()),
+    payload: z.record(z.string(), z.any()),
     secret: z.string(),
     expiresIn: z.string().optional()
   })
