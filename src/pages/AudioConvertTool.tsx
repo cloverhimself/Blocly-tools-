@@ -159,24 +159,15 @@ export function AudioConvertTool() {
 
           <div className="flex flex-col gap-6 w-full mt-6">
             <div className="relative">
-                 {/* Override dropzone component to allow audio */}
-                <input 
-                    type="file" 
-                    id="audio-upload"
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                    onChange={(e) => {
-                       const f = e.target.files?.[0];
-                       if (f) handleFile(f);
-                       e.target.value = '';
-                    }} 
-                    accept="audio/*"
-                />
                <Dropzone 
                  state={dzState} 
                  fileName={file?.name} 
                  fileMeta={file ? `${formatBytes(file.size)} - ${fileExt}` : undefined} 
                  onFileSelect={handleFile}
                  onReset={handleReset}
+                 accept="audio/*"
+                 label="Drop an audio file here, or"
+                 acceptedTypesLabel="MP3, WAV, AAC, FLAC, OGG"
                />
                {(mode !== 'empty') && (
                  <div className="absolute inset-0 z-20 pointer-events-none"></div>

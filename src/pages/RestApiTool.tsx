@@ -47,7 +47,7 @@ export function RestApiTool() {
         })
       };
       
-      const proxyRes = await fetch("/api/proxy", proxyOpts);
+      const proxyRes = await fetch("/api/v1/proxy", proxyOpts);
       const proxyData: any = await proxyRes.json();
       
       if (!proxyRes.ok || proxyData.error) {

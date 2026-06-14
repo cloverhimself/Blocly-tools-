@@ -13,9 +13,9 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
   const [targetFormat, setTargetFormat] = useState<'docx' | 'doc'>('docx');
   
   const endpointMap = {
-    'pdf-word': '/api/convert/pdf-word',
-    'word-pdf': '/api/convert/word-pdf',
-    'excel-csv': '/api/convert/excel-csv'
+    'pdf-word': '/api/v1/convert/pdf-word',
+    'word-pdf': '/api/v1/convert/word-pdf',
+    'excel-csv': '/api/v1/convert/excel-csv'
   };
 
   const currentEndpoint = endpointMap[type];
@@ -129,16 +129,6 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
 
         <div className="flex flex-col md:flex-row gap-6 items-stretch mt-6">
            <div className="flex-[1.5] relative min-w-0 flex flex-col">
-              <input 
-                  type="file" 
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                  accept={acceptTypes}
-                  onChange={(e) => {
-                     const f = e.target.files?.[0];
-                     if (f) handleFile(f);
-                     e.target.value = '';
-                  }} 
-              />
               <div className="flex-1 w-full flex flex-col items-stretch">
                 <Dropzone 
                   state={dzState} 
@@ -146,6 +136,7 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
                   fileMeta={file ? `Ready to convert` : undefined} 
                   onFileSelect={handleFile}
                   onReset={handleReset}
+                  accept={acceptTypes}
                   label="Drop a file here, or"
                   acceptedTypesLabel={acceptTypes.toUpperCase().split(',').join(' - ')}
                 />

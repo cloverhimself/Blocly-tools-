@@ -78,12 +78,14 @@ export function Home() {
           desc: "Extract MP3 or WAV from any clip",
           icon: <AudioWaveform />,
           to: "/tools/video-to-audio",
+          keywords: ["mp4", "mp3", "wav", "extract", "audio", "video"],
         },
         {
           name: "Convert Audio",
           desc: "Between MP3, WAV, AAC and OGG",
           icon: <FileAudio />,
           to: "/tools/audio-convert",
+          keywords: ["mp3", "wav", "aac", "ogg", "flac", "audio", "convert"],
         },
       ],
     },
@@ -95,42 +97,49 @@ export function Home() {
           desc: "Preview and generate OG cards",
           icon: <MonitorSmartphone />,
           to: "/tools/og-image",
+          keywords: ["og", "opengraph", "social", "twitter", "facebook", "card", "meta", "generate"],
         },
         {
           name: "Convert Image",
           desc: "PNG, JPG, WebP and AVIF",
           icon: <ImageIcon />,
           to: "/tools/image-convert",
+          keywords: ["png", "jpg", "jpeg", "webp", "avif", "image", "convert"],
         },
         {
           name: "Compress Image",
           desc: "Smaller files, sharp detail",
           icon: <FileMinus />,
           to: "/tools/image-compress",
+          keywords: ["compress", "shrink", "reduce", "optimize", "image", "size"],
         },
         {
           name: "Resize Image",
           desc: "Set exact pixel dimensions",
           icon: <FileImage />,
           to: "/tools/image-resize",
+          keywords: ["resize", "scale", "crop", "dimensions", "width", "height", "image"],
         },
         {
           name: "QR Code Generator",
           desc: "High-res, lossless QR codes",
           icon: <QrCode />,
           to: "/tools/qrcode",
+          keywords: ["qr", "qrcode", "barcode", "generate", "code"],
         },
         {
           name: "Favicon Generator",
           desc: "Generate multi-size favicons",
           icon: <AppWindow />,
           to: "/tools/favicon",
+          keywords: ["favicon", "icon", "website", "generate", "ico"],
         },
         {
           name: "SVG Viewer & Converter",
           desc: "Preview and convert SVGs",
           icon: <ImagePlus />,
           to: "/tools/svg",
+          keywords: ["svg", "vector", "convert", "viewer", "png", "jpg", "image"],
         },
       ],
     },
@@ -143,6 +152,7 @@ export function Home() {
           icon: <FileText />,
           to: "/tools/pdf-word",
           cloud: true,
+          keywords: ["pdf", "word", "docx", "convert", "document"],
         },
         {
           name: "Word to PDF",
@@ -150,6 +160,7 @@ export function Home() {
           icon: <FileText />,
           to: "/tools/word-pdf",
           cloud: true,
+          keywords: ["word", "docx", "pdf", "convert", "document"],
         },
         {
           name: "Excel to CSV",
@@ -157,6 +168,7 @@ export function Home() {
           icon: <Table />,
           to: "/tools/excel-csv",
           cloud: true,
+          keywords: ["excel", "csv", "xls", "xlsx", "sheet", "spreadsheet", "convert"],
         },
       ],
     },
@@ -168,126 +180,147 @@ export function Home() {
           desc: "Generate fake JSON/CSV data",
           icon: <Settings />,
           to: "/tools/test-data",
+          keywords: ["fake", "mock", "test", "data", "json", "csv", "generator", "faker"],
         },
         {
           name: "JSON Formatter",
           desc: "Prettify, minify and validate",
           icon: <Braces />,
           to: "/tools/json",
+          keywords: ["json", "format", "prettify", "minify", "validate", "lint", "beautify"],
         },
         {
           name: "JSON to TypeScript",
           desc: "Convert JSON to TS interfaces",
           icon: <FileCode2 />,
           to: "/tools/json-to-ts",
+          keywords: ["json", "ts", "typescript", "interface", "type", "convert", "generator"],
         },
         {
           name: "JSON to Zod",
           desc: "Convert JSON to Zod schema",
           icon: <FileJson />,
           to: "/tools/json-to-zod",
+          keywords: ["json", "zod", "schema", "validation", "typescript", "convert"],
         },
         {
           name: "JWT Decoder",
           desc: "Decode JSON Web Tokens",
           icon: <Key />,
           to: "/tools/jwt",
+          keywords: ["jwt", "token", "decode", "parse", "json web token"],
         },
         {
           name: "JWT Generator",
           desc: "Generate JSON Web Tokens",
           icon: <Key />,
           to: "/tools/jwt-generator",
+          keywords: ["jwt", "token", "generate", "create", "sign", "json web token"],
         },
         {
           name: "UUID Generator",
           desc: "Generate universally unique identifiers",
           icon: <Fingerprint />,
           to: "/tools/uuid",
+          keywords: ["uuid", "guid", "generate", "v4", "v1", "identifier"],
         },
         {
           name: "URL Encoder / Decoder",
           desc: "Encode or decode URLs",
           icon: <Link2 />,
           to: "/tools/url-encoder",
+          keywords: ["url", "encode", "decode", "uri", "percent", "escape"],
         },
         {
           name: "Cron Expression Generator",
           desc: "Decode and generate cron jobs",
           icon: <CalendarDays />,
           to: "/tools/cron",
+          keywords: ["cron", "schedule", "job", "time", "generate", "parse", "expression"],
         },
         {
           name: "Timestamp Converter",
           desc: "Convert Unix time to human date",
           icon: <Clock />,
           to: "/tools/timestamp",
+          keywords: ["timestamp", "unix", "epoch", "time", "date", "convert", "human readable"],
         },
         {
           name: "Markdown Previewer",
           desc: "Live Markdown formatting preview",
           icon: <LayoutTemplate />,
           to: "/tools/markdown",
+          keywords: ["md", "markdown", "preview", "editor", "format", "live"],
         },
         {
           name: "Lorem Ipsum Generator",
           desc: "Generate random placeholder text",
           icon: <FileText />,
           to: "/tools/lorem",
+          keywords: ["lorem", "ipsum", "placeholder", "text", "dummy", "generator"],
         },
         {
           name: "Regex Tester",
           desc: "Test and debug regular expressions",
           icon: <SearchCode />,
           to: "/tools/regex",
+          keywords: ["regex", "regular expression", "test", "match", "replace", "pattern"],
         },
         {
           name: ".gitignore Generator",
           desc: "Create gitignores for any stack",
           icon: <FileText />,
           to: "/tools/gitignore",
+          keywords: ["git", "gitignore", "ignore", "repo", "repository", "generate"],
         },
         {
           name: "Curl to Fetch",
           desc: "Convert curl commands to fetch API",
           icon: <Terminal />,
           to: "/tools/curl-to-fetch",
+          keywords: ["curl", "fetch", "http", "request", "convert", "api"],
         },
         {
           name: "Fancy Font Generator",
           desc: "Copyable unicode text styles",
           icon: <Type />,
           to: "/tools/fancy-font",
+          keywords: ["font", "fancy", "text", "style", "unicode", "copy", "paste"],
         },
         {
           name: "Base64 Encode / Decode",
           desc: "Text and small files",
           icon: <Replace />,
           to: "/tools/base64",
+          keywords: ["base64", "encode", "decode", "text", "format", "convert"],
         },
         {
           name: "Hash Generator",
           desc: "SHA-256, SHA-1 and MD5",
           icon: <Hash />,
           to: "/tools/hash",
+          keywords: ["hash", "md5", "sha1", "sha256", "sha512", "crypto", "generate"],
         },
         {
           name: "Password Strength",
           desc: "Check password security",
           icon: <ShieldAlert />,
           to: "/tools/password",
+          keywords: ["password", "strength", "secure", "check", "entropy", "generator"],
         },
         {
           name: "License Generator",
           desc: "Generate MIT, Apache, GPL licenses",
           icon: <Scale />,
           to: "/tools/license",
+          keywords: ["license", "mit", "apache", "gpl", "open source", "generate"],
         },
         {
           name: "bcrypt Generator",
           desc: "Generate bcrypt password hashes",
           icon: <Lock />,
           to: "/tools/bcrypt",
+          keywords: ["bcrypt", "hash", "password", "crypto", "generate", "compare"],
         },
       ],
     },
@@ -299,24 +332,28 @@ export function Home() {
           desc: "Generate XML sitemaps",
           icon: <MapIcon />,
           to: "/tools/sitemap",
+          keywords: ["sitemap", "xml", "seo", "generate", "url", "bot"],
         },
         {
           name: "Dockerfile Generator",
           desc: "Generate Dockerfiles for Node, Python, Go",
           icon: <Box />,
           to: "/tools/dockerfile",
+          keywords: ["docker", "dockerfile", "container", "generate", "image", "devops"],
         },
         {
           name: "Changelog Generator",
           desc: "Create standard changelogs",
           icon: <ListTree />,
           to: "/tools/changelog",
+          keywords: ["changelog", "release", "notes", "version", "history", "generate"],
         },
         {
           name: "Metadata Generator",
           desc: "Generate OpenGraph meta tags",
           icon: <Code />,
           to: "/tools/metadata",
+          keywords: ["meta", "tags", "seo", "html", "head", "generate", "opengraph"],
         },
       ],
     },
@@ -328,18 +365,21 @@ export function Home() {
           desc: "Beautify SQL statements",
           icon: <Database />,
           to: "/tools/sql-formatter",
+          keywords: ["sql", "format", "beautify", "query", "database", "postgres", "mysql"],
         },
         {
           name: "MongoDB Query Formatter",
           desc: "Format MongoDB queries",
           icon: <DatabaseZap />,
           to: "/tools/mongo-formatter",
+          keywords: ["mongo", "mongodb", "format", "query", "nosql", "database", "beautify"],
         },
         {
           name: "JSON to SQL Insert",
           desc: "Convert JSON array to SQL inserts",
           icon: <DatabaseBackup />,
           to: "/tools/json-to-sql",
+          keywords: ["json", "sql", "insert", "convert", "database", "query", "table"],
         },
       ],
     },
@@ -351,24 +391,28 @@ export function Home() {
           desc: "Convert HEX colors to RGB",
           icon: <Palette />,
           to: "/tools/hex-rgb",
+          keywords: ["hex", "rgb", "color", "convert", "css"],
         },
         {
           name: "RGB to HSL",
           desc: "Convert RGB colors to HSL",
           icon: <Pipette />,
           to: "/tools/rgb-hsl",
+          keywords: ["rgb", "hsl", "color", "convert", "css"],
         },
         {
           name: "Gradient Generator",
           desc: "Create CSS gradients",
           icon: <PaintBucket />,
           to: "/tools/gradient",
+          keywords: ["gradient", "css", "color", "generator", "background", "linear", "radial"],
         },
         {
           name: "Color Palette",
           desc: "Generate color schemes",
           icon: <Paintbrush />,
           to: "/tools/palette",
+          keywords: ["color", "palette", "scheme", "generator", "theme", "combinations", "analogous", "complementary"],
         },
       ],
     },
@@ -381,6 +425,7 @@ export function Home() {
           icon: <Network />,
           to: "/tools/rest-api",
           cloud: true,
+          keywords: ["api", "rest", "http", "fetch", "tester", "postman", "client", "request"],
         },
         {
           name: "HTTP Header Viewer",
@@ -388,6 +433,7 @@ export function Home() {
           icon: <Server />,
           to: "/tools/http-headers",
           cloud: true,
+          keywords: ["http", "headers", "request", "response", "viewer", "sniff", "api"],
         },
       ],
     },
@@ -399,6 +445,7 @@ export function Home() {
           desc: "Create and print beautiful invoices",
           icon: <FileText />,
           to: "/tools/invoice",
+          keywords: ["invoice", "bill", "receipt", "generate", "pdf", "print", "business"],
         },
       ],
     },
@@ -455,18 +502,19 @@ export function Home() {
 
   if (q) {
     const allTools = rawCategories.flatMap((c) =>
-      c.tools.map((t) => ({ ...t, category: c.name }))
+      c.tools.map((t) => ({ ...t, category: c.name, keywordsStr: t.keywords?.join(" ") || "" }))
     );
 
     const results = fuzzysort.go(q, allTools, {
-      keys: ["name", "desc", "category"],
+      keys: ["name", "desc", "category", "keywordsStr"],
       threshold: -10000,
       // Give heavy weight to name matches
       scoreFn: (a) =>
         Math.max(
           a[0] ? a[0].score : -1000,
           a[1] ? a[1].score - 100 : -1000,
-          a[2] ? a[2].score - 200 : -1000
+          a[2] ? a[2].score - 200 : -1000,
+          a[3] ? a[3].score - 50 : -1000
         ),
     });
 
@@ -503,16 +551,14 @@ export function Home() {
 
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-5 py-10 md:py-14">
-          <h1 className="m-0 font-extrabold text-4xl md:text-6xl leading-[1.02] tracking-[-0.035em] max-w-[15ch]">
-            Tools that never touch a{" "}
+          <h1 className="m-0 font-extrabold text-4xl md:text-6xl leading-[1.02] tracking-[-0.035em] max-w-[20ch]">
+            A unified digital{" "}
             <span className="border-b-[0.16em] border-[#FFD400] pb-[0.02em]">
-              server
+              toolkit
             </span>
           </h1>
           <p className="mt-6 text-[16px] md:text-[17px] leading-relaxed text-[#111111]/60 max-w-[54ch]">
-            Convert, compress, and clean up files entirely on your own device.
-            No uploads, no accounts, no servers in the middle - just fast,
-            private tools that run in your browser.
+            A unified productivity platform where every tool feels identical in interaction, reliability, and structure. Fast, reliable utilities for everyday tasks.
           </p>
 
           <div className="mt-8 max-w-[560px]">

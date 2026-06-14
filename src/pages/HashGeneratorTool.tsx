@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TopNav } from "../components/TopNav";
 import { Footer } from "../components/Footer";
 import { Copy, Check, Hash as HashIcon, Trash } from "lucide-react";
@@ -24,26 +24,23 @@ export function HashGeneratorTool() {
 
   const [[sha1, sha256, sha512], setHashes] = useState<[string, string, string]>(["", "", ""]);
 
-  // We debounce the calculation a bit or just run it via effect
-  import("react").then(React => {
-    React.useEffect(() => {
-      let active = true;
-      const compute = async () => {
-        if (!input) {
-          setHashes(["", "", ""]);
-          return;
-        }
-        const h1 = await getHash("SHA-1", input);
-        const h256 = await getHash("SHA-256", input);
-        const h512 = await getHash("SHA-512", input);
-        if (active) {
-          setHashes([h1, h256, h512]);
-        }
-      };
-      compute();
-      return () => { active = false };
-    }, [input]);
-  });
+  useEffect(() => {
+    let active = true;
+    const compute = async () => {
+      if (!input) {
+        setHashes(["", "", ""]);
+        return;
+      }
+      const h1 = await getHash("SHA-1", input);
+      const h256 = await getHash("SHA-256", input);
+      const h512 = await getHash("SHA-512", input);
+      if (active) {
+        setHashes([h1, h256, h512]);
+      }
+    };
+    compute();
+    return () => { active = false };
+  }, [input]);
 
   const handleCopy = (text: string, label: string) => {
     if (!text) return;

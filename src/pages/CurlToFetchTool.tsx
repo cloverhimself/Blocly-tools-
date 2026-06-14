@@ -5,19 +5,15 @@ import { Terminal, ArrowRight, Copy, Check } from "lucide-react";
 
 export function CurlToFetchTool() {
   const [curl, setCurl] = useState("curl -X POST https://api.example.com/data \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer TOKEN\" \\\n  -d '{\"key\":\"value\"}'");
-  const [fetchCode, setFetchCode] = useState("");
   const [copied, setCopied] = useState(false);
-  const [error, setError] = useState("");
 
-  const processCurl = (input: string) => {
+  const processCurl = (input: string): { code: string; error: string } => {
     try {
       if (!input.trim()) {
-        setFetchCode("");
-        setError("");
-        return;
+        return { code: "", error: "" };
       }
 
-      setError("");
+      let errorStr = "";
       
       // Basic extremely simplified curl to fetch parsing
       // This doesn't cover all cases of curl, but works for standard json apis
@@ -74,32 +70,21 @@ export function CurlToFetchTool() {
       }
 
       if (body) {
-         js += `,\n  body: JSON.stringify(${body})\n`; // we assume it's json for this simple generator, or keep it raw
-         // actually better to just output it as raw string if we don't know
-         // to simplify let's just make it a raw string
-         js = js.replace(`JSON.stringify(${body})`, `\`${body}\``);
+         js += `,\n  body: \`${body}\`\n`;
       } else {
         js += '\n';
       }
 
       js += `})\n.then(response => response.json())\n.then(data => console.log(data))\n.catch(error => console.error(error));`;
 
-      setFetchCode(js);
+      return { code: js, error: errorStr };
 
     } catch (e: any) {
-      setError("Failed to parse curl command. Note: This tool supports basic curl syntax.");
+      return { code: "", error: "Failed to parse curl command. Note: This tool supports basic curl syntax." };
     }
   };
 
-  // Process on init and input change
-  useState(() => {
-    processCurl(curl);
-  });
-
-  const handleChange = (val: string) => {
-    setCurl(val);
-    processCurl(val);
-  };
+  const { code: fetchCode, error } = processCurl(curl);
 
   const handleCopy = () => {
     if (!fetchCode) return;
@@ -130,7 +115,7 @@ export function CurlToFetchTool() {
             <textarea
               className="flex-1 w-full bg-[#111111] text-[#E5E5E5] border-2 border-[#111111] p-4 font-mono text-sm resize-none focus:outline-none shadow-[4px_4px_0px_#111111] focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-[2px_2px_0px_#111111] transition-all"
               value={curl}
-              onChange={(e) => handleChange(e.target.value)}
+              onChange={(e) => setCurl(e.target.value)}
               placeholder="curl -X GET ..."
               spellCheck={false}
             />

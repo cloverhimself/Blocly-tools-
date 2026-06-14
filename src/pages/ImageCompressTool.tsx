@@ -101,23 +101,14 @@ export function ImageCompressTool() {
 
           <div className="flex flex-col gap-6 w-full mt-6">
             <div className="relative">
-                <input 
-                    type="file" 
-                    id="img-upload-compress"
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                    onChange={(e) => {
-                       const f = e.target.files?.[0];
-                       if (f) handleFile(f);
-                       e.target.value = '';
-                    }} 
-                    accept="image/*"
-                />
                <Dropzone 
                  state={dzState} 
                  fileName={file?.name} 
                  fileMeta={file ? `${formatBytes(file.size)} - ${fileExt}` : undefined} 
                  onFileSelect={handleFile}
                  onReset={handleReset}
+                 accept="image/*"
+                 icon={FileMinus}
                />
                {(mode !== 'empty') && (
                  <div className="absolute inset-0 z-20 pointer-events-none"></div>

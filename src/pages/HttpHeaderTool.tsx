@@ -30,7 +30,7 @@ export function HttpHeaderTool() {
         body: JSON.stringify({ url: target, method: "HEAD" })
       };
       
-      const proxyRes = await fetch("/api/proxy", proxyOpts);
+      const proxyRes = await fetch("/api/v1/proxy", proxyOpts);
       const data: any = await proxyRes.json();
       
       if (!proxyRes.ok || data.error) {
@@ -46,7 +46,7 @@ export function HttpHeaderTool() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ url: target, method: "GET" })
         };
-        const proxyRes = await fetch("/api/proxy", proxyOpts);
+        const proxyRes = await fetch("/api/v1/proxy", proxyOpts);
         const data: any = await proxyRes.json();
         
         if (!proxyRes.ok || data.error) {

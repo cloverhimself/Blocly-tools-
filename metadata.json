@@ -1,6 +1,6 @@
 {
-  "name": "Blocly Tools",
-  "description": "Everyday file tools that run entirely in your browser. Private by design.",
+  "name": "Blocly",
+  "description": "A unified productivity platform where every tool feels identical in interaction, reliability, and structure.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

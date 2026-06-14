@@ -11,8 +11,7 @@ export function Footer() {
               <span className="font-extrabold text-[17px] tracking-tight">Blocly Tools</span>
             </div>
             <p className="m-0 text-[13px] leading-relaxed text-[#111111]/60">
-              A private, client-side toolkit that never touches a server.
-              Keep your sensitive files secure, converting and cleaning them entirely within your browser.
+              A unified productivity platform where every tool feels identical in interaction, reliability, and structure. Fast, reliable utilities for everyone.
             </p>
           </div>
           
@@ -26,7 +25,7 @@ export function Footer() {
         
         <div className="mt-9 pt-4 border-t border-[#111111] flex flex-col md:flex-row flex-wrap gap-x-5 gap-y-2 justify-between font-mono text-[11.5px] text-[#111111]/55">
           <span>© {new Date().getFullYear()} Blocly - MIT License</span>
-          <span>No cookies - No tracking - No servers</span>
+          <span>A unified digital toolkit</span>
         </div>
       </div>
     </footer>

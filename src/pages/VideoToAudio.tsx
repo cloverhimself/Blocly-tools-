@@ -165,6 +165,9 @@ export function VideoToAudio() {
               fileMeta={file ? `${formatBytes(file.size)} - ${fileExt}` : undefined} 
               onFileSelect={handleFile}
               onReset={handleReset}
+              accept="video/*"
+              label="Drop a video here, or"
+              acceptedTypesLabel="MP4, MOV, WEBM, AVI"
             />
 
             <div className="flex flex-wrap gap-5 items-stretch">

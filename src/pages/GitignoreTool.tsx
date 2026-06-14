@@ -14,7 +14,10 @@ export function GitignoreTool() {
   // Initial fetch of template list
   useEffect(() => {
     fetch("https://api.github.com/gitignore/templates")
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Rate limit or API error");
+        return res.json();
+      })
       .then(data => {
         if (Array.isArray(data)) setTemplates(data);
       })
@@ -33,9 +36,12 @@ export function GitignoreTool() {
     setLoading(true);
     const fetchPromises = selected.map(name => 
       fetch(`https://api.github.com/gitignore/templates/${name}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error("API error");
+          return res.json();
+        })
         .then(data => `### ${name} ###\n${data.source}\n`)
-        .catch(() => `### ${name} ###\n# Failed to fetch template\n`)
+        .catch(() => `### ${name} ###\n# Failed to fetch template (GitHub API rate limit)\n`)
     );
 
     Promise.all(fetchPromises).then(results => {
