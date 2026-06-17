@@ -350,6 +350,62 @@ router.get("/ytdl/info", async (req: Request, res: Response) => {
       });
     }
 
+    // ----- Estimated download sizes, so the UI can show "~84 MB" per quality.
+    // A merged YouTube download = (video-only stream at that height) + (best
+    // audio), which is what `buildDownloadPlan` actually fetches.
+    const sizeOf = (f: any) => Number(f?.filesize) || Number(f?.filesize_approx) || 0;
+
+    const audioOnly = rawFormats.filter(
+      (f) => (!f.vcodec || f.vcodec === "none") && f.acodec && f.acodec !== "none"
+    );
+    // The download uses `bestaudio`, so estimate with the largest audio stream
+    // (prefer m4a, which is what we serve for M4A and merge into video).
+    const bestM4a = audioOnly.filter((f) => f.ext === "m4a").sort((a, b) => sizeOf(b) - sizeOf(a))[0];
+    const audioSize = sizeOf(bestM4a) || Math.max(0, ...audioOnly.map(sizeOf), 0);
+
+    const videoOnly = rawFormats.filter(
+      (f) =>
+        f.height &&
+        f.vcodec &&
+        f.vcodec !== "none" &&
+        (!f.acodec || f.acodec === "none") &&
+        f.protocol !== "mhtml"
+    );
+    const videoSizeAt = (h: number) => {
+      const at = videoOnly.filter((f) => Number(f.height) === h);
+      if (!at.length) return 0;
+      const pick =
+        h <= 1080
+          ? at.find((f) => String(f.vcodec).startsWith("avc1") && f.ext === "mp4") ||
+            at.find((f) => f.ext === "mp4") ||
+            at[0]
+          : at.slice().sort((a, b) => sizeOf(b) - sizeOf(a))[0];
+      return sizeOf(pick);
+    };
+
+    // height -> estimated merged size (bytes); 0 means "unknown".
+    const qualities = videoHeights.map((h) => {
+      const v = videoSizeAt(h);
+      return { height: h, size: v ? v + audioSize : 0 };
+    });
+
+    // Estimate for the "Best Quality" button (capped at 1080p like the download).
+    const combinedMax = Math.max(
+      0,
+      ...rawFormats
+        .filter((f) => f.vcodec && f.vcodec !== "none" && f.acodec && f.acodec !== "none")
+        .map(sizeOf),
+      0
+    );
+    let bestSize = 0;
+    if (isYouTube(url)) {
+      const hForBest = videoHeights.filter((h) => h <= 1080).sort((a, b) => b - a)[0] || videoHeights[0];
+      const v = hForBest ? videoSizeAt(hForBest) : 0;
+      bestSize = v ? v + audioSize : 0;
+    } else {
+      bestSize = combinedMax;
+    }
+
     const hasAudio = rawFormats.some((f) => f.acodec && f.acodec !== "none") || formats.length > 0;
 
     res.json({
@@ -363,6 +419,9 @@ router.get("/ytdl/info", async (req: Request, res: Response) => {
         : [],
       lengthSeconds: info.duration != null ? String(info.duration) : "0",
       videoHeights,
+      qualities,
+      audioSize,
+      bestSize,
       hasAudio,
       formats,
     });

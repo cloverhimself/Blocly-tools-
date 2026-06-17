@@ -20,6 +20,9 @@ type VideoInfo = {
   thumbnails: { url: string; width?: number; height?: number }[];
   lengthSeconds: string;
   videoHeights: number[];
+  qualities?: { height: number; size: number }[];
+  audioSize?: number;
+  bestSize?: number;
   hasAudio: boolean;
 };
 
@@ -96,6 +99,12 @@ function qualityLabel(h: number): string {
   if (h >= 2160) return "4K (2160p)";
   if (h >= 1440) return "2K (1440p)";
   return `${h}p`;
+}
+
+function formatBytes(bytes?: number): string {
+  if (!bytes || bytes <= 0) return "";
+  if (bytes >= 1024 * 1024 * 1024) return `~${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+  return `~${Math.round(bytes / 1024 / 1024)} MB`;
 }
 
 function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
@@ -184,8 +193,11 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
     }
   };
 
+  const sizeByHeight = new Map((info?.qualities || []).map((q) => [q.height, q.size]));
   const availableQualities = info
-    ? COMMON_QUALITIES.filter((q) => info.videoHeights.some((h) => h >= q || (q === 360 && h <= 360)))
+    ? COMMON_QUALITIES.filter((q) => info.videoHeights.some((h) => h >= q || (q === 360 && h <= 360))).map(
+        (q) => ({ height: q, size: sizeByHeight.get(q) || 0 })
+      )
     : [];
   const qualitiesToShow =
     platform.qualityLadder && availableQualities.length > 0 ? availableQualities : [];
@@ -285,20 +297,29 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
               <button
                 onClick={() => download("video", "best", "Best Quality video")}
                 disabled={!permissionChecked || !!downloading}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-[#FFD400] text-[#111111] font-bold rounded-sm hover:brightness-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex flex-col items-center justify-center gap-0.5 px-4 py-2.5 bg-[#FFD400] text-[#111111] font-bold rounded-sm hover:brightness-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {downloading === "Best Quality video" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} Best Quality
+                <span className="flex items-center gap-2">
+                  {downloading === "Best Quality video" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} Best Quality
+                </span>
+                {formatBytes(info.bestSize) && (
+                  <span className="text-[10px] font-medium text-[#111111]/60">{formatBytes(info.bestSize)}</span>
+                )}
               </button>
               {qualitiesToShow.map((q) => {
-                const lbl = `${qualityLabel(q)} video`;
+                const lbl = `${qualityLabel(q.height)} video`;
+                const size = formatBytes(q.size);
                 return (
                   <button
-                    key={q}
-                    onClick={() => download("video", String(q), lbl)}
+                    key={q.height}
+                    onClick={() => download("video", String(q.height), lbl)}
                     disabled={!permissionChecked || !!downloading}
-                    className="flex items-center justify-center gap-2 px-4 py-3 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="flex flex-col items-center justify-center gap-0.5 px-4 py-2.5 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
                   >
-                    {downloading === lbl ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-[#111111]/50" />} {qualityLabel(q)}
+                    <span className="flex items-center gap-2">
+                      {downloading === lbl ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-[#111111]/50" />} {qualityLabel(q.height)}
+                    </span>
+                    {size && <span className="text-[10px] font-medium text-[#111111]/45">{size}</span>}
                   </button>
                 );
               })}
@@ -320,16 +341,26 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
                 <button
                   onClick={() => download("audio", "mp3", "MP3 audio")}
                   disabled={!permissionChecked || !!downloading}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex flex-col items-center justify-center gap-0.5 px-4 py-2.5 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  {downloading === "MP3 audio" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Music className="w-4 h-4 text-[#111111]/50" />} MP3
+                  <span className="flex items-center gap-2">
+                    {downloading === "MP3 audio" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Music className="w-4 h-4 text-[#111111]/50" />} MP3
+                  </span>
+                  {formatBytes(info.audioSize) && (
+                    <span className="text-[10px] font-medium text-[#111111]/45">{formatBytes(info.audioSize)}</span>
+                  )}
                 </button>
                 <button
                   onClick={() => download("audio", "m4a", "M4A audio")}
                   disabled={!permissionChecked || !!downloading}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex flex-col items-center justify-center gap-0.5 px-4 py-2.5 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  {downloading === "M4A audio" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Music className="w-4 h-4 text-[#111111]/50" />} M4A
+                  <span className="flex items-center gap-2">
+                    {downloading === "M4A audio" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Music className="w-4 h-4 text-[#111111]/50" />} M4A
+                  </span>
+                  {formatBytes(info.audioSize) && (
+                    <span className="text-[10px] font-medium text-[#111111]/45">{formatBytes(info.audioSize)}</span>
+                  )}
                 </button>
               </div>
             </div>
