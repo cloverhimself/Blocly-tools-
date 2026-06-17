@@ -47,6 +47,11 @@ import {
   Link2,
   LayoutTemplate,
   Map as MapIcon,
+  Calculator,
+  Type as TypeIcon,
+  Timer,
+  Ruler,
+  AlignLeft
 } from "lucide-react";
 
 export function Home() {
@@ -71,8 +76,55 @@ export function Home() {
 
   const rawCategories = [
     {
+      name: "Everyday Tools",
+      tools: [
+        {
+          name: "Word Counter",
+          desc: "Count words, characters, and sentences",
+          icon: <AlignLeft />,
+          to: "/tools/word-counter",
+          keywords: ["word", "character", "count", "counter", "text", "sentences", "paragraphs"],
+        },
+        {
+          name: "Case Converter",
+          desc: "Convert to UPPERCASE, lowercase, CamelCase, etc",
+          icon: <TypeIcon />,
+          to: "/tools/case-converter",
+          keywords: ["case", "convert", "uppercase", "lowercase", "text", "camelcase", "snake", "title"],
+        },
+        {
+          name: "Pomodoro Timer",
+          desc: "Focus timer to boost productivity",
+          icon: <Timer />,
+          to: "/tools/pomodoro",
+          keywords: ["pomodoro", "timer", "focus", "time", "clock", "productivity"],
+        },
+        {
+          name: "Unit Converter",
+          desc: "Convert length, weight, and temperature",
+          icon: <Ruler />,
+          to: "/tools/unit-converter",
+          keywords: ["unit", "convert", "length", "weight", "temperature", "meters", "kilograms", "farenheit"],
+        },
+        {
+          name: "Tip & Split Calculator",
+          desc: "Calculate tips and split the bill",
+          icon: <Calculator />,
+          to: "/tools/tip-calculator",
+          keywords: ["tip", "split", "bill", "calculator", "money", "percent"],
+        },
+      ],
+    },
+    {
       name: "Video & Audio",
       tools: [
+        {
+          name: "Social Media Downloader",
+          desc: "Download videos from YouTube, TikTok, IG & FB",
+          icon: <MonitorSmartphone />,
+          to: "/tools/youtube-downloader",
+          keywords: ["youtube", "tiktok", "instagram", "facebook", "download", "yt", "video", "mp4", "mp3", "social", "media"],
+        },
         {
           name: "Convert Video to Audio",
           desc: "Extract MP3 or WAV from any clip",

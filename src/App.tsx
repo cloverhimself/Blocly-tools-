@@ -29,6 +29,13 @@ import { PaletteTool } from "./pages/PaletteTool";
 import { HttpHeaderTool } from "./pages/HttpHeaderTool";
 import { MetadataTool } from "./pages/MetadataTool";
 import { RestApiTool } from "./pages/RestApiTool";
+import { Dashboard } from "./pages/Dashboard";
+import { WordCounterTool } from "./pages/WordCounterTool";
+import { CaseConverterTool } from "./pages/CaseConverterTool";
+import { PomodoroTool } from "./pages/PomodoroTool";
+import { UnitConverterTool } from "./pages/UnitConverterTool";
+import { TipCalculatorTool } from "./pages/TipCalculatorTool";
+import { SocialDownloaderTool } from "./pages/SocialDownloaderTool";
 
 import { SqlFormatterTool } from "./pages/SqlFormatterTool";
 import { MongoFormatterTool } from "./pages/MongoFormatterTool";
@@ -54,6 +61,14 @@ export default function App() {
     <Router>
       <SwitchRoutes>
         <SwitchRoute path="/" element={<Home />} />
+        <SwitchRoute path="/dashboard" element={<Dashboard />} />
+        <SwitchRoute path="/tools/word-counter" element={<WordCounterTool />} />
+        <SwitchRoute path="/tools/case-converter" element={<CaseConverterTool />} />
+        <SwitchRoute path="/tools/pomodoro" element={<PomodoroTool />} />
+        <SwitchRoute path="/tools/unit-converter" element={<UnitConverterTool />} />
+        <SwitchRoute path="/tools/tip-calculator" element={<TipCalculatorTool />} />
+        <SwitchRoute path="/tools/social-downloader" element={<SocialDownloaderTool />} />
+        <SwitchRoute path="/tools/youtube-downloader" element={<SocialDownloaderTool />} />
         <SwitchRoute path="/tools/video-to-audio" element={<VideoToAudio />} />
         <SwitchRoute path="/tools/audio-convert" element={<AudioConvertTool />} />
         <SwitchRoute path="/tools/base64" element={<Base64Tool />} />

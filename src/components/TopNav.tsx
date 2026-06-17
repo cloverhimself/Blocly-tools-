@@ -65,6 +65,12 @@ export function TopNav() {
             >
               Tools
             </Link>
+            <Link
+              to="/dashboard"
+              className="hidden md:block text-[#111111] text-[13.5px] font-semibold border-b-2 border-transparent pb-[1px] hover:border-[#FFD400]"
+            >
+              Dashboard
+            </Link>
             
             <button
               onClick={handleShare}
