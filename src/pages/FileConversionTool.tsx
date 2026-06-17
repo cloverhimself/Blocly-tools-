@@ -146,7 +146,7 @@ export function FileConversionTool({ title, type }: { title: string, type: 'pdf-
               )}
            </div>
 
-           <div className="flex-1 min-w-[300px] border-2 border-[#111111] bg-white shadow-[4px_4px_0px_#111111] rounded-sm p-6 box-border flex flex-col justify-center gap-4 min-h-[220px]">
+           <div className="flex-1 md:min-w-[300px] border-2 border-[#111111] bg-white shadow-[4px_4px_0px_#111111] rounded-sm p-6 box-border flex flex-col justify-center gap-4 min-h-[220px]">
               
               {type === 'pdf-word' && (
                 <div className="flex flex-col gap-2 pb-4 border-b-2 border-[#111111]/10">

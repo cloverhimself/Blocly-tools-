@@ -111,7 +111,7 @@ export function OpenGraphImageGeneratorTool() {
   return (
     <div className="w-full min-h-screen bg-[#FAFAFA] text-[#111111] font-sans flex flex-col">
       <TopNav />
-      <main className="flex-1 max-w-7xl w-full mx-auto px-5 py-10 md:py-14 grid grid-cols-1 md:grid-cols-[1fr_500px] gap-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-5 py-10 md:py-14 grid grid-cols-1 lg:grid-cols-[1fr_minmax(0,500px)] gap-8">
         <div>
           <h1 className="m-0 font-extrabold text-3xl md:text-4xl tracking-[-0.03em]">Open Graph Image Generator</h1>
           <p className="mt-3 mb-8 text-[16px] text-[#111111]/60 leading-relaxed">

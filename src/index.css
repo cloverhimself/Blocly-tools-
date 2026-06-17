@@ -10,5 +10,19 @@
   body {
     background-color: #FAFAFA;
     color: #111111;
+    /* Safety net: never allow a stray wide element to scroll the whole page
+       horizontally on small screens. In-component scroll areas keep their own
+       overflow-x via overflow-x-auto, so this only catches accidental bleed. */
+    overflow-x: hidden;
+  }
+
+  /* Media should never exceed its container on smaller viewports. Canvases keep
+     their internal drawing resolution; only the display size is constrained.
+     (Scoped to raster/large media so it can't affect class-sized SVG icons.) */
+  img,
+  video,
+  canvas {
+    max-width: 100%;
+    height: auto;
   }
 }
