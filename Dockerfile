@@ -22,8 +22,9 @@ ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL \
 
 # Install dependencies first for better layer caching. This also downloads the
 # yt-dlp and ffmpeg binaries via the packages' postinstall scripts.
+# `npm install` (not `npm ci`) so a minor lockfile drift can't fail the build.
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install --no-audit --no-fund
 
 # Build the client bundle + the server bundle (dist/server.cjs).
 COPY . .

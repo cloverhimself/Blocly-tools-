@@ -1,0 +1,15 @@
+# Never copy local (Windows) node_modules or build output into the image — the
+# container installs its own Linux binaries (yt-dlp, ffmpeg) via npm install.
+node_modules
+dist
+dev-dist
+.git
+.gitignore
+*.log
+npm-debug.log*
+.env
+.env.*
+!.env.example
+.DS_Store
+README.md
+DEPLOY.md
