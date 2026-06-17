@@ -16,7 +16,8 @@ const upload = multer({
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  // Cloud hosts (Render, Railway, Fly, …) inject the port to bind to.
+  const PORT = Number(process.env.PORT) || 3000;
 
   // 1. Core middlewares
   app.use(compression());
