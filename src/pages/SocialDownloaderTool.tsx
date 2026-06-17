@@ -104,7 +104,7 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<VideoInfo | null>(null);
   const [permissionChecked, setPermissionChecked] = useState(false);
-  const [preparing, setPreparing] = useState(false);
+  const [downloading, setDownloading] = useState<string | null>(null); // label of active download
 
   const hostMatches = (() => {
     try {
@@ -132,17 +132,56 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
     }
   };
 
-  const download = (type: "video" | "audio", quality: string) => {
+  const download = async (type: "video" | "audio", quality: string, label: string) => {
     if (!permissionChecked) {
       alert("Please confirm you have permission to download this content by ticking the box.");
       return;
     }
+    if (downloading) return; // one at a time
+    setError(null);
+    setDownloading(label);
+
     const href = `/api/v1/ytdl/download?url=${encodeURIComponent(url)}&type=${type}&quality=${quality}`;
-    // High-quality YouTube downloads merge server-side, so the browser may
-    // pause briefly before the save dialog appears — show a hint meanwhile.
-    setPreparing(true);
-    window.location.href = href;
-    setTimeout(() => setPreparing(false), 6000);
+    try {
+      const res = await fetch(href);
+
+      // The server reports failures as JSON; a real download comes back as a
+      // binary attachment. Detect errors here so we never navigate the SPA away
+      // to a raw JSON page (the old window.location approach did exactly that).
+      const contentType = res.headers.get("content-type") || "";
+      if (!res.ok || contentType.includes("application/json")) {
+        let msg = "Download failed. Please try again.";
+        try {
+          const data = await res.json();
+          if (data?.error) msg = data.error;
+        } catch {
+          /* non-JSON body */
+        }
+        throw new Error(msg);
+      }
+
+      // Derive the filename from the response headers, fall back to a sane name.
+      const disposition = res.headers.get("content-disposition") || "";
+      const match = /filename\*=UTF-8''([^;]+)|filename="?([^";]+)"?/i.exec(disposition);
+      const filename = decodeURIComponent(match?.[1] || match?.[2] || `download.${type === "audio" ? quality : "mp4"}`);
+
+      const blob = await res.blob();
+      if (blob.size === 0) throw new Error("The download was empty. The content may be unavailable.");
+
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = objectUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      // Give the browser a tick to start the save before revoking.
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 10000);
+    } catch (err: any) {
+      setError(err?.message || "Download failed. Please check your connection and try again.");
+    } finally {
+      setDownloading(null);
+    }
   };
 
   const availableQualities = info
@@ -229,10 +268,11 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
             </label>
           </div>
 
-          {preparing && (
-            <div className="flex items-center gap-2 text-sm text-[#111111]/70 bg-[#FFF9E6] border border-[#FFD400]/40 rounded-sm p-3">
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Preparing your download — high-quality videos are merged on the server and may take a few seconds.
+          {downloading && (
+            <div className="flex items-center gap-2 text-sm text-[#111111]/80 bg-[#FFF9E6] border border-[#FFD400]/40 rounded-sm p-3">
+              <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+              Preparing <strong>{downloading}</strong> — high-quality videos are merged on the server, so this can
+              take a little while. Please keep this tab open.
             </div>
           )}
 
@@ -243,22 +283,25 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
             </h4>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <button
-                onClick={() => download("video", "best")}
-                disabled={!permissionChecked}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-[#FFD400] text-[#111111] font-bold rounded-sm hover:brightness-95 transition disabled:opacity-40"
+                onClick={() => download("video", "best", "Best Quality video")}
+                disabled={!permissionChecked || !!downloading}
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-[#FFD400] text-[#111111] font-bold rounded-sm hover:brightness-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                <Download className="w-4 h-4" /> Best Quality
+                {downloading === "Best Quality video" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} Best Quality
               </button>
-              {qualitiesToShow.map((q) => (
-                <button
-                  key={q}
-                  onClick={() => download("video", String(q))}
-                  disabled={!permissionChecked}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40"
-                >
-                  <Download className="w-4 h-4 text-[#111111]/50" /> {qualityLabel(q)}
-                </button>
-              ))}
+              {qualitiesToShow.map((q) => {
+                const lbl = `${qualityLabel(q)} video`;
+                return (
+                  <button
+                    key={q}
+                    onClick={() => download("video", String(q), lbl)}
+                    disabled={!permissionChecked || !!downloading}
+                    className="flex items-center justify-center gap-2 px-4 py-3 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {downloading === lbl ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-[#111111]/50" />} {qualityLabel(q)}
+                  </button>
+                );
+              })}
             </div>
             {platform.qualityLadder && (
               <p className="text-xs text-[#111111]/45">
@@ -275,18 +318,18 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <button
-                  onClick={() => download("audio", "mp3")}
-                  disabled={!permissionChecked}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40"
+                  onClick={() => download("audio", "mp3", "MP3 audio")}
+                  disabled={!permissionChecked || !!downloading}
+                  className="flex items-center justify-center gap-2 px-4 py-3 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  <Music className="w-4 h-4 text-[#111111]/50" /> MP3
+                  {downloading === "MP3 audio" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Music className="w-4 h-4 text-[#111111]/50" />} MP3
                 </button>
                 <button
-                  onClick={() => download("audio", "m4a")}
-                  disabled={!permissionChecked}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40"
+                  onClick={() => download("audio", "m4a", "M4A audio")}
+                  disabled={!permissionChecked || !!downloading}
+                  className="flex items-center justify-center gap-2 px-4 py-3 border border-[#111111]/15 rounded-sm font-semibold hover:border-[#FFD400] hover:bg-[#FFD400]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  <Music className="w-4 h-4 text-[#111111]/50" /> M4A
+                  {downloading === "M4A audio" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Music className="w-4 h-4 text-[#111111]/50" />} M4A
                 </button>
               </div>
             </div>

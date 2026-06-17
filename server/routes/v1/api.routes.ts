@@ -60,6 +60,13 @@ function baseYtdlFlags(url: string): any {
       "user-agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     ],
   };
+  // Only ever touch the single linked video. Without this, a normal watch URL
+  // that carries a `&list=...` param (autoplay, mixes, "Watch Later") makes
+  // yt-dlp try to process the entire playlist, which breaks info/downloads.
+  flags.noPlaylist = true;
+  // If a *pure* playlist/channel URL is pasted, don't resolve every entry
+  // (that can take a minute+). List them flat so we can reject it instantly.
+  flags.flatPlaylist = true;
   // Bundled static ffmpeg so yt-dlp can merge separate video+audio streams
   // (required for any YouTube quality above 360p) and extract MP3 audio.
   if (ffmpegPath) flags.ffmpegLocation = ffmpegPath;
@@ -128,13 +135,41 @@ function sanitizeFilename(name: string): string {
   );
 }
 
-// Extract a single readable line from a yt-dlp failure (stderr or Error).
+// Extract a single readable line from a yt-dlp failure (stderr or Error) and
+// translate the common ones into plain-language messages for end users.
 function cleanYtError(err: any): string {
   const raw =
     typeof err === "string" ? err : err?.stderr || err?.message || "Unknown error";
-  const lines = String(raw)
-    // strip ANSI colour codes
-    .replace(/\x1b\[[0-9;]*m/g, "")
+  const text = String(raw).replace(/\x1b\[[0-9;]*m/g, ""); // strip ANSI colours
+  const lower = text.toLowerCase();
+
+  // Map well-known failure modes to friendly guidance.
+  if (lower.includes("sign in to confirm") || lower.includes("not a bot"))
+    return "YouTube is rate-limiting this server. Please try again in a little while.";
+  if (
+    lower.includes("private video") ||
+    lower.includes("login required") ||
+    lower.includes("requested content is not available") ||
+    lower.includes("logged-in") ||
+    lower.includes("empty media response") ||
+    lower.includes("use --cookies") ||
+    lower.includes("cookies-from-browser")
+  )
+    return "This post is private or only visible when signed in, so it can't be downloaded. Public posts work without login.";
+  if (lower.includes("video unavailable") || lower.includes("removed") || lower.includes("does not exist") || lower.includes("not found"))
+    return "This video is unavailable, removed, or the link is incorrect.";
+  if (lower.includes("age") && lower.includes("confirm"))
+    return "This video is age-restricted and can't be downloaded without sign-in.";
+  if (lower.includes("geo") || lower.includes("not available in your country") || lower.includes("region"))
+    return "This content is region-locked and not available from this server's location.";
+  if (lower.includes("is live") || lower.includes("livestream") || lower.includes("live event will begin"))
+    return "Live streams can't be downloaded. Try again once the stream has ended and is published.";
+  if (lower.includes("unsupported url") || lower.includes("no video formats") || lower.includes("unable to extract"))
+    return "This link isn't supported or contains no downloadable video.";
+  if (lower.includes("http error 429") || lower.includes("too many requests"))
+    return "Too many requests right now. Please wait a moment and try again.";
+
+  const lines = text
     .split("\n")
     .map((s) => s.trim())
     .filter(Boolean);
@@ -247,6 +282,19 @@ router.get("/ytdl/info", async (req: Request, res: Response) => {
       ...baseYtdlFlags(url),
     } as any);
 
+    // A playlist/channel URL slips through as an `entries` list with no media.
+    if (info && Array.isArray(info.entries) && info.formats == null) {
+      return res.status(400).json({
+        error: "That looks like a playlist or channel. Please paste a link to a single video.",
+      });
+    }
+
+    if (info?.is_live) {
+      return res.status(400).json({
+        error: "This is a live stream. Live content can't be downloaded until it has ended.",
+      });
+    }
+
     const rawFormats: any[] = Array.isArray(info.formats) ? info.formats : [];
     const formats = rawFormats
       // Drop storyboard / thumbnail "formats" that can't actually be played.
@@ -296,6 +344,12 @@ router.get("/ytdl/info", async (req: Request, res: Response) => {
       .filter((h) => h > 0)
       .sort((a, b) => b - a);
 
+    if (formats.length === 0) {
+      return res.status(422).json({
+        error: "No downloadable video or audio was found at this link.",
+      });
+    }
+
     const hasAudio = rawFormats.some((f) => f.acodec && f.acodec !== "none") || formats.length > 0;
 
     res.json({
@@ -334,12 +388,22 @@ router.get("/ytdl/download", async (req: Request, res: Response) => {
       dumpSingleJson: true,
       ...baseYtdlFlags(url),
     } as any);
+
+    if (info?.is_live) {
+      return res.status(400).json({ error: "Live streams can't be downloaded." });
+    }
+
     const filename = `${sanitizeFilename(info.title || "download")}.${plan.ext}`;
+    // HTTP headers are Latin-1 only, but titles routinely contain emoji or
+    // non-Latin characters (TikTok, YouTube, etc.) which would throw
+    // "Invalid character in header". Use an ASCII fallback for the plain
+    // filename and the percent-encoded UTF-8 form (preferred by browsers).
+    const asciiName = filename.replace(/[^\x20-\x7E]/g, "_").replace(/["\\]/g, "") || "download";
 
     const setDownloadHeaders = (size?: number) => {
       res.setHeader(
         "Content-Disposition",
-        `attachment; filename="${filename}"; filename*=UTF-8''${encodeURIComponent(filename)}`
+        `attachment; filename="${asciiName}"; filename*=UTF-8''${encodeURIComponent(filename)}`
       );
       res.setHeader("Content-Type", "application/octet-stream");
       if (size != null) res.setHeader("Content-Length", String(size));
