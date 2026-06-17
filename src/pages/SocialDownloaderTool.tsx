@@ -131,11 +131,22 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
     setInfo(null);
     try {
       const res = await fetch(`/api/v1/ytdl/info?url=${encodeURIComponent(url)}`);
+
+      // If the API isn't reachable (e.g. the backend isn't deployed on this
+      // host), we get an HTML error page, not JSON. Detect that and explain it
+      // instead of crashing with "Unexpected token … is not valid JSON".
+      const contentType = res.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error(
+          "The downloader service isn't reachable. The download server may not be running or deployed on this site."
+        );
+      }
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to fetch info. Ensure the link is valid and public.");
       setInfo(data);
     } catch (err: any) {
-      setError(err.message);
+      setError(err?.message || "Something went wrong. Please try again.");
     } finally {
       setLoadingInfo(false);
     }
