@@ -46,6 +46,26 @@ export default defineConfig(() => {
         }
       })
     ],
+    build: {
+      // Only pin the small, app-wide React runtime into its own long-cached
+      // chunk. Everything else (recharts, ffmpeg, faker, supabase, …) is left to
+      // Rollup's automatic per-route splitting so heavy libs load ONLY with the
+      // tool that needs them — keeping the initial payload tiny.
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes('node_modules')) return;
+            if (
+              id.includes('react-dom') ||
+              id.includes('react-router') ||
+              id.includes('/scheduler/') ||
+              /node_modules\/react\//.test(id)
+            )
+              return 'react-vendor';
+          },
+        },
+      },
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TopNav } from "../components/TopNav";
 import { Footer } from "../components/Footer";
 import { SearchBar } from "../components/SearchBar";
 import { ToolCard } from "../components/ToolCard";
 import fuzzysort from "fuzzysort";
+import { toolId } from "../lib/toolId";
 import {
   AudioWaveform,
   FileAudio,
@@ -47,11 +48,13 @@ import {
   Link2,
   LayoutTemplate,
   Map as MapIcon,
-  Calculator,
   Type as TypeIcon,
-  Timer,
   Ruler,
-  AlignLeft
+  AlignLeft,
+  Youtube,
+  Instagram,
+  Facebook,
+  Music2
 } from "lucide-react";
 
 export function Home() {
@@ -65,16 +68,57 @@ export function Home() {
     }
   });
 
+  // Admin-disabled tools (greyed out for everyone). Empty when Supabase is
+  // not configured, so all tools stay visible.
+  const [disabledTools, setDisabledTools] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    // Loaded async (separate chunk) so the Supabase client never blocks first paint.
+    import("../lib/analytics")
+      .then((m) => m.fetchDisabledTools())
+      .then(setDisabledTools)
+      .catch(() => {});
+  }, []);
+
   const trackUsage = (name: string) => {
-    try {
-      const next = { ...usageStats, [name]: (usageStats[name] || 0) + 1 };
-      localStorage.setItem("tools_usage_stats", JSON.stringify(next));
-      // Use timeout so async navigation doesn't block sync localstorage
-      setTimeout(() => setUsageStats(next), 0);
-    } catch (e) {}
+    // Local stat immediately (for popularity); Supabase event fire-and-forget.
+    setUsageStats((prev) => ({ ...prev, [name]: (prev[name] || 0) + 1 }));
+    import("../lib/analytics").then((m) => m.trackToolOpen(name)).catch(() => {});
   };
 
   const rawCategories = [
+    {
+      name: "Social Media Downloader",
+      tools: [
+        {
+          name: "YouTube Downloader",
+          desc: "Download YouTube videos, Shorts & audio",
+          icon: <Youtube />,
+          to: "/tools/social-downloader?platform=youtube",
+          keywords: ["youtube", "yt", "download", "video", "shorts", "mp4", "mp3", "music", "social"],
+        },
+        {
+          name: "Instagram Downloader",
+          desc: "Save Reels, posts & video clips",
+          icon: <Instagram />,
+          to: "/tools/social-downloader?platform=instagram",
+          keywords: ["instagram", "ig", "reel", "reels", "post", "download", "video", "social"],
+        },
+        {
+          name: "TikTok Downloader",
+          desc: "Download TikTok videos without watermark",
+          icon: <Music2 />,
+          to: "/tools/social-downloader?platform=tiktok",
+          keywords: ["tiktok", "tik tok", "download", "video", "watermark", "social", "clip"],
+        },
+        {
+          name: "Facebook Downloader",
+          desc: "Save Facebook videos, Reels & watch clips",
+          icon: <Facebook />,
+          to: "/tools/social-downloader?platform=facebook",
+          keywords: ["facebook", "fb", "reel", "watch", "download", "video", "social"],
+        },
+      ],
+    },
     {
       name: "Everyday Tools",
       tools: [
@@ -93,13 +137,6 @@ export function Home() {
           keywords: ["case", "convert", "uppercase", "lowercase", "text", "camelcase", "snake", "title"],
         },
         {
-          name: "Pomodoro Timer",
-          desc: "Focus timer to boost productivity",
-          icon: <Timer />,
-          to: "/tools/pomodoro",
-          keywords: ["pomodoro", "timer", "focus", "time", "clock", "productivity"],
-        },
-        {
           name: "Unit Converter",
           desc: "Convert length, weight, and temperature",
           icon: <Ruler />,
@@ -107,24 +144,31 @@ export function Home() {
           keywords: ["unit", "convert", "length", "weight", "temperature", "meters", "kilograms", "farenheit"],
         },
         {
-          name: "Tip & Split Calculator",
-          desc: "Calculate tips and split the bill",
-          icon: <Calculator />,
-          to: "/tools/tip-calculator",
-          keywords: ["tip", "split", "bill", "calculator", "money", "percent"],
+          name: "Password Strength",
+          desc: "Check how secure your password is",
+          icon: <ShieldAlert />,
+          to: "/tools/password",
+          keywords: ["password", "strength", "secure", "check", "entropy", "safety", "security"],
+        },
+        {
+          name: "Fancy Font Generator",
+          desc: "Copyable unicode text styles for bios & posts",
+          icon: <Type />,
+          to: "/tools/fancy-font",
+          keywords: ["font", "fancy", "text", "style", "unicode", "copy", "paste", "bio", "instagram"],
+        },
+        {
+          name: "QR Code Generator",
+          desc: "High-res, lossless QR codes",
+          icon: <QrCode />,
+          to: "/tools/qrcode",
+          keywords: ["qr", "qrcode", "barcode", "generate", "code"],
         },
       ],
     },
     {
       name: "Video & Audio",
       tools: [
-        {
-          name: "Social Media Downloader",
-          desc: "Download videos from YouTube, TikTok, IG & FB",
-          icon: <MonitorSmartphone />,
-          to: "/tools/youtube-downloader",
-          keywords: ["youtube", "tiktok", "instagram", "facebook", "download", "yt", "video", "mp4", "mp3", "social", "media"],
-        },
         {
           name: "Convert Video to Audio",
           desc: "Extract MP3 or WAV from any clip",
@@ -178,13 +222,6 @@ export function Home() {
           icon: <FileImage />,
           to: "/tools/image-resize",
           keywords: ["resize", "scale", "crop", "dimensions", "width", "height", "image"],
-        },
-        {
-          name: "QR Code Generator",
-          desc: "High-res, lossless QR codes",
-          icon: <QrCode />,
-          to: "/tools/qrcode",
-          keywords: ["qr", "qrcode", "barcode", "generate", "code"],
         },
         {
           name: "Favicon Generator",
@@ -340,13 +377,6 @@ export function Home() {
           keywords: ["curl", "fetch", "http", "request", "convert", "api"],
         },
         {
-          name: "Fancy Font Generator",
-          desc: "Copyable unicode text styles",
-          icon: <Type />,
-          to: "/tools/fancy-font",
-          keywords: ["font", "fancy", "text", "style", "unicode", "copy", "paste"],
-        },
-        {
           name: "Base64 Encode / Decode",
           desc: "Text and small files",
           icon: <Replace />,
@@ -359,13 +389,6 @@ export function Home() {
           icon: <Hash />,
           to: "/tools/hash",
           keywords: ["hash", "md5", "sha1", "sha256", "sha512", "crypto", "generate"],
-        },
-        {
-          name: "Password Strength",
-          desc: "Check password security",
-          icon: <ShieldAlert />,
-          to: "/tools/password",
-          keywords: ["password", "strength", "secure", "check", "entropy", "generator"],
         },
         {
           name: "License Generator",
@@ -650,7 +673,7 @@ export function Home() {
                       iconEl={t.icon}
                       featured={(t as any).featured}
                       to={t.to}
-                      disabled={(t as any).disabled}
+                      disabled={(t as any).disabled || disabledTools.has(toolId(t.name))}
                       cloud={(t as any).cloud}
                       onClick={() => trackUsage(t.name)}
                     />
