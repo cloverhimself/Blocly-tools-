@@ -50,6 +50,8 @@ const ChangelogTool = page(() => import("./pages/ChangelogTool"), "ChangelogTool
 const InvoiceTool = page(() => import("./pages/InvoiceTool"), "InvoiceTool");
 const FileConversionTool = page(() => import("./pages/FileConversionTool"), "FileConversionTool");
 const PowerPointToPdfTool = page(() => import("./pages/PowerPointToPdfTool"), "PowerPointToPdfTool");
+const SpreadsheetConverterTool = page(() => import("./pages/SpreadsheetConverterTool"), "SpreadsheetConverterTool");
+const DocumentConverterTool = page(() => import("./pages/DocumentConverterTool"), "DocumentConverterTool");
 const FaviconTool = page(() => import("./pages/FaviconTool"), "FaviconTool");
 const SvgTool = page(() => import("./pages/SvgTool"), "SvgTool");
 const TestDataGeneratorTool = page(() => import("./pages/TestDataGeneratorTool"), "TestDataGeneratorTool");
@@ -122,6 +124,8 @@ export default function App() {
           <SwitchRoute path="/tools/word-pdf" element={<FileConversionTool title="Word to PDF" type="word-pdf" />} />
           <SwitchRoute path="/tools/excel-csv" element={<FileConversionTool title="Excel to CSV" type="excel-csv" />} />
           <SwitchRoute path="/tools/ppt-pdf" element={<PowerPointToPdfTool />} />
+          <SwitchRoute path="/tools/spreadsheet" element={<SpreadsheetConverterTool />} />
+          <SwitchRoute path="/tools/document" element={<DocumentConverterTool />} />
           <SwitchRoute path="/tools/test-data" element={<TestDataGeneratorTool />} />
           <SwitchRoute path="/tools/timestamp" element={<TimestampConverterTool />} />
           <SwitchRoute path="/tools/cron" element={<CronGeneratorTool />} />

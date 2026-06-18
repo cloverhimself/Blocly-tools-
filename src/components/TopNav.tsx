@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Github, Download, Share2, Info, X, Monitor, Smartphone, Apple } from "lucide-react";
+import { Download, Share2, Info, X, Monitor, Smartphone, Apple } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export function TopNav() {
@@ -93,13 +93,17 @@ export function TopNav() {
             </button>
 
             <a
-              href="https://github.com/saviourpopoola/blocly-tools"
+              href="https://x.com/cloverhimself"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:flex flex items-center gap-2 text-[#111111] text-[13px] sm:text-[13.5px] font-semibold border border-[#111111] rounded-sm px-2.5 sm:px-3 py-1.5 hover:bg-[#FFD400] transition-colors"
+              aria-label="Follow on X"
+              title="Follow on X"
+              className="flex items-center justify-center text-[#111111] border border-[#111111] rounded-sm w-[34px] h-[31px] sm:w-auto sm:px-3 sm:py-1.5 gap-2 hover:bg-[#FFD400] transition-colors"
             >
-              <Github className="w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]" />
-              <span>GitHub</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" className="w-[14px] h-[14px] fill-current">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              <span className="hidden sm:inline text-[13px] sm:text-[13.5px] font-semibold">Follow</span>
             </a>
           </nav>
         </div>

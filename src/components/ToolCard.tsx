@@ -67,12 +67,6 @@ export function ToolCard({
           {desc}
         </div>
       </div>
-      {cloud && (
-        <div className="text-[9px] uppercase font-mono font-bold tracking-wider text-blue-600 border-t-2 border-[#111111]/5 pt-3 mt-1 flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 block animate-pulse"></span>
-          Processed in Cloud
-        </div>
-      )}
     </Link>
   );
 }
