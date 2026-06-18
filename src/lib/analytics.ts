@@ -20,7 +20,7 @@ function bumpLocal(name: string) {
 export function trackToolOpen(name: string) {
   bumpLocal(name);
   if (!isSupabaseConfigured || !supabase) return;
-  // Don't await — analytics must not slow the UI.
+  // Don't await - analytics must not slow the UI.
   supabase
     .from("tool_events")
     .insert({ tool_id: toolId(name), tool_name: name })

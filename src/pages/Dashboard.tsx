@@ -137,7 +137,7 @@ function ToolManager() {
       <div className="p-6 border-b border-[#111111]/10 flex items-center gap-2">
         <Power className="w-5 h-5 text-[#FFD400]" />
         <h2 className="text-lg font-bold">Manage Tools</h2>
-        <span className="text-sm text-[#111111]/50">— disable a tool to hide/grey it out for everyone</span>
+        <span className="text-sm text-[#111111]/50">- disable a tool to hide/grey it out for everyone</span>
       </div>
       {error && <div className="px-6 pt-4 text-sm text-red-600">{error}</div>}
       <div className="p-6 space-y-6">
@@ -338,7 +338,7 @@ export function Dashboard() {
       <TopNav />
       <main className="flex-1 max-w-7xl mx-auto w-full px-5 py-10 md:py-14">
         {/* If Supabase isn't configured yet, the dashboard still works in
-            local-only mode so it's never broken — but it's clearly unsecured. */}
+            local-only mode so it's never broken - but it's clearly unsecured. */}
         {configured && loading ? (
           <div className="flex items-center gap-2 text-[#111111]/50 p-12 justify-center">
             <Loader2 className="w-5 h-5 animate-spin" /> Checking access…
@@ -371,7 +371,7 @@ export function Dashboard() {
                       <ShieldCheck className="w-4 h-4 text-green-600" /> Signed in as {email}
                     </span>
                   ) : (
-                    "Local mode — configure Supabase to secure this and enable cross-user analytics."
+                    "Local mode - configure Supabase to secure this and enable cross-user analytics."
                   )}
                 </p>
               </div>

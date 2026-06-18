@@ -56,7 +56,7 @@ async function pptxToPdf(buffer: ArrayBuffer): Promise<Uint8Array> {
       return n(a) - n(b);
     });
 
-  if (slidePaths.length === 0) throw new Error("No slides found — is this a valid .pptx file?");
+  if (slidePaths.length === 0) throw new Error("No slides found - is this a valid .pptx file?");
 
   const pdf = await PDFDocument.create();
   const font = await pdf.embedFont(StandardFonts.Helvetica);
@@ -206,14 +206,14 @@ export function PowerPointToPdfTool() {
   return (
     <ToolLayout
       title="PowerPoint to PDF"
-      description="Convert .pptx presentations to PDF — entirely in your browser, so your files never leave your device."
+      description="Convert .pptx presentations to PDF - entirely in your browser, so your files never leave your device."
       category="File Conversion"
     >
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="bg-[#FFF9E6] border border-[#FFD400]/50 p-4 rounded-sm flex gap-3 text-[#111111]/80 text-sm">
           <AlertCircle className="w-5 h-5 text-[#FFD400] flex-shrink-0" />
           <p>
-            This runs 100% on your device — nothing is uploaded. It reproduces each slide's text and images
+            This runs 100% on your device - nothing is uploaded. It reproduces each slide's text and images
             (PNG/JPG) at their positions; complex effects, fonts, charts, and animations are simplified.
           </p>
         </div>

@@ -7,7 +7,7 @@ type OutFmt = "xlsx" | "xls" | "csv" | "ods" | "html" | "json";
 
 const OUTPUTS: { id: OutFmt; label: string; ext: string; bookType?: string; mime: string }[] = [
   { id: "xlsx", label: "Excel (.xlsx)", ext: "xlsx", bookType: "xlsx", mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
-  { id: "xls", label: "Excel 97–2003 (.xls)", ext: "xls", bookType: "biff8", mime: "application/vnd.ms-excel" },
+  { id: "xls", label: "Excel 97-2003 (.xls)", ext: "xls", bookType: "biff8", mime: "application/vnd.ms-excel" },
   { id: "csv", label: "CSV (.csv)", ext: "csv", bookType: "csv", mime: "text/csv" },
   { id: "ods", label: "OpenDocument (.ods)", ext: "ods", bookType: "ods", mime: "application/vnd.oasis.opendocument.spreadsheet" },
   { id: "html", label: "HTML table (.html)", ext: "html", bookType: "html", mime: "text/html" },
@@ -82,13 +82,13 @@ export function SpreadsheetConverterTool() {
   return (
     <ToolLayout
       title="Spreadsheet Converter"
-      description="Convert between Excel (.xlsx, .xls), CSV, OpenDocument (.ods), HTML and JSON — all in your browser."
+      description="Convert between Excel (.xlsx, .xls), CSV, OpenDocument (.ods), HTML and JSON - all in your browser."
       category="File Conversion"
     >
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="bg-[#FFF9E6] border border-[#FFD400]/50 p-4 rounded-sm flex gap-3 text-[#111111]/80 text-sm">
           <AlertCircle className="w-5 h-5 text-[#FFD400] flex-shrink-0" />
-          <p>Runs entirely on your device — your spreadsheets are never uploaded.</p>
+          <p>Runs entirely on your device - your spreadsheets are never uploaded.</p>
         </div>
 
         <Dropzone
@@ -133,7 +133,7 @@ export function SpreadsheetConverterTool() {
 
         {csvNote && (
           <p className="text-xs text-[#111111]/45">
-            CSV holds a single sheet — only the first sheet is exported. Use XLSX/ODS to keep every sheet.
+            CSV holds a single sheet - only the first sheet is exported. Use XLSX/ODS to keep every sheet.
           </p>
         )}
 

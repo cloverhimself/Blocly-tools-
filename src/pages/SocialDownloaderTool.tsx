@@ -236,7 +236,7 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
 
       {!hostMatches && url && (
         <p className="text-xs text-[#111111]/50">
-          That doesn’t look like a {platform.label} link — it may still work, or switch to the matching tab.
+          That doesn’t look like a {platform.label} link - it may still work, or switch to the matching tab.
         </p>
       )}
 
@@ -244,7 +244,7 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
         <p className="text-xs text-[#111111]/45 flex items-start gap-1.5">
           <AlertCircle className="w-3.5 h-3.5 mt-px shrink-0" />
           <span>
-            YouTube occasionally rate-limits our servers. If a download fails, wait a moment and try again —
+            YouTube occasionally rate-limits our servers. If a download fails, wait a moment and try again -
             TikTok, Instagram, and Facebook aren’t affected.
           </span>
         </p>
@@ -304,7 +304,7 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
           {downloading && (
             <div className="flex items-center gap-2 text-sm text-[#111111]/80 bg-[#FFF9E6] border border-[#FFD400]/40 rounded-sm p-3">
               <Loader2 className="w-4 h-4 animate-spin shrink-0" />
-              Preparing <strong>{downloading}</strong> — high-quality videos are merged on the server, so this can
+              Preparing <strong>{downloading}</strong> - high-quality videos are merged on the server, so this can
               take a little while. Please keep this tab open.
             </div>
           )}
@@ -412,7 +412,7 @@ export function SocialDownloaderTool() {
   return (
     <ToolLayout
       title="Social Media Downloader"
-      description="Download videos and audio from YouTube, Instagram, TikTok, and Facebook — each with its own dedicated downloader."
+      description="Download videos and audio from YouTube, Instagram, TikTok, and Facebook - each with its own dedicated downloader."
     >
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="bg-[#FFF9E6] border border-[#FFD400]/50 p-4 rounded-sm flex gap-3 text-[#111111]/80 text-sm">
@@ -443,7 +443,7 @@ export function SocialDownloaderTool() {
           })}
         </div>
 
-        {/* Active panel — keyed so state resets when switching platforms */}
+        {/* Active panel - keyed so state resets when switching platforms */}
         <DownloaderPanel key={activePlatform.id} platform={activePlatform} />
       </div>
     </ToolLayout>

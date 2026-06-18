@@ -172,15 +172,15 @@ export function DocumentConverterTool() {
   return (
     <ToolLayout
       title="Document Converter"
-      description="Convert Word (.docx), text, Markdown and HTML between each other and PDF — privately, in your browser."
+      description="Convert Word (.docx), text, Markdown and HTML between each other and PDF - privately, in your browser."
       category="File Conversion"
     >
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="bg-[#FFF9E6] border border-[#FFD400]/50 p-4 rounded-sm flex gap-3 text-[#111111]/80 text-sm">
           <AlertCircle className="w-5 h-5 text-[#FFD400] flex-shrink-0" />
           <p>
-            Runs on your device — nothing is uploaded. DOCX text and structure are converted; heavy formatting
-            (columns, embedded objects) may be simplified. Legacy <strong>.doc</strong> isn't supported — save as
+            Runs on your device - nothing is uploaded. DOCX text and structure are converted; heavy formatting
+            (columns, embedded objects) may be simplified. Legacy <strong>.doc</strong> isn't supported - save as
             .docx first.
           </p>
         </div>

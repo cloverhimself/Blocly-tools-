@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TopNav } from './TopNav';
 import { Footer } from './Footer';
 
@@ -9,7 +9,24 @@ interface ToolLayoutProps {
   children: React.ReactNode;
 }
 
+// Keep the document title and meta description in sync with the active tool so
+// each tool reads as its own page to search engines and shared links.
+function useToolSeo(title: string, description: string) {
+  useEffect(() => {
+    const prevTitle = document.title;
+    document.title = `${title} - Blocly Tools`;
+    const meta = document.querySelector('meta[name="description"]');
+    const prevDesc = meta?.getAttribute('content') || '';
+    if (meta) meta.setAttribute('content', description);
+    return () => {
+      document.title = prevTitle;
+      if (meta) meta.setAttribute('content', prevDesc);
+    };
+  }, [title, description]);
+}
+
 export function ToolLayout({ title, description, category = 'Developer', children }: ToolLayoutProps) {
+  useToolSeo(title, description);
   return (
     <div className="w-full min-h-screen bg-[#FAFAFA] text-[#111111] font-sans flex flex-col">
       <TopNav />
