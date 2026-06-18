@@ -88,6 +88,12 @@ function baseYtdlFlags(url: string): any {
       "user-agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     ],
   };
+  // Download DASH fragments in parallel — big speed-up for HD YouTube videos.
+  flags.concurrentFragments = 5;
+  // Fail reasonably fast instead of hanging on dead/blocked connections.
+  flags.socketTimeout = 20;
+  flags.retries = 3;
+  flags.fragmentRetries = 3;
   // Only ever touch the single linked video. Without this, a normal watch URL
   // that carries a `&list=...` param (autoplay, mixes, "Watch Later") makes
   // yt-dlp try to process the entire playlist, which breaks info/downloads.

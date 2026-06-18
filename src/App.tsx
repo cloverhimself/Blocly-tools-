@@ -49,6 +49,7 @@ const JsonToSqlTool = page(() => import("./pages/JsonToSqlTool"), "JsonToSqlTool
 const ChangelogTool = page(() => import("./pages/ChangelogTool"), "ChangelogTool");
 const InvoiceTool = page(() => import("./pages/InvoiceTool"), "InvoiceTool");
 const FileConversionTool = page(() => import("./pages/FileConversionTool"), "FileConversionTool");
+const PowerPointToPdfTool = page(() => import("./pages/PowerPointToPdfTool"), "PowerPointToPdfTool");
 const FaviconTool = page(() => import("./pages/FaviconTool"), "FaviconTool");
 const SvgTool = page(() => import("./pages/SvgTool"), "SvgTool");
 const TestDataGeneratorTool = page(() => import("./pages/TestDataGeneratorTool"), "TestDataGeneratorTool");
@@ -120,6 +121,7 @@ export default function App() {
           <SwitchRoute path="/tools/pdf-word" element={<FileConversionTool title="PDF to Word" type="pdf-word" />} />
           <SwitchRoute path="/tools/word-pdf" element={<FileConversionTool title="Word to PDF" type="word-pdf" />} />
           <SwitchRoute path="/tools/excel-csv" element={<FileConversionTool title="Excel to CSV" type="excel-csv" />} />
+          <SwitchRoute path="/tools/ppt-pdf" element={<PowerPointToPdfTool />} />
           <SwitchRoute path="/tools/test-data" element={<TestDataGeneratorTool />} />
           <SwitchRoute path="/tools/timestamp" element={<TimestampConverterTool />} />
           <SwitchRoute path="/tools/cron" element={<CronGeneratorTool />} />

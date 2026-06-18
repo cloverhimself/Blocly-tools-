@@ -266,6 +266,13 @@ export function Home() {
           cloud: true,
           keywords: ["excel", "csv", "xls", "xlsx", "sheet", "spreadsheet", "convert"],
         },
+        {
+          name: "PowerPoint to PDF",
+          desc: "Convert .pptx slides to PDF in your browser",
+          icon: <FileText />,
+          to: "/tools/ppt-pdf",
+          keywords: ["powerpoint", "ppt", "pptx", "pdf", "slides", "presentation", "convert"],
+        },
       ],
     },
     {

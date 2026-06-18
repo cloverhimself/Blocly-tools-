@@ -47,7 +47,12 @@ export const TOOL_CATALOG: CatalogSection[] = [
   },
   {
     category: "File Conversion",
-    tools: [{ name: "PDF to Word" }, { name: "Word to PDF" }, { name: "Excel to CSV" }],
+    tools: [
+      { name: "PDF to Word" },
+      { name: "Word to PDF" },
+      { name: "Excel to CSV" },
+      { name: "PowerPoint to PDF" },
+    ],
   },
   {
     category: "Developer",
