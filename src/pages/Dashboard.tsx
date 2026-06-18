@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import { Activity, BarChart2, PieChart as PieChartIcon, Lock, LogOut, Power, Loader2, ShieldCheck } from "lucide-react";
 import { useAuth, signInWithMagicLink, signInWithPassword, signOut } from "../lib/useAuth";
-import { isSupabaseConfigured, ADMIN_EMAIL, toolId } from "../lib/supabase";
+import { isSupabaseConfigured, toolId } from "../lib/supabase";
 import { fetchAnalytics, fetchAllToolSettings, setToolEnabled, type ToolStat } from "../lib/analytics";
 import { TOOL_CATALOG } from "../lib/toolsCatalog";
 
@@ -23,7 +23,9 @@ const COLORS = ["#FFD400", "#111111", "#444444", "#777777", "#AAAAAA", "#CCCCCC"
 
 // ---- Login screen -----------------------------------------------------------
 function AdminLogin() {
-  const [email, setEmail] = useState(ADMIN_EMAIL || "");
+  // Intentionally NOT pre-filled, and the field is neutral, so finding the
+  // /dashboard route never reveals which account it belongs to.
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"magic" | "password">("magic");
   const [status, setStatus] = useState<string | null>(null);
@@ -55,15 +57,16 @@ function AdminLogin() {
           <Lock className="w-5 h-5 text-[#FFD400]" />
         </div>
         <div>
-          <h1 className="font-extrabold text-xl">Admin Access</h1>
-          <p className="text-sm text-[#111111]/55">Sign in to view analytics and manage tools.</p>
+          <h1 className="font-extrabold text-xl">Restricted</h1>
+          <p className="text-sm text-[#111111]/55">Enter your details to continue.</p>
         </div>
       </div>
 
       <div className="space-y-3">
         <input
-          type="email"
-          placeholder="Admin email"
+          type="text"
+          autoComplete="off"
+          placeholder="Details"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full px-4 py-2.5 border border-[#111111]/15 rounded-sm focus:outline-none focus:border-[#FFD400]"
@@ -188,6 +191,7 @@ function Analytics() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [source, setSource] = useState<"supabase" | "local">("supabase");
+  const [readError, setReadError] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -208,7 +212,10 @@ function Analytics() {
           setTotal(local.reduce((a, s) => a + s.count, 0));
         }
       } catch {
-        /* ignore */
+        // A thrown error here is almost always Row Level Security blocking the
+        // read, NOT an absence of data. Surface that so it isn't mistaken for
+        // "no usage yet".
+        setReadError(true);
       } finally {
         setLoading(false);
       }
@@ -227,9 +234,15 @@ function Analytics() {
 
   return (
     <>
-      {source === "local" && (
+      {source === "local" && !readError && (
         <div className="mb-6 text-sm bg-[#FFF9E6] border border-[#FFD400]/40 p-3 rounded-sm text-[#111111]/70">
           Showing <strong>local</strong> stats from this device only. Configure Supabase to see real cross-user analytics.
+        </div>
+      )}
+      {readError && (
+        <div className="mb-6 text-sm bg-red-50 border border-red-200 p-3 rounded-sm text-red-700">
+          Analytics could not be read. This usually means the <strong>tool_events</strong> read policy in Supabase
+          does not match your admin email. Update the SELECT policy and reload.
         </div>
       )}
 

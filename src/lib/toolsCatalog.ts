@@ -21,6 +21,7 @@ export const TOOL_CATALOG: CatalogSection[] = [
       { name: "Word Counter" },
       { name: "Case Converter" },
       { name: "Unit Converter" },
+      { name: "Timezone Converter" },
       { name: "Password Strength" },
       { name: "Fancy Font Generator" },
       { name: "QR Code Generator" },

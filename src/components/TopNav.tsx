@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import { Download, Share2, Info, X, Monitor, Smartphone, Apple } from "lucide-react";
+import { Download, Share2, Info, X, Monitor, Smartphone, Apple, Globe } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useI18n, LANGS } from "../lib/i18n";
 
 export function TopNav() {
+  const { t, lang, setLang } = useI18n();
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallGuide, setShowInstallGuide] = useState(false);
 
@@ -63,25 +65,41 @@ export function TopNav() {
               to="/"
               className="hidden md:block text-[#111111] text-[13.5px] font-semibold border-b-2 border-transparent pb-[1px] hover:border-[#FFD400]"
             >
-              Tools
+              {t("navTools")}
             </Link>
+
+            <label className="flex items-center gap-1.5 text-[#111111] cursor-pointer" title="Language">
+              <Globe className="w-[15px] h-[15px]" />
+              <select
+                value={lang}
+                onChange={(e) => setLang(e.target.value as any)}
+                aria-label="Language"
+                className="bg-transparent text-[13px] sm:text-[13.5px] font-semibold cursor-pointer focus:outline-none hover:text-[#FFD400] appearance-none"
+              >
+                {LANGS.map((l) => (
+                  <option key={l.code} value={l.code}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+            </label>
 
             <button
               onClick={handleShare}
               className="flex items-center gap-1.5 text-[#111111] text-[13px] sm:text-[13.5px] font-semibold px-1 py-1.5 hover:text-[#FFD400] transition-colors cursor-pointer"
-              title="Share"
+              title={t("navShare")}
             >
               <Share2 className="w-[15px] h-[15px]" />
-              <span className="hidden sm:inline">Share</span>
+              <span className="hidden lg:inline">{t("navShare")}</span>
             </button>
 
             <button
               onClick={() => setShowInstallGuide(true)}
               className="flex items-center gap-1.5 text-[#111111] text-[13px] sm:text-[13.5px] font-semibold px-1 py-1.5 hover:text-[#FFD400] transition-colors cursor-pointer"
-              title="Install Guide"
+              title={t("navGuide")}
             >
               <Info className="w-[15px] h-[15px]" />
-              <span className="hidden md:inline">Guide</span>
+              <span className="hidden lg:inline">{t("navGuide")}</span>
             </button>
 
             <button
@@ -89,7 +107,7 @@ export function TopNav() {
               className="flex items-center gap-1.5 text-[#111111] text-[13px] sm:text-[13.5px] font-semibold border border-[#111111] bg-[#FFD400] rounded-sm px-2.5 sm:px-3 py-1.5 hover:bg-[#111111] hover:text-[#FFD400] transition-colors cursor-pointer"
             >
               <Download className="w-[14px] h-[14px]" />
-              <span className="hidden sm:inline">Install App</span>
+              <span className="hidden sm:inline">{t("navInstall")}</span>
             </button>
 
             <a

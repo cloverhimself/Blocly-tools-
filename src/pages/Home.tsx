@@ -5,6 +5,7 @@ import { SearchBar } from "../components/SearchBar";
 import { ToolCard } from "../components/ToolCard";
 import fuzzysort from "fuzzysort";
 import { toolId } from "../lib/toolId";
+import { useI18n } from "../lib/i18n";
 import {
   AudioWaveform,
   FileAudio,
@@ -58,6 +59,7 @@ import {
 } from "lucide-react";
 
 export function Home() {
+  const { t } = useI18n();
   const [query, setQuery] = useState("");
   const [usageStats, setUsageStats] = useState<Record<string, number>>(() => {
     try {
@@ -142,6 +144,13 @@ export function Home() {
           icon: <Ruler />,
           to: "/tools/unit-converter",
           keywords: ["unit", "convert", "length", "weight", "temperature", "meters", "kilograms", "farenheit"],
+        },
+        {
+          name: "Timezone Converter",
+          desc: "Convert times between any time zones",
+          icon: <Clock />,
+          to: "/tools/timezone",
+          keywords: ["timezone", "time zone", "convert", "utc", "gmt", "world clock", "meeting", "time"],
         },
         {
           name: "Password Strength",
@@ -625,7 +634,7 @@ export function Home() {
 
   if (popularTools.length > 0) {
     categories.unshift({
-      name: "Recommended & Popular Tools",
+      name: t("recommended"),
       count: "Top picks",
       tools: popularTools.map(t => ({ ...t, featured: true })),
     });
@@ -676,23 +685,21 @@ export function Home() {
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-5 py-10 md:py-14">
           <h1 className="m-0 font-extrabold text-4xl md:text-6xl leading-[1.02] tracking-[-0.035em] max-w-[20ch]">
-            A unified digital{" "}
+            {t("heroA")}{" "}
             <span className="border-b-[0.16em] border-[#FFD400] pb-[0.02em]">
-              toolkit
+              {t("heroB")}
             </span>
           </h1>
           <p className="mt-6 text-[16px] md:text-[17px] leading-relaxed text-[#111111]/60 max-w-[54ch]">
-            A unified productivity platform where every tool feels identical in interaction, reliability, and structure. Fast, reliable utilities for everyday tasks.
+            {t("heroSub")}
           </p>
 
           <div className="mt-8 max-w-[560px]">
             <SearchBar
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder={`Search ${totalTools} tools - try 'mp3', 'jwt' or 'pdf'`}
-              countLabel={
-                isSearching ? `${shownTools} found` : `${totalTools} tools`
-              }
+              placeholder={t("search", { n: totalTools })}
+              countLabel={isSearching ? t("found", { n: shownTools }) : t("toolsCount", { n: totalTools })}
               results={searchResultsDropdown}
               onSelect={trackUsage}
             />

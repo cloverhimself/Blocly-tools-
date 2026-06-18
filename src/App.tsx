@@ -58,6 +58,7 @@ const MergePdfTool = page(() => import("./pages/MergePdfTool"), "MergePdfTool");
 const SplitPdfTool = page(() => import("./pages/SplitPdfTool"), "SplitPdfTool");
 const CompressPdfTool = page(() => import("./pages/CompressPdfTool"), "CompressPdfTool");
 const OrganizePdfTool = page(() => import("./pages/OrganizePdfTool"), "OrganizePdfTool");
+const TimezoneConverterTool = page(() => import("./pages/TimezoneConverterTool"), "TimezoneConverterTool");
 const FaviconTool = page(() => import("./pages/FaviconTool"), "FaviconTool");
 const SvgTool = page(() => import("./pages/SvgTool"), "SvgTool");
 const TestDataGeneratorTool = page(() => import("./pages/TestDataGeneratorTool"), "TestDataGeneratorTool");
@@ -138,6 +139,7 @@ export default function App() {
           <SwitchRoute path="/tools/split-pdf" element={<SplitPdfTool />} />
           <SwitchRoute path="/tools/compress-pdf" element={<CompressPdfTool />} />
           <SwitchRoute path="/tools/organize-pdf" element={<OrganizePdfTool />} />
+          <SwitchRoute path="/tools/timezone" element={<TimezoneConverterTool />} />
           <SwitchRoute path="/tools/test-data" element={<TestDataGeneratorTool />} />
           <SwitchRoute path="/tools/timestamp" element={<TimestampConverterTool />} />
           <SwitchRoute path="/tools/cron" element={<CronGeneratorTool />} />

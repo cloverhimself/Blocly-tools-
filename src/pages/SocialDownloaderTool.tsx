@@ -20,9 +20,11 @@ type VideoInfo = {
   thumbnails: { url: string; width?: number; height?: number }[];
   lengthSeconds: string;
   videoHeights: number[];
-  qualities?: { height: number; size: number }[];
+  qualities?: { height: number; size: number; exact?: boolean }[];
   audioSize?: number;
+  audioSizeExact?: boolean;
   bestSize?: number;
+  bestSizeExact?: boolean;
   hasAudio: boolean;
 };
 
@@ -101,10 +103,12 @@ function qualityLabel(h: number): string {
   return `${h}p`;
 }
 
-function formatBytes(bytes?: number): string {
+function formatBytes(bytes?: number, exact?: boolean): string {
   if (!bytes || bytes <= 0) return "";
-  if (bytes >= 1024 * 1024 * 1024) return `~${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
-  return `~${Math.round(bytes / 1024 / 1024)} MB`;
+  const prefix = exact ? "" : "~";
+  if (bytes >= 1024 * 1024 * 1024) return `${prefix}${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+  if (bytes >= 1024 * 1024) return `${prefix}${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  return `${prefix}${Math.round(bytes / 1024)} KB`;
 }
 
 function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
@@ -204,10 +208,10 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
     }
   };
 
-  const sizeByHeight = new Map((info?.qualities || []).map((q) => [q.height, q.size]));
+  const qMap = new Map((info?.qualities || []).map((q) => [q.height, q]));
   const availableQualities = info
     ? COMMON_QUALITIES.filter((q) => info.videoHeights.some((h) => h >= q || (q === 360 && h <= 360))).map(
-        (q) => ({ height: q, size: sizeByHeight.get(q) || 0 })
+        (q) => ({ height: q, size: qMap.get(q)?.size || 0, exact: qMap.get(q)?.exact })
       )
     : [];
   const qualitiesToShow =
@@ -323,13 +327,13 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
                 <span className="flex items-center gap-2">
                   {downloading === "Best Quality video" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} Best Quality
                 </span>
-                {formatBytes(info.bestSize) && (
-                  <span className="text-[10px] font-medium text-[#111111]/60">{formatBytes(info.bestSize)}</span>
+                {formatBytes(info.bestSize, info.bestSizeExact) && (
+                  <span className="text-[10px] font-medium text-[#111111]/60">{formatBytes(info.bestSize, info.bestSizeExact)}</span>
                 )}
               </button>
               {qualitiesToShow.map((q) => {
                 const lbl = `${qualityLabel(q.height)} video`;
-                const size = formatBytes(q.size);
+                const size = formatBytes(q.size, q.exact);
                 return (
                   <button
                     key={q.height}
@@ -367,8 +371,8 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
                   <span className="flex items-center gap-2">
                     {downloading === "MP3 audio" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Music className="w-4 h-4 text-[#111111]/50" />} MP3
                   </span>
-                  {formatBytes(info.audioSize) && (
-                    <span className="text-[10px] font-medium text-[#111111]/45">{formatBytes(info.audioSize)}</span>
+                  {formatBytes(info.audioSize, info.audioSizeExact) && (
+                    <span className="text-[10px] font-medium text-[#111111]/45">{formatBytes(info.audioSize, info.audioSizeExact)}</span>
                   )}
                 </button>
                 <button
@@ -379,8 +383,8 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
                   <span className="flex items-center gap-2">
                     {downloading === "M4A audio" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Music className="w-4 h-4 text-[#111111]/50" />} M4A
                   </span>
-                  {formatBytes(info.audioSize) && (
-                    <span className="text-[10px] font-medium text-[#111111]/45">{formatBytes(info.audioSize)}</span>
+                  {formatBytes(info.audioSize, info.audioSizeExact) && (
+                    <span className="text-[10px] font-medium text-[#111111]/45">{formatBytes(info.audioSize, info.audioSizeExact)}</span>
                   )}
                 </button>
               </div>

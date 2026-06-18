@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { useI18n } from "../lib/i18n";
 
 export function Footer() {
+  const { t } = useI18n();
   return (
     <footer className="w-full border-t border-[#111111] bg-[#FAFAFA]">
       <div className="max-w-7xl mx-auto px-5 pt-11 pb-6">
@@ -11,14 +12,14 @@ export function Footer() {
               <span className="font-extrabold text-[17px] tracking-tight">Blocly Tools</span>
             </div>
             <p className="m-0 text-[13px] leading-relaxed text-[#111111]/60">
-              A unified productivity platform where every tool feels identical in interaction, reliability, and structure. Fast, reliable utilities for everyone.
+              {t("footerDesc")}
             </p>
           </div>
         </div>
-        
+
         <div className="mt-9 pt-4 border-t border-[#111111] flex flex-col md:flex-row flex-wrap gap-x-5 gap-y-2 justify-between font-mono text-[11.5px] text-[#111111]/55">
           <span>© {new Date().getFullYear()} Blocly - MIT License</span>
-          <span>A unified digital toolkit</span>
+          <span>{t("footerToolkit")}</span>
         </div>
       </div>
     </footer>

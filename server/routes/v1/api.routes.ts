@@ -388,18 +388,26 @@ router.get("/ytdl/info", async (req: Request, res: Response) => {
       });
     }
 
-    // ----- Estimated download sizes, so the UI can show "~84 MB" per quality.
-    // A merged YouTube download = (video-only stream at that height) + (best
-    // audio), which is what `buildDownloadPlan` actually fetches.
-    const sizeOf = (f: any) => Number(f?.filesize) || Number(f?.filesize_approx) || 0;
+    // ----- Download sizes. We prefer yt-dlp's exact `filesize`; a size is only
+    // "approximate" when we fall back to `filesize_approx`. A merged download =
+    // (video-only stream) + (best audio), which is what we actually fetch, so it
+    // is exact only when BOTH parts report an exact filesize.
+    // Returns { size, exact }.
+    const sized = (f: any): { size: number; exact: boolean } => {
+      if (f && Number(f.filesize)) return { size: Number(f.filesize), exact: true };
+      if (f && Number(f.filesize_approx)) return { size: Number(f.filesize_approx), exact: false };
+      return { size: 0, exact: false };
+    };
 
     const audioOnly = rawFormats.filter(
       (f) => (!f.vcodec || f.vcodec === "none") && f.acodec && f.acodec !== "none"
     );
-    // The download uses `bestaudio`, so estimate with the largest audio stream
-    // (prefer m4a, which is what we serve for M4A and merge into video).
-    const bestM4a = audioOnly.filter((f) => f.ext === "m4a").sort((a, b) => sizeOf(b) - sizeOf(a))[0];
-    const audioSize = sizeOf(bestM4a) || Math.max(0, ...audioOnly.map(sizeOf), 0);
+    const bestM4a =
+      audioOnly.filter((f) => f.ext === "m4a").sort((a, b) => sized(b).size - sized(a).size)[0] ||
+      audioOnly.slice().sort((a, b) => sized(b).size - sized(a).size)[0];
+    const audio = sized(bestM4a);
+    const audioSize = audio.size;
+    const audioSizeExact = audio.exact;
 
     const videoOnly = rawFormats.filter(
       (f) =>
@@ -409,39 +417,39 @@ router.get("/ytdl/info", async (req: Request, res: Response) => {
         (!f.acodec || f.acodec === "none") &&
         f.protocol !== "mhtml"
     );
-    const videoSizeAt = (h: number) => {
+    const videoSizeAt = (h: number): { size: number; exact: boolean } => {
       const at = videoOnly.filter((f) => Number(f.height) === h);
-      if (!at.length) return 0;
+      if (!at.length) return { size: 0, exact: false };
       const pick =
         h <= 1080
           ? at.find((f) => String(f.vcodec).startsWith("avc1") && f.ext === "mp4") ||
             at.find((f) => f.ext === "mp4") ||
             at[0]
-          : at.slice().sort((a, b) => sizeOf(b) - sizeOf(a))[0];
-      return sizeOf(pick);
+          : at.slice().sort((a, b) => sized(b).size - sized(a).size)[0];
+      return sized(pick);
     };
 
-    // height -> estimated merged size (bytes); 0 means "unknown".
+    // height -> merged size; exact only when both video and audio are exact.
     const qualities = videoHeights.map((h) => {
       const v = videoSizeAt(h);
-      return { height: h, size: v ? v + audioSize : 0 };
+      const size = v.size ? v.size + audioSize : 0;
+      return { height: h, size, exact: size > 0 && v.exact && audioSizeExact };
     });
 
-    // Estimate for the "Best Quality" button (capped at 1080p like the download).
-    const combinedMax = Math.max(
-      0,
-      ...rawFormats
-        .filter((f) => f.vcodec && f.vcodec !== "none" && f.acodec && f.acodec !== "none")
-        .map(sizeOf),
-      0
-    );
     let bestSize = 0;
+    let bestSizeExact = false;
     if (isYouTube(url)) {
       const hForBest = videoHeights.filter((h) => h <= 1080).sort((a, b) => b - a)[0] || videoHeights[0];
-      const v = hForBest ? videoSizeAt(hForBest) : 0;
-      bestSize = v ? v + audioSize : 0;
+      const v = hForBest ? videoSizeAt(hForBest) : { size: 0, exact: false };
+      bestSize = v.size ? v.size + audioSize : 0;
+      bestSizeExact = bestSize > 0 && v.exact && audioSizeExact;
     } else {
-      bestSize = combinedMax;
+      const combined = rawFormats
+        .filter((f) => f.vcodec && f.vcodec !== "none" && f.acodec && f.acodec !== "none")
+        .map(sized)
+        .sort((a, b) => b.size - a.size)[0] || { size: 0, exact: false };
+      bestSize = combined.size;
+      bestSizeExact = combined.exact;
     }
 
     const hasAudio = rawFormats.some((f) => f.acodec && f.acodec !== "none") || formats.length > 0;
@@ -459,7 +467,9 @@ router.get("/ytdl/info", async (req: Request, res: Response) => {
       videoHeights,
       qualities,
       audioSize,
+      audioSizeExact,
       bestSize,
+      bestSizeExact,
       hasAudio,
       formats,
     });
