@@ -240,6 +240,16 @@ function DownloaderPanel({ platform }: { platform: PlatformConfig }) {
         </p>
       )}
 
+      {platform.id === "youtube" && (
+        <p className="text-xs text-[#111111]/45 flex items-start gap-1.5">
+          <AlertCircle className="w-3.5 h-3.5 mt-px shrink-0" />
+          <span>
+            YouTube occasionally rate-limits our servers. If a download fails, wait a moment and try again —
+            TikTok, Instagram, and Facebook aren’t affected.
+          </span>
+        </p>
+      )}
+
       {error && (
         <div className="bg-red-50 text-red-600 p-4 rounded-sm border border-red-100 text-sm">{error}</div>
       )}
