@@ -35,3 +35,26 @@ You should get **JSON**. The admin dashboard is at `/dashboard`.
 
 Also add your live URL to **Supabase → Authentication → URL Configuration**
 (Site URL + Redirect URLs) so admin magic-link logins are accepted.
+
+## Making YouTube reliable (free) — optional cookies
+
+YouTube blocks **datacenter IPs** (Render/AWS/etc.) with a "confirm you're not a
+bot" challenge, so YouTube downloads are flaky from any cloud host. TikTok,
+Instagram and Facebook are unaffected. The free fix is to give the server a
+YouTube cookie so it looks like a signed-in user.
+
+1. Log into YouTube in a browser **with a throwaway Google account** (not your
+   main one — heavy downloading can get an account flagged).
+2. Export cookies with a browser extension like **"Get cookies.txt LOCALLY"**.
+   Save the `youtube.com` cookies as a Netscape `cookies.txt`.
+3. Base64-encode it into one line:
+   - macOS/Linux: `base64 -w0 cookies.txt` (or `base64 cookies.txt | tr -d '\n'`)
+   - Windows PowerShell: `[Convert]::ToBase64String([IO.File]::ReadAllBytes("cookies.txt"))`
+4. In **Render → your service → Environment**, add:
+   `YTDLP_COOKIES` = *(the base64 string)*
+5. Save — Render redeploys. YouTube now works.
+
+The server accepts the raw `cookies.txt` content too, but base64 is easier to
+paste. Cookies expire after a few weeks — when YouTube starts failing again,
+re-export and update the variable. Leave `YTDLP_COOKIES` unset and everything
+still works; only YouTube stays best-effort.

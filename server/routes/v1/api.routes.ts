@@ -49,6 +49,34 @@ function isYouTube(u: string): boolean {
   }
 }
 
+// Resolve the YouTube cookies file from the YTDLP_COOKIES env var (once).
+// The value may be the raw Netscape cookies.txt content OR base64 of it
+// (base64 is easier to paste into a host's single-line env field). Returns the
+// path to a temp cookies file, or null when not configured.
+let _cookiesPath: string | null | undefined;
+function getCookiesFile(): string | null {
+  if (_cookiesPath !== undefined) return _cookiesPath;
+  const raw = (process.env.YTDLP_COOKIES || "").trim();
+  if (!raw) {
+    _cookiesPath = null;
+    return null;
+  }
+  try {
+    let content = raw;
+    // If it has no newlines and looks like base64, decode it.
+    if (!/\s/.test(raw) && /^[A-Za-z0-9+/=]+$/.test(raw)) {
+      const decoded = Buffer.from(raw, "base64").toString("utf8");
+      if (decoded.includes("\t") || /youtube|\.com/i.test(decoded)) content = decoded;
+    }
+    const p = path.join(os.tmpdir(), "blocly-yt-cookies.txt");
+    fs.writeFileSync(p, content, "utf8");
+    _cookiesPath = p;
+  } catch {
+    _cookiesPath = null;
+  }
+  return _cookiesPath;
+}
+
 // Base yt-dlp flags. Only apply YouTube-specific client args to YouTube URLs;
 // forcing a youtube referer/client onto FB/IG/TikTok breaks extraction.
 // Typed as `any` because youtube-dl-exec's Flags type omits `extractorArgs`.
@@ -70,6 +98,10 @@ function baseYtdlFlags(url: string): any {
   // Bundled static ffmpeg so yt-dlp can merge separate video+audio streams
   // (required for any YouTube quality above 360p) and extract MP3 audio.
   if (ffmpegPath) flags.ffmpegLocation = ffmpegPath;
+  // Optional YouTube cookies (set YTDLP_COOKIES) — lets a datacenter-hosted
+  // server pass YouTube's "confirm you're not a bot" check. No-op if unset.
+  const cookies = getCookiesFile();
+  if (cookies) flags.cookies = cookies;
   // NB: we intentionally do NOT pin a YouTube player_client — forcing one
   // collapses the format list down to a single 360p stream. yt-dlp's default
   // client selection exposes the full DASH quality ladder (up to 4K).
