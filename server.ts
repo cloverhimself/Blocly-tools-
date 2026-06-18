@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'path';
-import { createServer as createViteServer } from 'vite';
 import os from 'os';
 import fs from 'fs';
 import compression from 'compression';
@@ -129,6 +128,8 @@ async function startServer() {
 
   // 5. Frontend & Vite Proxy
   if (process.env.NODE_ENV !== 'production') {
+    // Loaded only in dev so production never needs `vite` installed at runtime.
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
