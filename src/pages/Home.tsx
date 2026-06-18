@@ -273,6 +273,53 @@ export function Home() {
       ],
     },
     {
+      name: "PDF Tools",
+      tools: [
+        {
+          name: "Merge PDF",
+          desc: "Combine multiple PDFs into one",
+          icon: <FileText />,
+          to: "/tools/merge-pdf",
+          keywords: ["pdf", "merge", "combine", "join", "concatenate"],
+        },
+        {
+          name: "Split PDF",
+          desc: "Extract pages or split into files",
+          icon: <FileText />,
+          to: "/tools/split-pdf",
+          keywords: ["pdf", "split", "extract", "pages", "separate"],
+        },
+        {
+          name: "Compress PDF",
+          desc: "Reduce PDF file size",
+          icon: <FileMinus />,
+          to: "/tools/compress-pdf",
+          keywords: ["pdf", "compress", "shrink", "reduce", "size", "optimize"],
+        },
+        {
+          name: "Organize PDF",
+          desc: "Reorder and delete pages visually",
+          icon: <AppWindow />,
+          to: "/tools/organize-pdf",
+          keywords: ["pdf", "organize", "reorder", "delete", "pages", "rearrange", "rotate"],
+        },
+        {
+          name: "Image to PDF",
+          desc: "Combine JPG and PNG into a PDF",
+          icon: <ImageIcon />,
+          to: "/tools/image-to-pdf",
+          keywords: ["image", "jpg", "png", "pdf", "convert", "combine", "photo"],
+        },
+        {
+          name: "PDF to Image",
+          desc: "Export PDF pages as PNG or JPG",
+          icon: <FileImage />,
+          to: "/tools/pdf-to-image",
+          keywords: ["pdf", "image", "png", "jpg", "convert", "export", "pages"],
+        },
+      ],
+    },
+    {
       name: "Developer",
       tools: [
         {

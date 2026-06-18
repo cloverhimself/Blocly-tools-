@@ -55,6 +55,17 @@ export const TOOL_CATALOG: CatalogSection[] = [
     ],
   },
   {
+    category: "PDF Tools",
+    tools: [
+      { name: "Merge PDF" },
+      { name: "Split PDF" },
+      { name: "Compress PDF" },
+      { name: "Organize PDF" },
+      { name: "Image to PDF" },
+      { name: "PDF to Image" },
+    ],
+  },
+  {
     category: "Developer",
     tools: [
       { name: "Test Data Generator" },

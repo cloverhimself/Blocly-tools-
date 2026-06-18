@@ -52,6 +52,12 @@ const FileConversionTool = page(() => import("./pages/FileConversionTool"), "Fil
 const PowerPointToPdfTool = page(() => import("./pages/PowerPointToPdfTool"), "PowerPointToPdfTool");
 const SpreadsheetConverterTool = page(() => import("./pages/SpreadsheetConverterTool"), "SpreadsheetConverterTool");
 const DocumentConverterTool = page(() => import("./pages/DocumentConverterTool"), "DocumentConverterTool");
+const ImageToPdfTool = page(() => import("./pages/ImageToPdfTool"), "ImageToPdfTool");
+const PdfToImageTool = page(() => import("./pages/PdfToImageTool"), "PdfToImageTool");
+const MergePdfTool = page(() => import("./pages/MergePdfTool"), "MergePdfTool");
+const SplitPdfTool = page(() => import("./pages/SplitPdfTool"), "SplitPdfTool");
+const CompressPdfTool = page(() => import("./pages/CompressPdfTool"), "CompressPdfTool");
+const OrganizePdfTool = page(() => import("./pages/OrganizePdfTool"), "OrganizePdfTool");
 const FaviconTool = page(() => import("./pages/FaviconTool"), "FaviconTool");
 const SvgTool = page(() => import("./pages/SvgTool"), "SvgTool");
 const TestDataGeneratorTool = page(() => import("./pages/TestDataGeneratorTool"), "TestDataGeneratorTool");
@@ -126,6 +132,12 @@ export default function App() {
           <SwitchRoute path="/tools/ppt-pdf" element={<PowerPointToPdfTool />} />
           <SwitchRoute path="/tools/spreadsheet" element={<SpreadsheetConverterTool />} />
           <SwitchRoute path="/tools/document" element={<DocumentConverterTool />} />
+          <SwitchRoute path="/tools/image-to-pdf" element={<ImageToPdfTool />} />
+          <SwitchRoute path="/tools/pdf-to-image" element={<PdfToImageTool />} />
+          <SwitchRoute path="/tools/merge-pdf" element={<MergePdfTool />} />
+          <SwitchRoute path="/tools/split-pdf" element={<SplitPdfTool />} />
+          <SwitchRoute path="/tools/compress-pdf" element={<CompressPdfTool />} />
+          <SwitchRoute path="/tools/organize-pdf" element={<OrganizePdfTool />} />
           <SwitchRoute path="/tools/test-data" element={<TestDataGeneratorTool />} />
           <SwitchRoute path="/tools/timestamp" element={<TimestampConverterTool />} />
           <SwitchRoute path="/tools/cron" element={<CronGeneratorTool />} />
