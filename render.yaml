@@ -8,13 +8,18 @@ services:
     name: blocly-tools
     runtime: node
     plan: free # bump to "starter" if large/4K downloads run out of memory
-    # --include=dev guarantees build tools (vite, esbuild, tailwind) install even
-    # if the host sets NODE_ENV=production.
-    buildCommand: npm install --include=dev && npm run build
+    # YOUTUBE_DL_SKIP_PYTHON_CHECK skips youtube-dl-exec's (overly strict) Python
+    # preinstall check. --include=dev guarantees build tools (vite, esbuild) install
+    # even if the host sets NODE_ENV=production.
+    buildCommand: YOUTUBE_DL_SKIP_PYTHON_CHECK=1 npm install --include=dev && npm run build
     startCommand: NODE_ENV=production node dist/server.cjs
     healthCheckPath: /
     autoDeploy: true
     envVars:
+      # youtube-dl-exec's preinstall demands a `python` binary, but the yt-dlp
+      # binary it downloads is self-contained and needs none at runtime. Skip it.
+      - key: YOUTUBE_DL_SKIP_PYTHON_CHECK
+        value: "1"
       # Available at build time so Vite bakes them into the frontend.
       - key: VITE_SUPABASE_URL
         sync: false
