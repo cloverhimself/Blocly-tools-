@@ -14,7 +14,7 @@ that runs Node (not static-only hosting like Vercel). No Docker required.
 
 **Or set it up manually (New → Web Service):**
 - Environment: **Node**
-- Build command: `npm install && npm run build`
+- Build command: `npm install --include=dev && npm run build`
 - Start command: `NODE_ENV=production node dist/server.cjs`
 - Add the three `VITE_*` env vars above.
 
