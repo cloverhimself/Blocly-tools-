@@ -11,12 +11,13 @@ that runs Node (not static-only hosting like Vercel). No Docker required.
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
    - `VITE_ADMIN_EMAIL`
+   - `APP_URL`
 
 **Or set it up manually (New → Web Service):**
 - Environment: **Node**
 - Build command: `YOUTUBE_DL_SKIP_PYTHON_CHECK=1 npm install --include=dev && npm run build`
 - Start command: `NODE_ENV=production node dist/server.cjs`
-- Add the three `VITE_*` env vars above.
+- Add the three `VITE_*` env vars above and `APP_URL`.
 
 First build takes a few minutes (it downloads the yt-dlp + ffmpeg binaries).
 
@@ -25,7 +26,7 @@ First build takes a few minutes (it downloads the yt-dlp + ffmpeg binaries).
 
 ## Railway (alternative)
 
-New Project → Deploy from GitHub repo → add the three `VITE_*` variables.
+New Project → Deploy from GitHub repo → add the three `VITE_*` variables and `APP_URL`.
 Railway auto-detects the build/start scripts.
 
 ## After deploying — verify

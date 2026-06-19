@@ -27,3 +27,6 @@ services:
         sync: false
       - key: VITE_ADMIN_EMAIL
         sync: false
+      # Used by server-side CORS. Set this to your deployed Render URL or custom domain.
+      - key: APP_URL
+        sync: false
