@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ComponentType } from "react";
 import { ToolLayout } from "../components/ToolLayout";
 import {
   Download,
@@ -28,12 +28,21 @@ type VideoInfo = {
   hasAudio: boolean;
 };
 
-type PlatformId = "youtube" | "instagram" | "tiktok" | "facebook";
+type PlatformId = "youtube" | "instagram" | "tiktok" | "facebook" | "x";
+
+// lucide has no X brand mark, so we render the official glyph.
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
 
 type PlatformConfig = {
   id: PlatformId;
   label: string;
-  Icon: typeof Youtube;
+  Icon: ComponentType<{ className?: string }>;
   accent: string;
   placeholder: string;
   example: string;
@@ -82,6 +91,16 @@ const PLATFORMS: PlatformConfig[] = [
     placeholder: "Paste a Facebook video or Reel link…",
     example: "https://www.facebook.com/watch?v=…",
     hosts: ["facebook.com", "fb.watch", "fb.com"],
+    qualityLadder: false,
+  },
+  {
+    id: "x",
+    label: "X",
+    Icon: XIcon,
+    accent: "#111111",
+    placeholder: "Paste an X (Twitter) post link…",
+    example: "https://x.com/user/status/…",
+    hosts: ["x.com", "twitter.com", "t.co"],
     qualityLadder: false,
   },
 ];
@@ -428,7 +447,7 @@ export function SocialDownloaderTool() {
         </div>
 
         {/* Platform tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-1 bg-[#111111]/5 rounded-sm">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 p-1 bg-[#111111]/5 rounded-sm">
           {PLATFORMS.map((p) => {
             const isActive = p.id === active;
             return (

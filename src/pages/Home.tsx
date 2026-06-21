@@ -119,6 +119,13 @@ export function Home() {
           to: "/tools/social-downloader?platform=facebook",
           keywords: ["facebook", "fb", "reel", "watch", "download", "video", "social"],
         },
+        {
+          name: "X (Twitter) Downloader",
+          desc: "Download videos from X posts",
+          icon: <MonitorSmartphone />,
+          to: "/tools/social-downloader?platform=x",
+          keywords: ["x", "twitter", "download", "video", "post", "tweet", "social"],
+        },
       ],
     },
     {

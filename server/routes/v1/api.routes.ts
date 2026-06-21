@@ -355,8 +355,15 @@ function cleanYtError(err: any): string {
     return "This content is region-locked and not available from this server's location.";
   if (lower.includes("is live") || lower.includes("livestream") || lower.includes("live event will begin"))
     return "Live streams can't be downloaded. Try again once the stream has ended and is published.";
-  if (lower.includes("unsupported url") || lower.includes("no video formats") || lower.includes("unable to extract"))
-    return "This link isn't supported or contains no downloadable video.";
+  if (
+    lower.includes("unsupported url") ||
+    lower.includes("no video formats") ||
+    lower.includes("unable to extract") ||
+    lower.includes("no video could be found")
+  )
+    return "No video was found at this link. Make sure the post actually contains a video.";
+  if (lower.includes("nsfw") || lower.includes("age-restricted") || lower.includes("tweet is unavailable") || lower.includes("requires authentication"))
+    return "This post is age-restricted or only visible when signed in, so it can't be downloaded.";
   if (lower.includes("http error 429") || lower.includes("too many requests"))
     return "Too many requests right now. Please wait a moment and try again.";
 

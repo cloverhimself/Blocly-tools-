@@ -13,6 +13,7 @@ export const TOOL_CATALOG: CatalogSection[] = [
       { name: "Instagram Downloader" },
       { name: "TikTok Downloader" },
       { name: "Facebook Downloader" },
+      { name: "X (Twitter) Downloader" },
     ],
   },
   {
