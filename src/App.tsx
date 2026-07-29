@@ -69,6 +69,7 @@ const MarkdownPreviewerTool = page(() => import("./pages/MarkdownPreviewerTool")
 const SitemapGeneratorTool = page(() => import("./pages/SitemapGeneratorTool"), "SitemapGeneratorTool");
 const OpenGraphImageGeneratorTool = page(() => import("./pages/OpenGraphImageGeneratorTool"), "OpenGraphImageGeneratorTool");
 const LoremIpsumTool = page(() => import("./pages/LoremIpsumTool"), "LoremIpsumTool");
+const TypingSpeedTestTool = page(() => import("./pages/TypingSpeedTestTool"), "TypingSpeedTestTool");
 
 function RouteFallback() {
   return (
@@ -148,6 +149,7 @@ export default function App() {
           <SwitchRoute path="/tools/sitemap" element={<SitemapGeneratorTool />} />
           <SwitchRoute path="/tools/og-image" element={<OpenGraphImageGeneratorTool />} />
           <SwitchRoute path="/tools/lorem" element={<LoremIpsumTool />} />
+          <SwitchRoute path="/tools/typing-test" element={<TypingSpeedTestTool />} />
         </SwitchRoutes>
       </Suspense>
     </Router>

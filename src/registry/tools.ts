@@ -26,6 +26,7 @@ export const CATEGORY_ORDER: string[] = [
   "Color Tools",
   "API Tools",
   "Business",
+  "Fun",
 ];
 
 // Single source of truth for tool metadata (name, description, category,
@@ -704,5 +705,17 @@ export const toolRegistry: Record<string, ToolDefinition> = {
     status: "stable",
     keywords: ["invoice", "bill", "receipt", "generate", "pdf", "print", "business"],
     iconName: "FileText",
+  },
+
+  // --- Fun ---
+  typingSpeedTest: {
+    id: "typingSpeedTest",
+    name: "Typing Speed Test",
+    category: "Fun",
+    description: "Measure your typing speed (WPM) and accuracy",
+    route: "/tools/typing-test",
+    status: "stable",
+    keywords: ["typing", "speed", "test", "wpm", "words per minute", "accuracy", "keyboard", "practice", "game"],
+    iconName: "Keyboard",
   },
 };
