@@ -1,17 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import { TopNav } from "../components/TopNav";
 import { Footer } from "../components/Footer";
-import { Copy, Check, Download, Image as ImageIcon } from "lucide-react";
+import { Copy, Check, Download, Upload } from "lucide-react";
 
 export function SvgTool() {
   const [svgInput, setSvgInput] = useState<string>(`<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
   <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
 </svg>`);
-  
+
   const [copiedUrl, setCopiedUrl] = useState(false);
   const [copiedB64, setCopiedB64] = useState(false);
-  
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const cleanSvg = (svg: string) => svg.trim();
 
@@ -44,31 +45,48 @@ export function SvgTool() {
     }
   };
 
-  const handleDownloadPng = () => {
+  const handleDownload = (format: 'png' | 'jpeg') => {
     const b64 = getSvgBase64(svgInput);
     if (!b64) return;
-    
+
     const img = new Image();
     img.onload = () => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      
+
       canvas.width = img.width || 512;
       canvas.height = img.height || 512;
-      
+
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
-      
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (format === 'jpeg') {
+        // JPEG has no transparency, so flatten onto a white background first.
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
       ctx.drawImage(img, 0, 0);
-      
-      const pngUrl = canvas.toDataURL("image/png");
+
+      const mime = format === 'jpeg' ? 'image/jpeg' : 'image/png';
+      const dataUrl = canvas.toDataURL(mime, format === 'jpeg' ? 0.92 : undefined);
       const a = document.createElement("a");
-      a.href = pngUrl;
-      a.download = `optimized_${Date.now()}.png`;
+      a.href = dataUrl;
+      a.download = `image_${Date.now()}.${format === 'jpeg' ? 'jpg' : 'png'}`;
       a.click();
     };
     img.src = b64;
+  };
+
+  const handleUploadClick = () => fileInputRef.current?.click();
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setSvgInput(String(reader.result || ''));
+    reader.readAsText(file);
   };
 
   const previewB64 = getSvgBase64(svgInput);
@@ -91,13 +109,26 @@ export function SvgTool() {
             SVG Converter & Viewer
           </h1>
           <p className="mt-4 mb-8 text-[16px] leading-[1.5] text-[#111111]/66 max-w-[62ch]">
-            Paste raw SVG code to preview it, generate CSS data URIs, or export it to a PNG image immediately.
+            Paste raw SVG code or upload a .svg file to preview it, generate CSS data URIs, or export it to PNG or JPG.
           </p>
 
           <div className="flex flex-col lg:flex-row gap-6 items-stretch">
             <div className="flex-[1.5] flex flex-col min-h-[300px]">
               <div className="flex items-center justify-between mb-2">
                  <span className="font-mono text-[11.5px] uppercase tracking-[0.1em] text-[#111111]/60 font-bold">SVG Code Input</span>
+                 <button
+                  onClick={handleUploadClick}
+                  className="flex items-center gap-1.5 font-mono text-[11px] uppercase font-bold text-[#111111]/60 hover:text-[#111111] transition-colors cursor-pointer"
+                 >
+                   <Upload className="w-3.5 h-3.5" /> Upload .svg
+                 </button>
+                 <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".svg,image/svg+xml"
+                  className="hidden"
+                  onChange={handleFileUpload}
+                 />
               </div>
               <textarea
                 className="w-full h-[400px] bg-white border-2 border-[#111111] shadow-[4px_4px_0px_#111111] focus:shadow-[2px_2px_0px_#111111] focus:translate-x-[2px] focus:translate-y-[2px] transition-all p-4 font-mono text-sm leading-relaxed focus:outline-none resize-none"
@@ -140,13 +171,22 @@ export function SvgTool() {
                    Copy Base64 URI
                  </button>
                  
-                 <button 
-                  disabled={!previewB64}
-                  onClick={handleDownloadPng}
-                  className="w-full py-4 bg-[#111111] text-[#FFD400] border-2 border-[#111111] shadow-[2px_2px_0px_#111111] hover:bg-transparent hover:text-[#111111] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all rounded-sm font-mono text-xs uppercase font-bold tracking-wide flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-                 >
-                   <Download className="w-4 h-4"/> Download PNG
-                 </button>
+                 <div className="grid grid-cols-2 gap-3">
+                   <button
+                    disabled={!previewB64}
+                    onClick={() => handleDownload('png')}
+                    className="w-full py-4 bg-[#111111] text-[#FFD400] border-2 border-[#111111] shadow-[2px_2px_0px_#111111] hover:bg-transparent hover:text-[#111111] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all rounded-sm font-mono text-xs uppercase font-bold tracking-wide flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                   >
+                     <Download className="w-4 h-4"/> PNG
+                   </button>
+                   <button
+                    disabled={!previewB64}
+                    onClick={() => handleDownload('jpeg')}
+                    className="w-full py-4 bg-[#111111] text-[#FFD400] border-2 border-[#111111] shadow-[2px_2px_0px_#111111] hover:bg-transparent hover:text-[#111111] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all rounded-sm font-mono text-xs uppercase font-bold tracking-wide flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                   >
+                     <Download className="w-4 h-4"/> JPG
+                   </button>
+                 </div>
               </div>
               
               {/* Hidden canvas used for exporting png */}

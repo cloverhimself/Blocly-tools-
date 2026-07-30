@@ -49,6 +49,7 @@ import {
   Facebook,
   Music2,
   Keyboard,
+  Spline,
 } from "lucide-react";
 
 // Named imports only (not `import * as`) so tree-shaking keeps unused
@@ -104,6 +105,7 @@ const ICONS: Record<string, ComponentType> = {
   Facebook,
   Music2,
   Keyboard,
+  Spline,
 };
 
 export function resolveIcon(name?: string): ReactNode {

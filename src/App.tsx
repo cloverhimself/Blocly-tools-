@@ -9,7 +9,6 @@ function page(loader: () => Promise<any>, key: string): ComponentType<any> {
 }
 
 const Dashboard = page(() => import("./pages/Dashboard"), "Dashboard");
-const SocialDownloaderTool = page(() => import("./pages/SocialDownloaderTool"), "SocialDownloaderTool");
 const VideoToAudio = page(() => import("./pages/VideoToAudio"), "VideoToAudio");
 const AudioConvertTool = page(() => import("./pages/AudioConvertTool"), "AudioConvertTool");
 const CompressAudioTool = page(() => import("./pages/CompressAudioTool"), "CompressAudioTool");
@@ -61,6 +60,7 @@ const OrganizePdfTool = page(() => import("./pages/OrganizePdfTool"), "OrganizeP
 const TimezoneConverterTool = page(() => import("./pages/TimezoneConverterTool"), "TimezoneConverterTool");
 const FaviconTool = page(() => import("./pages/FaviconTool"), "FaviconTool");
 const SvgTool = page(() => import("./pages/SvgTool"), "SvgTool");
+const ImageToSvgTool = page(() => import("./pages/ImageToSvgTool"), "ImageToSvgTool");
 const TestDataGeneratorTool = page(() => import("./pages/TestDataGeneratorTool"), "TestDataGeneratorTool");
 const TimestampConverterTool = page(() => import("./pages/TimestampConverterTool"), "TimestampConverterTool");
 const CronGeneratorTool = page(() => import("./pages/CronGeneratorTool"), "CronGeneratorTool");
@@ -89,8 +89,6 @@ export default function App() {
           <SwitchRoute path="/tools/word-counter" element={<WordCounterTool />} />
           <SwitchRoute path="/tools/case-converter" element={<CaseConverterTool />} />
           <SwitchRoute path="/tools/unit-converter" element={<UnitConverterTool />} />
-          <SwitchRoute path="/tools/social-downloader" element={<SocialDownloaderTool />} />
-          <SwitchRoute path="/tools/youtube-downloader" element={<SocialDownloaderTool />} />
           <SwitchRoute path="/tools/video-to-audio" element={<VideoToAudio />} />
           <SwitchRoute path="/tools/audio-convert" element={<AudioConvertTool />} />
           <SwitchRoute path="/tools/base64" element={<Base64Tool />} />
@@ -128,6 +126,7 @@ export default function App() {
           <SwitchRoute path="/tools/invoice" element={<InvoiceTool />} />
           <SwitchRoute path="/tools/favicon" element={<FaviconTool />} />
           <SwitchRoute path="/tools/svg" element={<SvgTool />} />
+          <SwitchRoute path="/tools/image-to-svg" element={<ImageToSvgTool />} />
           <SwitchRoute path="/tools/pdf-word" element={<FileConversionTool title="PDF to Word" type="pdf-word" />} />
           <SwitchRoute path="/tools/word-pdf" element={<FileConversionTool title="Word to PDF" type="word-pdf" />} />
           <SwitchRoute path="/tools/excel-csv" element={<FileConversionTool title="Excel to CSV" type="excel-csv" />} />
