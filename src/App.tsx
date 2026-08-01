@@ -9,6 +9,7 @@ function page(loader: () => Promise<any>, key: string): ComponentType<any> {
 }
 
 const Dashboard = page(() => import("./pages/Dashboard"), "Dashboard");
+const SocialDownloaderTool = page(() => import("./pages/SocialDownloaderTool"), "SocialDownloaderTool");
 const VideoToAudio = page(() => import("./pages/VideoToAudio"), "VideoToAudio");
 const AudioConvertTool = page(() => import("./pages/AudioConvertTool"), "AudioConvertTool");
 const CompressAudioTool = page(() => import("./pages/CompressAudioTool"), "CompressAudioTool");
@@ -89,6 +90,8 @@ export default function App() {
           <SwitchRoute path="/tools/word-counter" element={<WordCounterTool />} />
           <SwitchRoute path="/tools/case-converter" element={<CaseConverterTool />} />
           <SwitchRoute path="/tools/unit-converter" element={<UnitConverterTool />} />
+          <SwitchRoute path="/tools/social-downloader" element={<SocialDownloaderTool />} />
+          <SwitchRoute path="/tools/youtube-downloader" element={<SocialDownloaderTool />} />
           <SwitchRoute path="/tools/video-to-audio" element={<VideoToAudio />} />
           <SwitchRoute path="/tools/audio-convert" element={<AudioConvertTool />} />
           <SwitchRoute path="/tools/base64" element={<Base64Tool />} />

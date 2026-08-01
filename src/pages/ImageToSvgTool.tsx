@@ -4,7 +4,7 @@ import { Footer } from "../components/Footer";
 import { Dropzone, DropzoneState } from "../components/Dropzone";
 import { DownloadButton } from "../components/DownloadButton";
 import { Image as ImageIcon } from "lucide-react";
-// @ts-expect-error - imagetracerjs ships no type declarations
+// imagetracerjs ships no type declarations; TS treats it as implicit `any`.
 import ImageTracer from "imagetracerjs";
 
 type Preset = "default" | "detailed" | "posterized2" | "posterized1";

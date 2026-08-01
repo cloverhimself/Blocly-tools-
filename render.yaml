@@ -30,3 +30,8 @@ services:
       # Used by server-side CORS. Set this to your deployed Render URL or custom domain.
       - key: APP_URL
         sync: false
+      # Optional: base64 youtube.com cookies so YouTube downloads survive
+      # Render's datacenter-IP bot-check. See DEPLOY.md. Leave unset and
+      # everything still works; only YouTube stays best-effort.
+      - key: YTDLP_COOKIES
+        sync: false

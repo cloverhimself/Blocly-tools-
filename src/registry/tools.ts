@@ -14,6 +14,7 @@ export interface ToolDefinition {
 // "Recommended" is a synthetic category computed at render time from usage
 // stats — it must never appear here.
 export const CATEGORY_ORDER: string[] = [
+  "Social Media Downloader",
   "Everyday Tools",
   "Video & Audio",
   "Images",
@@ -42,6 +43,58 @@ export const CATEGORY_ORDER: string[] = [
 // is derived from `name`, not from the `id` key below, and existing Supabase
 // rows are keyed off the current name.
 export const toolRegistry: Record<string, ToolDefinition> = {
+  // --- Social Media Downloader ---
+  youtubeDownloader: {
+    id: "youtubeDownloader",
+    name: "YouTube Downloader",
+    category: "Social Media Downloader",
+    description: "Download YouTube videos, Shorts & audio",
+    route: "/tools/social-downloader?platform=youtube",
+    status: "stable",
+    keywords: ["youtube", "yt", "download", "video", "shorts", "mp4", "mp3", "music", "social"],
+    iconName: "Youtube",
+  },
+  instagramDownloader: {
+    id: "instagramDownloader",
+    name: "Instagram Downloader",
+    category: "Social Media Downloader",
+    description: "Save Reels, posts & video clips",
+    route: "/tools/social-downloader?platform=instagram",
+    status: "stable",
+    keywords: ["instagram", "ig", "reel", "reels", "post", "download", "video", "social"],
+    iconName: "Instagram",
+  },
+  tiktokDownloader: {
+    id: "tiktokDownloader",
+    name: "TikTok Downloader",
+    category: "Social Media Downloader",
+    description: "Download TikTok videos without watermark",
+    route: "/tools/social-downloader?platform=tiktok",
+    status: "stable",
+    keywords: ["tiktok", "tik tok", "download", "video", "watermark", "social", "clip"],
+    iconName: "Music2",
+  },
+  facebookDownloader: {
+    id: "facebookDownloader",
+    name: "Facebook Downloader",
+    category: "Social Media Downloader",
+    description: "Save Facebook videos, Reels & watch clips",
+    route: "/tools/social-downloader?platform=facebook",
+    status: "stable",
+    keywords: ["facebook", "fb", "reel", "watch", "download", "video", "social"],
+    iconName: "Facebook",
+  },
+  xDownloader: {
+    id: "xDownloader",
+    name: "X (Twitter) Downloader",
+    category: "Social Media Downloader",
+    description: "Download videos from X posts",
+    route: "/tools/social-downloader?platform=x",
+    status: "stable",
+    keywords: ["x", "twitter", "download", "video", "post", "tweet", "social"],
+    iconName: "MonitorSmartphone",
+  },
+
   // --- Everyday Tools ---
   wordCounter: {
     id: "wordCounter",

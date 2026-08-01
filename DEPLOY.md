@@ -7,11 +7,12 @@ that runs Node (not static-only hosting like Vercel). No Docker required.
 
 **Easiest — Blueprint (uses `render.yaml`):**
 1. Render → **New → Blueprint** → pick this repo.
-2. Enter the three values when prompted, then **Apply**:
+2. Enter these values when prompted, then **Apply**:
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
    - `VITE_ADMIN_EMAIL`
    - `APP_URL`
+   - `YTDLP_COOKIES` — optional, leave blank for now (see below).
 
 **Or set it up manually (New → Web Service):**
 - Environment: **Node**
