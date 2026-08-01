@@ -63,6 +63,7 @@ const FaviconTool = page(() => import("./pages/FaviconTool"), "FaviconTool");
 const SvgTool = page(() => import("./pages/SvgTool"), "SvgTool");
 const ImageToSvgTool = page(() => import("./pages/ImageToSvgTool"), "ImageToSvgTool");
 const TestDataGeneratorTool = page(() => import("./pages/TestDataGeneratorTool"), "TestDataGeneratorTool");
+const MockApiGeneratorTool = page(() => import("./pages/MockApiGeneratorTool"), "MockApiGeneratorTool");
 const TimestampConverterTool = page(() => import("./pages/TimestampConverterTool"), "TimestampConverterTool");
 const CronGeneratorTool = page(() => import("./pages/CronGeneratorTool"), "CronGeneratorTool");
 const UrlEncoderTool = page(() => import("./pages/UrlEncoderTool"), "UrlEncoderTool");
@@ -144,6 +145,7 @@ export default function App() {
           <SwitchRoute path="/tools/organize-pdf" element={<OrganizePdfTool />} />
           <SwitchRoute path="/tools/timezone" element={<TimezoneConverterTool />} />
           <SwitchRoute path="/tools/test-data" element={<TestDataGeneratorTool />} />
+          <SwitchRoute path="/tools/mock-api" element={<MockApiGeneratorTool />} />
           <SwitchRoute path="/tools/timestamp" element={<TimestampConverterTool />} />
           <SwitchRoute path="/tools/cron" element={<CronGeneratorTool />} />
           <SwitchRoute path="/tools/url-encoder" element={<UrlEncoderTool />} />
