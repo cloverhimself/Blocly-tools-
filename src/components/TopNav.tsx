@@ -111,7 +111,7 @@ export function TopNav() {
             </button>
 
             <a
-              href="https://x.com/cloverhimself"
+              href="https://x.com/clover_himself"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow on X"
