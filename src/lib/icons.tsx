@@ -113,7 +113,7 @@ const ICONS: Record<string, ComponentType> = {
 export function resolveIcon(name?: string): ReactNode {
   const Icon = name ? ICONS[name] : undefined;
   if (!Icon) {
-    if (import.meta.env.DEV) {
+    if (process.env.NODE_ENV !== "production") {
       console.warn(`resolveIcon: unknown icon "${name}"`);
     }
     return null;

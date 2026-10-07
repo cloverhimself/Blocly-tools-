@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import React, { ReactNode } from "react";
 
 export interface ToolCardProps {
@@ -44,8 +43,8 @@ export function ToolCard({
   }
 
   return (
-    <Link
-      to={to}
+    <a
+      href={to}
       onClick={onClick}
       className="group flex flex-col gap-3 p-[18px] pb-5 bg-[#FAFAFA] border-2 border-[#111111] rounded-sm text-[#111111] cursor-pointer h-full min-h-[132px] hover:-translate-y-[2px] transition-all duration-100 hover:shadow-[4px_4px_0px_#111111] active:translate-y-[0px] active:shadow-[1px_1px_0px_#111111]"
     >
@@ -67,6 +66,6 @@ export function ToolCard({
           {desc}
         </div>
       </div>
-    </Link>
+    </a>
   );
 }

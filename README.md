@@ -23,7 +23,7 @@ We utilize a lightweight Express/Serverless layer strictly for heavy operations 
 - **Client-First**: We process on your computer whenever technologically possible.
 
 ## Tech Stack
-- React 19 + Vite
+- Next.js + React 19
 - Tailwind CSS 4
 - Express + Node.js (for proxy API and cloud fallbacks)
 - `lucide-react` for iconography

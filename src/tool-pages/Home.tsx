@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, type ReactNode } from "react";
 import { TopNav } from "../components/TopNav";
 import { Footer } from "../components/Footer";

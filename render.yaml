@@ -7,19 +7,19 @@ services:
     name: blocly-tools
     runtime: node
     plan: free
-    # --include=dev guarantees build tools (vite, esbuild) install even if the
+    # --include=dev guarantees build tools install even if the
     # host sets NODE_ENV=production.
     buildCommand: npm install --include=dev && npm run build
-    startCommand: NODE_ENV=production node dist/server.cjs
+    startCommand: NODE_ENV=production npm run start
     healthCheckPath: /
     autoDeploy: true
     envVars:
-      # Available at build time so Vite bakes them into the frontend.
-      - key: VITE_SUPABASE_URL
+      # Available at build time so Next.js bakes them into the frontend.
+      - key: NEXT_PUBLIC_SUPABASE_URL
         sync: false
-      - key: VITE_SUPABASE_ANON_KEY
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
         sync: false
-      - key: VITE_ADMIN_EMAIL
+      - key: NEXT_PUBLIC_ADMIN_EMAIL
         sync: false
       # Used by server-side CORS. Set this to your deployed Render URL or custom domain.
       - key: APP_URL

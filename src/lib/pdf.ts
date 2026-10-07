@@ -7,9 +7,7 @@ let _pdfjs: any;
 export async function getPdfjs() {
   if (_pdfjs) return _pdfjs;
   const pdfjs = await import("pdfjs-dist");
-  // Vite resolves the worker to a hashed URL.
-  const workerUrl = (await import("pdfjs-dist/build/pdf.worker.min.mjs?url")).default;
-  pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
+  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
   _pdfjs = pdfjs;
   return pdfjs;
 }

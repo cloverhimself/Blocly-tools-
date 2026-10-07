@@ -2,9 +2,11 @@ node_modules/
 build/
 dist/
 dev-dist/
+.next/
 coverage/
 .tmp/
 .DS_Store
 *.log
+*.tsbuildinfo
 .env*
 !.env.example

@@ -10,7 +10,7 @@ export interface ToolDefinition {
 }
 
 // Display order for homepage categories. Categories not listed here fall back
-// to appearing after these, sorted alphabetically (see src/pages/Home.tsx).
+// to appearing after these, sorted alphabetically (see src/tool-pages/Home.tsx).
 // "Recommended" is a synthetic category computed at render time from usage
 // stats — it must never appear here.
 export const CATEGORY_ORDER: string[] = [
@@ -29,7 +29,7 @@ export const CATEGORY_ORDER: string[] = [
 ];
 
 // Single source of truth for tool metadata (name, description, category,
-// route, keywords, icon). Consumed by src/pages/Home.tsx (homepage grid +
+// route, keywords, icon). Consumed by src/tool-pages/Home.tsx (homepage grid +
 // search) and src/lib/toolsCatalog.ts (admin dashboard toggle list).
 //
 // IMPORTANT — ordering contract: entries are grouped by category, and within

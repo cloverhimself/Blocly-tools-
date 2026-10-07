@@ -7,8 +7,8 @@
 - `@clover_himself` is live in the X/Twitter metadata.
 - Direct app routes such as `/dashboard` and `/tools/json` returned Vercel `404`
   before adding the SPA rewrite in `vercel.json`.
-- Current Vercel deployment serves the Vite frontend as static assets. Express
-  endpoints such as `/api/v1/uuid` are not available on Vercel yet.
+- Current Vercel deployment has started moving to Next.js route handlers.
+  `/api/v1/uuid` is available as the first migrated endpoint.
 
 ## 2. Next.js Migration Scope
 
@@ -41,7 +41,7 @@ Migration approach:
 - Replace React Router with Next route files and `next/link`.
 - Move Express API handlers into `app/api/v1/*/route.ts` incrementally.
 - Keep browser-only heavy tools lazy-loaded with dynamic imports.
-- Remove the Vite/Express server once all routes are migrated.
+- Remove the remaining Express reference code once all routes are migrated.
 
 ## 3. Information Architecture Direction
 

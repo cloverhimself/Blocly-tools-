@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Search } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 type SearchResultItem = {
   name: string;
@@ -27,7 +26,6 @@ export function SearchBar({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   // Flatten results for keyboard navigation
   const flatResults = results.flatMap((g) => g.items);
@@ -64,7 +62,7 @@ export function SearchBar({
       e.preventDefault();
       if (flatResults[selectedIndex]) {
         if (onSelect) onSelect(flatResults[selectedIndex].name);
-        navigate(flatResults[selectedIndex].to);
+        window.location.href = flatResults[selectedIndex].to;
         setIsOpen(false);
       }
     } else if (e.key === "Escape") {
@@ -121,7 +119,7 @@ export function SearchBar({
                       key={iIdx}
                       onClick={() => {
                         if (onSelect) onSelect(item.name);
-                        navigate(item.to);
+                        window.location.href = item.to;
                         setIsOpen(false);
                       }}
                       className={`w-full text-left px-4 py-3 flex flex-col gap-0.5 border-b border-[#111111]/10 last:border-b-0 transition-colors ${

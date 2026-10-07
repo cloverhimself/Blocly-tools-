@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Download, Share2, Info, X, Monitor, Smartphone, Apple, Globe } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useI18n, LANGS } from "../lib/i18n";
@@ -55,18 +54,18 @@ export function TopNav() {
     <>
       <header className="w-full border-b border-[#111111] bg-[#FAFAFA]">
         <div className="max-w-7xl mx-auto px-5 h-[62px] flex items-center justify-between gap-3.5">
-          <Link to="/" className="flex items-center gap-2.5 text-[#111111]">
+          <a href="/" className="flex items-center gap-2.5 text-[#111111]">
             <img src="/logo.svg" alt="Blocly" className="w-[20px] h-[20px] block flex-none" />
             <span className="font-extrabold text-[18px] tracking-tight">Blocly</span>
             <span className="font-mono text-[11px] text-[#111111]/50">/tools</span>
-          </Link>
+          </a>
           <nav className="flex items-center gap-3 sm:gap-4">
-            <Link
-              to="/"
+            <a
+              href="/"
               className="hidden md:block text-[#111111] text-[13.5px] font-semibold border-b-2 border-transparent pb-[1px] hover:border-[#FFD400]"
             >
               {t("navTools")}
-            </Link>
+            </a>
 
             <label className="flex items-center gap-1.5 text-[#111111] cursor-pointer" title="Language">
               <Globe className="w-[15px] h-[15px]" />
